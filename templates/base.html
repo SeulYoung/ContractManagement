@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}base{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block js %}{% endblock %}
+</head>
+
+<body>
+    <main>
+        <div class="flexContainer">
+            <div class="imgLeft"></div>
+            <div class="boxRight">
+                {% block main %}{% endblock %}
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

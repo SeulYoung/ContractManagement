@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>login</title>
+<link href="/static/css/style2.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="App Sign in Form,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements"./>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/static/js/login.js"></script>
+
+
+</head>
+<body>
+<h1> Sign Up Form</h1>
+		<div class="app-cam">
+			<div class="cam"><img src="/static/img/cam.png" class="img-responsive" alt="" /></div>
+
+			<form class="innerBox" action="" method="post" onsubmit="return login_check()">
+
+                <br style="color:red"/>{% csrf_token %}<br />
+                <label class="aleStyle"  style="color:red" id="error">{{ login_error }}</label>
+                <input type="text" class="text" id="email" name="email" placeholder="Email Address" />
+				<input type="password" id="password" name="password" placeholder="Password" />
+                <div class="submit"><input type="submit" value="Login" ></div>
+				</form>
+
+                <div class="clear"></div>
+
+				<div class="new">
+					<p><a href="/registration.html">Register a new users</a></p>
+                    <p class="sign"> <a href="#"> Forgot Password ?</a></p>
+
+					<div class="clear"></div>
+				</div>
+			</form>
+		</div>
+
+</body>
+</html>
