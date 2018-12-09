@@ -1,8 +1,10 @@
 import re
 
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from app.models import MyUser
+
+from app.forms import LoginForm, RegistrationForm
 
 
 def landing(request):
@@ -15,59 +17,41 @@ def login(request):
     if request.user.is_authenticated:
         return redirect('/profile.html')
     if request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        info = MyUser.objects.filter(email=email).first()
-        if info is None:
-            return render(request, 'login.html', {'login_error': 'email not found.'})
-        user = auth.authenticate(email=email, password=password)
-        if user is not None:
-            if user.is_active:
-                auth.login(request, user)
-                return redirect('/profile.html')
-        else:
-            return render(request, 'login.html', {'login_error': 'password is invalid.'})
-
-    return render(request, 'login.html')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = auth.authenticate(email=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    auth.login(request, user)
+                    return redirect('/profile.html')
+            else:
+                return render(request, 'login.html', {'form': form, 'login_error': '密码错误'})
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
 
 def registration(request):
     if request.user.is_authenticated:
         return redirect('/profile.html')
     if request.method == "POST":
-        email = request.POST.get('email')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        password_confirmation = request.POST.get('password_confirmation')
-
-        email_valid = r'^[0-9a-zA-Z\_\-]+(\.[0-9a-zA-Z\_\-]+)*@[0-9a-zA-Z]+(\.[0-9a-zA-Z]+){1,}$'
-        if not re.match(email_valid, email):
-            return render(request, 'registration.html', {'registration_error': 'enter a valid email address.'})
-        username_valid = r'^[a-z]+$'
-        if not re.match(username_valid, username):
-            return render(request, 'registration.html', {'registration_error': 'username has illegal characters.'})
-        if len(password) < 6:
-            return render(request, 'registration.html', {'registration_error': 'password too short.'})
-        if password != password_confirmation:
-            return render(request, 'registration.html', {'registration_error': 'password mismatch.'})
-
-        info = MyUser.objects.filter(email=email).first()
-        if info is not None:
-            return render(request, 'registration.html', {'registration_error': 'email already taken.'})
-        info = MyUser.objects.filter(username=username).first()
-        if info is not None:
-            return render(request, 'registration.html', {'registration_error': 'username already taken.'})
-        MyUser.objects.create_user(email=email, username=username, password=password)
-
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password2']
+            User.objects.create_user(username=username, password=password)
         return redirect('/login.html')
-    return render(request, 'registration.html')
+    else:
+        form = RegistrationForm()
+    return render(request, 'registration.html', {'form': form})
 
 
 def profile(request):
     if request.user.is_authenticated:
-        info = MyUser.objects.filter(email=request.user.email).first()
-        return render(request, 'profile.html', {'email': info.email, 'username': info.username})
+        info = User.objects.filter(username=request.user.username).first()
+        return render(request, 'profile.html', {'username': info.username})
     return redirect('/login.html')
 
 
@@ -78,10 +62,10 @@ def email_update(request):
 
         if not re.match(email_valid, email):
             return render(request, 'emailUpdate.html', {'email_error': 'enter a valid email address.'})
-        info = MyUser.objects.filter(email=email).first()
+        info = User.objects.filter(email=email).first()
         if info is not None:
             return render(request, 'emailUpdate.html', {'email_error': 'email already taken.'})
-        MyUser.objects.filter(email=request.user.email).update(email=email)
+        User.objects.filter(email=request.user.email).update(email=email)
         return redirect('/login.html')
 
     return render(request, 'emailUpdate.html')
