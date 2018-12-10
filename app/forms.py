@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(label='Username', max_length=50)
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password1', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password2', widget=forms.PasswordInput)
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

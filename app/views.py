@@ -13,8 +13,6 @@ def landing(request):
 
 
 def login(request):
-    if request.user.is_authenticated:
-        return redirect('/profile.html')
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -26,22 +24,21 @@ def login(request):
                     auth.login(request, user)
                     return redirect('/profile.html')
             else:
-                return render(request, 'login.html', {'form': form, 'login_error': '密码错误'})
+                form.add_error('password', '密码错误')
+                return render(request, 'login.html', {'form': form})
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
 
 def registration(request):
-    if request.user.is_authenticated:
-        return redirect('/profile.html')
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password2']
             User.objects.create_user(username=username, password=password)
-        return redirect('/login.html')
+            return redirect('/login.html')
     else:
         form = RegistrationForm()
     return render(request, 'registration.html', {'form': form})
