@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+    <meta charset="UTF-8">
+    <!--IE8开启标准渲染模式-->
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <!--宽度等于设备狂读，缩放比1，禁止用户缩放，更像原生app-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>用户管理</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="css/bootstrap-maizi.css"/>
+
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="js/Chart.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+
+<!--导航-->
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <!--小屏幕导航按钮和Logo-->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/mainf" class="navbar-brand">仓库管理</a>
+        </div>
+        <!--小屏幕导航按钮和Logo-->
+        <!--导航-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/mainf"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;后台首页</a></li>
+                <li class="active"><a href="/user"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;用户管理</a></li>
+                <li><a href="/manage"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;部门管理</a></li>
+                <li><a href="/store"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;仓库管理</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a href="index.html"><span
+                                class="glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;前台首页</a></li>
+                        <li><a href="index.html"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;个人主页</a></li>
+                        <li><a href="index.html"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;个人设置</a></li>
+                        <li><a href="index.html"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;账户中心</a></li>
+                        <li><a href="index.html"><span class="glyphicon glyphicon-heart"></span>&nbsp;&nbsp;我的收藏</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="/"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/mainf" class="list-group-item active">用户管理</a>
+                <a href="/searchuser" class="list-group-item">用户搜索</a>
+                <a href="/adduser" class="list-group-item">添加用户</a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="page-header">
+                <h1>用户管理</h1>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="/mainf">用户列表</a></li>
+                <li><a href="/searchuser">用户搜索</a></li>
+                <li><a href="/adduser">添加用户</a></li>
+            </ul>
+
+            <!--<table class="table table-hover">-->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="emp:${hap}">
+                    <td th:text="${emp.username}"></td>
+                    <td th:text="${emp.email}"></td>
+                    <td>
+                        <a href="#" role="button" data-toggle="modal" data-target="#myModal1"class="btn btn-sm btn-info" >修改</a>
+                        <a href="#" role="button" data-toggle="modal" data-target="#myModal"class="btn btn-sm btn-danger" >删除</a>
+                        <a href="#" role="button" data-toggle="modal" data-target="#myModal2"class="btn btn-sm btn-success" >权限更改</a>
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+            </table>
+            <nav class="pull-right">
+                <ul class="pagination">
+                    <li class="disabled"><a href="#" aria-label="Privious"><span aria-hidden="true">&laquo;</span></a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#"><span aria-hidden="true">&raquo;</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">修改用户权限</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/user" th:action="@{/aut}" method="post">
+                    <div class="form-group">
+                        <label for="addname3">被修改用户名</label>
+                        <input type="text" id="addname4" name="username" class="form-control" placeholder="请输入被修改用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="addname2">权限更改为</label>
+                        <input type="text" id="addname3" name="authority" class="form-control" placeholder="0--普通用户，1--职员，2--部长">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addpassword">管理员账号</label>
+                        <input id="addpassword4" type="text" name="manager" class="form-control" placeholder="请输入管理员账号">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addpassword1">管理员密码</label>
+                        <input id="addpassword5" type="password" name="key" class="form-control" placeholder="请输入管理员密码">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">修改用户密码</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" th:action="@{/upd}" method="post">
+                    <div class="form-group">
+                        <label for="addname2">原密码</label>
+                        <input type="password" id="addname2" name="password" class="form-control" placeholder="请输入原密码">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addpassword2">修改后密码</label>
+                        <input id="addpassword2" type="password" name="key" class="form-control" placeholder="请输入修改后密码">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addpassword3">再次输入密码</label>
+                        <input id="addpassword3" type="password" name="newkey" class="form-control" placeholder="请输入管理员密码">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" th:action="@{/del}" method="post">
+                    <div class="form-group">
+                        <label for="addname">确认删除用户名</label>
+                        <input type="text" id="addname" name="username" class="form-control" placeholder="确认删除用户名">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addpassword">管理员账号</label>
+                        <input id="addpassword" type="text" name="manager" class="form-control" placeholder="请输入管理员账号">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addpassword1">管理员密码</label>
+                        <input id="addpassword1" type="password" name="key" class="form-control" placeholder="请输入管理员密码">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="addgroup">所属用户组</label>
+                        <select id="addgroup" class="form-control">
+                            <option>普通用户</option>
+                            <option>管理员</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    Copyright&nbsp;©&nbsp;2018-7-8--2018-7-20&nbsp;&nbsp;Store Manager System&nbsp;&nbsp;Ninth group
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
