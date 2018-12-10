@@ -8,7 +8,7 @@ from app.forms import LoginForm, RegistrationForm
 
 
 def landing(request):
-    return render(request, 'index.html')
+    return render(request, 'home.html')
 
 
 def login(request):
