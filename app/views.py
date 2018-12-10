@@ -17,9 +17,9 @@ def login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['username']
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = auth.authenticate(email=email, password=password)
+            user = auth.authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     auth.login(request, user)
