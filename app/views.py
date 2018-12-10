@@ -8,8 +8,6 @@ from app.forms import LoginForm, RegistrationForm
 
 
 def landing(request):
-    if request.user.is_authenticated:
-        return redirect('/profile.html')
     return render(request, 'index.html')
 
 
