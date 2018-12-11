@@ -52,67 +52,91 @@
 				h3. Lorem ipsum dolor sit amet.
 			</h3>
 			<div class="row">
+
 				<div class="col-md-3">
 				</div>
 				<div class="col-md-6">
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" method="POST">
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">客户名称</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" placeholder="请输入客户名称">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="请输入客户名称">
                             </div>
+
+							 <div class=" col-sm-2">
+
+								 <button class="btn btn-primary"  data-target="#myModal">
+								修改
+								</button>
+								 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											<h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+										</div>
+										<div class="modal-body">在这里添加一些文本</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+											<button type="button" class="btn btn-primary">提交更改</button>
+										</div>
+									</div><!-- /.modal-content -->
+								</div><!-- /.modal -->
+							</div>
+                            </div>
+
                         </div>
                         <div class="form-group">
                             <label for="tel" class="col-sm-2 control-label">电话</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="tel" placeholder="请输入电话">
+                                <input type="text" class="form-control" id="tel" name="tel" placeholder="请输入电话">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="address" class="col-sm-2 control-label">地址</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="address" placeholder="请输入地址">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="请输入地址">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="fax" class="col-sm-2 control-label">传真</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="fax" placeholder="请输入传真">
+                                <input type="text" class="form-control" id="fax" name="fax" placeholder="请输入传真">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="code" class="col-sm-2 control-label">邮箱</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="code" placeholder="请输入邮箱">
+                                <input type="text" class="form-control" id="code"  name="code" placeholder="请输入邮箱">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="bank" class="col-sm-2 control-label">银行名称</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="bank" placeholder="请输入银行名称">
+                                <input type="text" class="form-control" id="bank" name="bank" placeholder="请输入银行名称">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="account" class="col-sm-2 control-label">银行账号</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="account" placeholder="请输入银行账户">
+                                <input type="text" class="form-control" id="account" name="account" placeholder="请输入银行账户">
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label for="remark" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="remark" rows="3" name="remark" placeholder="请输入备注"></textarea>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">提交</button>
+
+                                <a href="/customer_add" class="btn btn-default">重置</a>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"> 请记住我
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">登录</button>
-                            </div>
-                        </div>
                     </form>
 
 				</div>
