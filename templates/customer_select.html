@@ -53,13 +53,15 @@
 			</h3>
 			<div class="row">
 				<div class="col-md-12">
+
 					<form id="form_email" action="#" method="POST">
+					  {% csrf_token %}
 							<div class="col-md-3">
 								<div class="input-group">
 
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" name="name">
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="submit">查询用户</button>
+										<button class="btn btn-default" type="submit">查询客户</button>
 									</span>
 								</div><!-- /input-group -->
 							 </div><!-- /.col-lg-6 -->
@@ -80,9 +82,7 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th>
-									#
-								</th>
+
 								<th>
 									客户名称
 								</th>
@@ -98,19 +98,34 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% for user in list%}
-							<tr>
-
+						{% if not_found %}
+						 <tr>
+								<td>{{ not_found }}</td>
+						 </tr>
+                        {% endif %}
+						{% if user %}
+                            <tr>
 								<td>{{user.name}}</td>
 								<td>{{user.tel}}</td>
 								<td>{{user.fax}}</td>
 								<td>{{user.address}}</td>
-								<td>
-									<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>
-								</td>
+							</tr>
+                        {% endif %}
+						{% if customer_list %}
+							{% for Customer in customer_list%}
+							<tr>
+
+								<td>{{Customer.name}}</td>
+								<td>{{Customer.tel}}</td>
+								<td>{{Customer.fax}}</td>
+								<td>{{Customer.address}}</td>
+								<!--<td>-->
+									<!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
+								<!--</td>-->
 
 							</tr>
 							{% endfor %}
+						{% endif %}
 						</tbody>
 					</table>
 				</div>

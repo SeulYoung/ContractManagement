@@ -38,6 +38,7 @@ def registration(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password2']
             User.objects.create_user(username=username, password=password)
+
             return redirect('/login.html')
     else:
         form = RegistrationForm()

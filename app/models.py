@@ -52,7 +52,7 @@ class Log(models.Model):
 
 
 class Customer(models.Model):
-    num = models.CharField(verbose_name='num', max_length=20, primary_key=True)
+    # num = models.BigAutoField(verbose_name='num', max_length=20, primary_key=True)
     name = models.CharField(verbose_name='name', max_length=40)
     address = models.CharField(verbose_name='address', max_length=100)
     tel = models.CharField(verbose_name='tel', max_length=20)
@@ -61,6 +61,7 @@ class Customer(models.Model):
     bank = models.CharField(verbose_name='bank', max_length=50)
     account = models.CharField(verbose_name='account', max_length=50)
     remark = models.CharField(verbose_name='remark', max_length=200)
+
 
 
 class Attachment(models.Model):
