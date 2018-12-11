@@ -57,7 +57,7 @@ class Customer(models.Model):
     address = models.CharField(verbose_name='address', max_length=100)
     tel = models.CharField(verbose_name='tel', max_length=20)
     fax = models.CharField(verbose_name='fax', max_length=20)
-    code = models.CharField(verbose_name='code', max_length=20)
+    email = models.EmailField(verbose_name='email', max_length=20)
     bank = models.CharField(verbose_name='bank', max_length=50)
     account = models.CharField(verbose_name='account', max_length=50)
 
