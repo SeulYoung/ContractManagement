@@ -3,7 +3,7 @@ import re
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+
 
 from app.forms import LoginForm, RegistrationForm
 
@@ -90,28 +90,4 @@ def logout(request):
     auth.logout(request)
     return redirect('landing')
 
-
-class customer_add(TemplateView):
-    template_name = "customer_add.html"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'customer_add.html')
-
-class customer_modify(TemplateView):
-    template_name = "customer_modify.html"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'customer_modify.html')
-
-class customer_select(TemplateView):
-    template_name = "customer_select.html"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'customer_select.html')
-
-class customer_delete(TemplateView):
-    template_name = "customer_delete.html"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'customer_delete.html')
 

@@ -52,73 +52,27 @@
 				h3. Lorem ipsum dolor sit amet.
 			</h3>
 			<div class="row">
+				<div class="col-md-12">
+					<form id="form_email" action="#" method="POST">
+							<div class="col-md-3">
+								<div class="input-group">
+
+									<input type="text" class="form-control">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">查询用户</button>
+									</span>
+								</div><!-- /input-group -->
+							 </div><!-- /.col-lg-6 -->
+					</form>
+				</div>
+
 				<div class="col-md-3">
 				</div>
 				<div class="col-md-6">
-					<form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">客户名称</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" placeholder="请输入客户名称">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="tel" class="col-sm-2 control-label">电话</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="tel" placeholder="请输入电话">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="address" class="col-sm-2 control-label">地址</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="address" placeholder="请输入地址">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="fax" class="col-sm-2 control-label">传真</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="fax" placeholder="请输入传真">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="code" class="col-sm-2 control-label">邮箱</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="code" placeholder="请输入邮箱">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="bank" class="col-sm-2 control-label">银行名称</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="bank" placeholder="请输入银行名称">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="account" class="col-sm-2 control-label">银行账号</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="account" placeholder="请输入银行账户">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"> 请记住我
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">登录</button>
-                            </div>
-                        </div>
-                    </form>
 
 				</div>
 				<div class="col-md-3">
 				</div>
-			</div>
 			<div class="row">
 				<div class="col-md-3">
 				</div>
@@ -130,87 +84,33 @@
 									#
 								</th>
 								<th>
-									Product
+									客户名称
 								</th>
 								<th>
-									Payment Taken
+									客户电话
 								</th>
 								<th>
-									Status
+									客户传真
+								</th>
+								<th>
+									客户地址
 								</th>
 							</tr>
 						</thead>
 						<tbody>
+							{% for user in list%}
 							<tr>
+
+								<td>{{user.name}}</td>
+								<td>{{user.tel}}</td>
+								<td>{{user.fax}}</td>
+								<td>{{user.address}}</td>
 								<td>
-									1
+									<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>
 								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									01/04/2012
-								</td>
-								<td>
-									Default
-								</td>
+
 							</tr>
-							<tr class="table-active">
-								<td>
-									1
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									01/04/2012
-								</td>
-								<td>
-									Approved
-								</td>
-							</tr>
-							<tr class="table-success">
-								<td>
-									2
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									02/04/2012
-								</td>
-								<td>
-									Declined
-								</td>
-							</tr>
-							<tr class="table-warning">
-								<td>
-									3
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									03/04/2012
-								</td>
-								<td>
-									Pending
-								</td>
-							</tr>
-							<tr class="table-danger">
-								<td>
-									4
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									04/04/2012
-								</td>
-								<td>
-									Call in to confirm
-								</td>
-							</tr>
+							{% endfor %}
 						</tbody>
 					</table>
 				</div>
