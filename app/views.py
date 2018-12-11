@@ -4,8 +4,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
-
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm,UsernameForm,PasswordForm
 
 
 def landing(request):
@@ -53,14 +52,9 @@ def profile(request):
 
 def email_update(request):
     if request.method == "POST":
-        email = request.POST.get('email')
-        email_valid = r'^[0-9a-zA-Z\_\-]+(\.[0-9a-zA-Z\_\-]+)*@[0-9a-zA-Z]+(\.[0-9a-zA-Z]+){1,}$'
-
-        if not re.match(email_valid, email):
-            return render(request, 'emailUpdate.html', {'email_error': 'enter a valid email address.'})
-        info = User.objects.filter(email=email).first()
-        if info is not None:
-            return render(request, 'emailUpdate.html', {'email_error': 'email already taken.'})
+        form = UsernameForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
         User.objects.filter(email=request.user.email).update(email=email)
         return redirect('/login.html')
 
@@ -88,6 +82,4 @@ def password_update(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('landing')
-
-
+    return redirect('/landing')

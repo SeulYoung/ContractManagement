@@ -60,6 +60,7 @@ class Customer(models.Model):
     email = models.EmailField(verbose_name='email', max_length=20)
     bank = models.CharField(verbose_name='bank', max_length=50)
     account = models.CharField(verbose_name='account', max_length=50)
+    remark = models.CharField(verbose_name='remark', max_length=200)
 
 
 class Attachment(models.Model):
