@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 from django.conf.urls import url
 from . import DataManagement
+from . import ContractManagement
+
+app_name='app'
 
 urlpatterns = [
     path('', views.landing, name='landing'),
@@ -19,4 +22,6 @@ urlpatterns = [
     url(r'^customer_modify/$', DataManagement.customer_modify.as_view(), name='customer_modify'),
     url(r'^customer_select/$', DataManagement.customer_select.as_view(), name='customer_select'),
     url(r'^customer_delete/$', DataManagement.customer_delete.as_view(), name='customer_delete'),
+    ######################合同查询####################
+    path('contract_select',ContractManagement.C_Select,name="contract_select"),
 ]
