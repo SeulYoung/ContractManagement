@@ -67,7 +67,7 @@ class customer_modify(TemplateView):
             remark = request.POST.get('remark')
             Customer.objects.filter(name=name).update(tel=tel,fax=fax,email=email,address=address,bank=bank,account=account,remark=remark)
 
-            return render(request, 'customer_select.html', {'not_found': "User not found"})
+            return render(request, 'customer_modify.html', {'complish': "User modify complish"})
 
 class customer_select(TemplateView):
     template_name = "customer_select.html"
@@ -100,6 +100,8 @@ class customer_delete(TemplateView):
     def post(self, request, *args, **kwargs):
         name = request.POST.get('name')
         tel = request.POST.get('tel')
+        address =request.POST.get('address')
+        print(name, tel, address)
         if tel is None:
             customer_list = Customer.objects.all()
             user_exist = False
@@ -115,4 +117,4 @@ class customer_delete(TemplateView):
 
             Customer.objects.filter(name=name).delete()
 
-            return render(request, 'customer_select.html', {'not_found': "User not found"})
+            return render(request, 'customer_delete.html', {'complish': "User delete complish"})
