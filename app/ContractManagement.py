@@ -27,4 +27,11 @@ def signing_contract(request):
 
 
 def C_Select(request):
-    return render(request, 'Contract_select.html')
+    print(request.method)
+    if request.method == "GET":
+        contract_list = Contract.objects.all()
+        return render(request, 'Contract_select.html',{'contract_list':contract_list})
+    if request.method == "POST":
+        s_name = request.POST['name']
+        contract_list = Contract.objects.all()
+        return render(request, 'Contract_select.html',{'contract_list':contract_list})
