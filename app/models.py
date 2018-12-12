@@ -63,7 +63,6 @@ class Customer(models.Model):
     remark = models.CharField(verbose_name='remark', max_length=200)
 
 
-
 class Attachment(models.Model):
     conNum = models.CharField(verbose_name='conNum', max_length=20, primary_key=True)
     fileName = models.CharField(verbose_name='fileName', max_length=100)

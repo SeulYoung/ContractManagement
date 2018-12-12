@@ -48,7 +48,7 @@ def profile(request):
     return redirect('/login.html')
 
 
-def email_update(request):
+def username_update(request):
     if request.method == "POST":
         form = UsernameForm(request.POST)
         if form.is_valid():
@@ -57,7 +57,7 @@ def email_update(request):
             return redirect('/login.html')
     else:
         form = RegistrationForm()
-    return render(request, 'emailUpdate.html', {'form': form})
+    return render(request, 'UsernameUpdate.html', {'form': form})
 
 
 def password_update(request):
@@ -75,7 +75,7 @@ def password_update(request):
                 form.add_error('password', '密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'passwordUpdate.html', {'form': form})
+    return render(request, 'PasswordUpdate.html', {'form': form})
 
 
 def logout(request):
