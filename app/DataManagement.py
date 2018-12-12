@@ -25,7 +25,9 @@ class customer_add(TemplateView):
         remark = request.POST.get('remark')
 
         customer_list = Customer.objects.all()
-        print(customer_list)
+        for user in customer_list:
+            if user.name == name:
+                return render(request, 'customer_add.html', {'is_exist': '该客户已存在，请重新输入'})
 
         Customer.objects.create(name=name, address=address, fax=fax, tel=tel, email=email, bank=bank,
                             account=account, remark=remark)
