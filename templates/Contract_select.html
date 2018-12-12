@@ -82,7 +82,6 @@
 					<table class="table">
 						<thead>
 							<tr>
-
 								<th>
 									合同名称
 								</th>
@@ -106,14 +105,14 @@
 								<td>{{ not_found }}</td>
 						 </tr>
                         {% endif %}
-						{% if user %}
+						<!-- {% if user %}
                             <tr>
 								<td>{{user.name}}</td>
 								<td>{{user.tel}}</td>
 								<td>{{user.fax}}</td>
 								<td>{{user.address}}</td>
 							</tr>
-                        {% endif %}
+                        {% endif %} -->
 						{% if contract_list %}
 							{% for contract in contract_list%}
 							<tr>
@@ -121,7 +120,7 @@
 								<td>{{contract.customer}}</td>
 								<td>{{contract.beginTime}}</td>
 								<td>{{contract.endTime}}</td>
-                               <td>{{contract.username}}</td>
+                                <td>{{contract.username}}</td>
 								<!--<td>-->
 									<!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
 								<!--</td>-->

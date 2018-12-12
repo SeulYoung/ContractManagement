@@ -1,7 +1,11 @@
+import re
+
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
 
@@ -35,8 +39,9 @@ def C_Select(request):
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
+        print(contract_list[0].content)
         return render(request, 'Contract_select.html',{'contract_list':contract_list})
     if request.method == "POST":
         s_name = request.POST['name']
-        contract_list = Contract.objects.all()
+        contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
         return render(request, 'Contract_select.html',{'contract_list':contract_list})
