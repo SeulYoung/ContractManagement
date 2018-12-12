@@ -10,6 +10,11 @@ def drafting_contract(request):
     return render(request, 'DraftingContract.html')
 
 
+def list_contract(request):
+    contract_list = Contract.objects.all()
+    return render(request, 'ListContract.html', {'contract_list': contract_list})
+
+
 def sign_contract(request):
     return render(request, 'SignContract.html')
 

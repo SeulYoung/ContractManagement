@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
 
+
 class customer_add(TemplateView):
     template_name = "customer_add.html"
 
@@ -30,13 +31,9 @@ class customer_add(TemplateView):
                 return render(request, 'customer_add.html', {'is_exist': '该客户已存在，请重新输入'})
 
         Customer.objects.create(name=name, address=address, fax=fax, tel=tel, email=email, bank=bank,
-                            account=account, remark=remark)
+                                account=account, remark=remark)
 
         return HttpResponseRedirect('/customer_select')
-
-
-
-
 
 
 class customer_modify(TemplateView):
@@ -67,9 +64,11 @@ class customer_modify(TemplateView):
             bank = request.POST.get('bank')
             account = request.POST.get('account')
             remark = request.POST.get('remark')
-            Customer.objects.filter(name=name).update(tel=tel,fax=fax,email=email,address=address,bank=bank,account=account,remark=remark)
+            Customer.objects.filter(name=name).update(tel=tel, fax=fax, email=email, address=address, bank=bank,
+                                                      account=account, remark=remark)
 
             return render(request, 'customer_modify.html', {'complish': "User modify complish"})
+
 
 class customer_select(TemplateView):
     template_name = "customer_select.html"
@@ -77,7 +76,7 @@ class customer_select(TemplateView):
     def get(self, request, *args, **kwargs):
         customer_list = Customer.objects.all()
 
-        return render(request, 'customer_select.html',{'customer_list':customer_list})
+        return render(request, 'customer_select.html', {'customer_list': customer_list})
 
     def post(self, request, *args, **kwargs):
         name = request.POST.get('name')
@@ -102,7 +101,7 @@ class customer_delete(TemplateView):
     def post(self, request, *args, **kwargs):
         name = request.POST.get('name')
         tel = request.POST.get('tel')
-        address =request.POST.get('address')
+        address = request.POST.get('address')
         print(name, tel, address)
         if tel is None:
             customer_list = Customer.objects.all()

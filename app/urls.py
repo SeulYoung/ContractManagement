@@ -16,6 +16,7 @@ urlpatterns = [
     path('PasswordUpdate.html', views.password_update, name='password_update'),
 
     path('DraftingContract.html', ContractManagement.drafting_contract, name='drafting_contract'),
+    path('ListContract.html', ContractManagement.list_contract, name='list_contract'),
     path('SignContract.html', ContractManagement.sign_contract, name='sign_contract'),
     path('FinalContract.html', ContractManagement.final_contract, name='final_contract'),
     path('ApprovalContract.html', ContractManagement.approval_contract, name='approval_contract'),
