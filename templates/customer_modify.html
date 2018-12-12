@@ -56,6 +56,16 @@
 
 					<form id="form_email" action="#" method="POST">
 					  {% csrf_token %}
+						{% if complish %}
+						<div class="form-group">
+							<label  class="col-sm-12 control-label">{{ complish }}</label>
+						</div>
+						{% endif %}
+						{% if not_found %}
+						<div class="form-group">
+							<label  class="col-sm-12 control-label">{{ not_found }}</label>
+						</div>
+						{% endif %}
 							<div class="col-md-3">
 								<div class="input-group">
 
