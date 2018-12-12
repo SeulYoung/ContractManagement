@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<!-- css files -->
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/jQuery.lightninBox.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/team.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/portfolio.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/services.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/pogo-slider.min.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/nav.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/aos.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- /css files -->
+	<!-- fonts -->
+	<link href="http://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+	<link href="http://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+	<link href="/static/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css">
+	<!-- fonts -->
+	<!-- js files -->
+	<script src="/static/js/modernizr.js"></script>
+	<!-- /js files -->
+</head>
+
+<body>
+	<section class="contact-w3layouts jarallax" id="contact">
+		<div class="container">
+			<h3 class="text-center">用户登陆</h3>
+			<span class="fa fa-star-o" aria-hidden="true"></span>
+			<div class="col-lg-5 col-md-5 col-sm-12" data-aos="zoom-in">
+				<p class="contact-p1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at risus facilisis, semper
+					justo ut, sagittis urna. Donec libero velit, consectetur nec aliquet ac, fermentum vel felis. </p>
+				<ul class="contact-w3ls">
+					<li>
+						<i class="fa fa-map-marker" aria-hidden="true"></i>
+						<p>27 Jack Street, Chicago, USA.</p>
+					</li>
+					<li>
+						<i class="fa fa-mobile" aria-hidden="true"></i>
+						<p>+01 010 101010</p>
+					</li>
+					<li>
+						<i class="fa fa-envelope-o" aria-hidden="true"></i>
+						<p><a href="mailto:support@company.com">mail@example.com</a></p>
+					</li>
+				</ul>
+			</div>
+			<div class="col-lg-7 col-md-7 col-sm-12" data-aos="zoom-in">
+				<form action="" method="post">
+					{% csrf_token %}
+					<div class="col-lg-8 col-md-8 col-sm-8">
+						<div class="control-group form-group">
+							<div class="controls">
+								<label>合同名称：</label>
+								<input type="text" class="form-control" id="name" name="name" required data-validation-required-message="Please enter your name.">
+								<p class="help-block"></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-8 col-md-8 col-sm-8">
+						<div class="control-group form-group">
+							<div class="controls">
+								<label>客  户：</label>
+								<input type="text" class="form-control" id="customer" name="customer" required data-validation-required-message="Please enter your name.">
+								<p class="help-block"></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-8 col-md-8 col-sm-8">
+						<div class="control-group form-group">
+							<div class="controls">
+								<label>开始时间：</label>
+								<input type="text" class="form-control" id="beginTime" name="beginTime" required data-validation-required-message="Please enter your name.">
+								<p class="help-block"></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-8 col-md-8 col-sm-8">
+						<div class="control-group form-group">
+							<div class="controls">
+								<label>结束时间：</label>
+								<input type="text" class="form-control" id="endTime" name="endTime" required data-validation-required-message="Please enter your name.">
+								<p class="help-block"></p>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="control-group form-group">
+							<div class="controls">
+								<label>合同内容:</label>
+								<textarea rows="10" cols="100" class="form-control" id="content" name="content" required data-validation-required-message="Please enter your message"
+								 maxlength="999" style="resize:none"></textarea>
+							</div>
+						</div>
+					</div>
+					{% for field in form %}
+						{{ field.errors }}
+						{% if field.help_text %}
+							<p class="help">{{ field.help_text|safe }}</p>
+						{% endif %}
+					{% endfor %}
+					<!-- For success/fail messages -->
+					<div class="col-lg-6 col-md-6 col-sm-6">
+						<button type="submit" class="btn btn-primary">提交</button>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6">
+						<button onclick="location.href='registration.html'" type="button" class="btn btn-primary">重置</button>
+					</div>
+					<div class="clearfix"></div>
+				</form>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</section>
+
+	<!-- js files -->
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/smoothscroll.js"></script>
+	<script src='/static/js/aos.js'></script>
+	<script src="/static/js/lazyload.js"></script>
+	<script src="/static/js/jquery.easing.min.js"></script>
+	<script src="/static/js/grayscale.js"></script>
+	<script src="/static/js/jarallax.js"></script>
+	<script type="text/javascript">
+		$('.jarallax').jarallax({
+			speed: 0.5,
+			imgWidth: 1680,
+			imgHeight: 925
+		})
+	</script>
+	<!-- /js files -->
+</body>
+
+</html>
