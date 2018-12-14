@@ -26,10 +26,11 @@ class Contract(models.Model):
     num = models.CharField(verbose_name='num', max_length=20, primary_key=True)
     name = models.CharField(verbose_name='name', max_length=40)
     customer = models.CharField(verbose_name='customer', max_length=40)
-    beginTime = models.DateField(verbose_name='beginTime')
-    endTime = models.DateField(verbose_name='endTime')
+    beginTime = models.DateTimeField(verbose_name='beginTime')
+    endTime = models.DateTimeField(verbose_name='endTime')
     content = models.TextField(verbose_name='content')
     userName = models.CharField(verbose_name='userName', max_length=40)
+
 
 
 class Process(models.Model):

@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^customer_select/$', DataManagement.customer_select.as_view(), name='customer_select'),
     url(r'^customer_delete/$', DataManagement.customer_delete.as_view(), name='customer_delete'),
     ######################合同查询####################
-    path('contract_select', ContractManagement.C_Select, name="contract_select"),
+    path('contract_select/', ContractManagement.C_Select, name="contract_select"),
 ]

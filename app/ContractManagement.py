@@ -39,7 +39,7 @@ def C_Select(request):
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
-        print(contract_list[0].content)
+        #print(contract_list[0].beginTime)
         return render(request, 'Contract_select.html',{'contract_list':contract_list})
     if request.method == "POST":
         s_name = request.POST['name']
