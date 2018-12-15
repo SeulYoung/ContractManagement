@@ -1,8 +1,7 @@
 from django.contrib import auth
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
-from app.forms import LoginForm, RegistrationForm, UsernameForm, PasswordForm
+from app.forms import *
 
 
 def landing(request):
