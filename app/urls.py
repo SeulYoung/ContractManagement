@@ -4,6 +4,7 @@ from . import views
 from . import DataManagement
 
 from . import ContractManagement
+from . import SystemManagement
 
 app_name = 'app'
 
@@ -29,4 +30,11 @@ urlpatterns = [
     url(r'^customer_delete/$', DataManagement.customer_delete.as_view(), name='customer_delete'),
     ######################合同查询####################
     path('contract_select/', ContractManagement.C_Select, name="contract_select"),
+
+    path('Wcontract_sel.html', SystemManagement.Wcon_sel, name='Wcon_sel'),
+    path('contract_assign.html', SystemManagement.con_assign, name='con_assign'),
+    path('permission_assign.html', SystemManagement.permission_assign, name='permission_assign'),
+    path('role_add.html', SystemManagement.role_add, name='role_add'),
+    path('role_mod.html', SystemManagement.role_mod, name='role_mod'),
+    path('role_sel.html', SystemManagement.role_sel, name='role_sel'),
 ]
