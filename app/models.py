@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 
 
@@ -30,7 +28,6 @@ class Contract(models.Model):
     endTime = models.DateTimeField(verbose_name='endTime')
     content = models.TextField(verbose_name='content')
     userName = models.CharField(verbose_name='userName', max_length=40)
-
 
 
 class Process(models.Model):
@@ -64,7 +61,6 @@ class Customer(models.Model):
     bank = models.CharField(verbose_name='bank', max_length=50)
     account = models.CharField(verbose_name='account', max_length=50)
     remark = models.CharField(verbose_name='remark', max_length=200)
-
 
 
 class Attachment(models.Model):

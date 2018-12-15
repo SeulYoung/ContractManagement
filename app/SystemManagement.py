@@ -1,8 +1,4 @@
-from django import forms
-
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.shortcuts import render
 from .models import *
 
 
@@ -21,7 +17,7 @@ def Wcon_sel(request):
         return render(request, 'Wcontract_sel.html', {'con_list': con_list})
 
 
-def con_assign(request,name):
+def con_assign(request, name):
     if request.method == "POST":
         countersignP = request.POST.get('sign_field')
         approvalP = request.POST.get('approval_field')
@@ -30,7 +26,7 @@ def con_assign(request,name):
         contract_list = Contract.objects.all()
         for user in contract_list:
             if user.name == name:
-                con_id=user.num
+                con_id = user.num
 
         Process.objects.create_user(conNum=con_id, type=1, state=0, userName=countersignP)
         Process.objects.create_user(conNum=con_id, type=2, state=0, userName=approvalP)
@@ -57,5 +53,3 @@ def role_mod(request):
 
 def role_sel(request):
     return render(request, 'contract_assign.html')
-
-
