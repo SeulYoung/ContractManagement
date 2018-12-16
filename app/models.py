@@ -21,7 +21,7 @@ class Function(models.Model):
 
 
 class Contract(models.Model):
-    num = models.CharField(verbose_name='num', max_length=20, primary_key=True)
+    num = models.AutoField(verbose_name='num', max_length=20, primary_key=True)
     name = models.CharField(verbose_name='name', max_length=40)
     customer = models.CharField(verbose_name='customer', max_length=40)
     beginTime = models.DateTimeField(verbose_name='beginTime')

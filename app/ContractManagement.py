@@ -2,10 +2,28 @@ from django.db.models import Q
 from django.shortcuts import render
 
 from .models import *
+import datetime
 
 
 def drafting_contract(request):
-    return render(request, 'DraftingContract.html')
+    if request.method == "GET":
+        return render(request, 'DraftingContract.html')
+    if request.method == "POST":
+
+        name = request.POST.get('name')
+        customer = request.POST.get('customer')
+        beginTime = request.POST.get('beginTime')
+        endTime = request.POST.get('endTime')
+        content = request.POST.get('content')
+        userName = request.user.username
+        nowTime = datetime.datetime.now()
+        my_contract = Contract.objects.create(name=name, customer=customer, beginTime=beginTime, endTime=endTime, content=content,
+                                userName=userName)
+        my_state = State.objects.create(conName=name,type=1,time=nowTime)
+        print(my_contract)
+        print(my_state)
+        print(my_contract.beginTime)
+        return render(request, 'DraftingContract.html')
 
 
 def list_contract(request):
