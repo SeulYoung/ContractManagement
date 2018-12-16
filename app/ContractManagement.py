@@ -57,13 +57,20 @@ def list_contract(request):
     return render(request, 'ListContract.html', {'contract_list': contract_list})
 
 
-def list_drafts(request):
+def list_draft(request):
     contract_list = Contract.objects.filter(userName=request.user.username)
     for contract in contract_list:
-        state = State.objects.filter(conNum=contract.num)
-        if state.type == 2:
-            contract_list.append(contract)
-    return render(request, 'ListContract.html', {'contract_list': contract_list})
+        state = State.objects.filter(conNum=contract.num).last()
+        if state.type == 1:
+            contract['state'] = '待会签'
+        elif state.type == 2:
+            contract['state'] = '待定稿'
+        elif state.type == 3:
+            contract['state'] = '待审批'
+        elif state.type == 4:
+            contract['state'] = '待签订'
+        contract_list.append(contract)
+    return render(request, 'ListDraft.html', {'contract_list': contract_list})
 
 
 def contract_info(request):
@@ -90,13 +97,18 @@ def signing_contract(request):
                                                                                           time=datetime.datetime.now())
         filter_result = Process.objects.filter(conNum=num, type=1, state=0)
         if not filter_result:
-            State.objects.create(conName=num, type=2, time=datetime.datetime.now())
+            State.objects.create(conNum=num, type=2, time=datetime.datetime.now())
         return redirect('/ListContract.html')
+    return render(request, 'SigningContract.html')
 
 
 def final_contract(request):
     if request.method == "POST":
-        pass
+        num = request.POST.get('num')
+        content = request.POST.get('content')
+        Contract.objects.filter(num=num).update(content=content)
+        State.objects.create(conNum=num, type=3, time=datetime.datetime.now())
+        return redirect('/ListDraft.html')
     return render(request, 'FinalContract.html')
 
 

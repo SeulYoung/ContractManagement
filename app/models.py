@@ -40,7 +40,7 @@ class Process(models.Model):
 
 
 class State(models.Model):
-    conNum = models.IntegerField(verbose_name='conNum', primary_key=True)
+    conNum = models.IntegerField(verbose_name='conNum')
     type = models.IntegerField(verbose_name='type')
     time = models.DateTimeField(verbose_name='time')
 
