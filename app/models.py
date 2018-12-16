@@ -69,3 +69,4 @@ class Attachment(models.Model):
     path = models.CharField(verbose_name='path', max_length=100)
     type = models.CharField(verbose_name='type', max_length=20)
     uploadTime = models.DateField(verbose_name='uploadTime')
+    file = models.FileField(verbose_name='file')

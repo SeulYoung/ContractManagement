@@ -1,10 +1,11 @@
 from django.db.models import Q
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 import datetime
 
-
+@csrf_exempt
 def drafting_contract(request):
     if request.method == "GET":
         return render(request, 'DraftingContract.html')
@@ -17,9 +18,18 @@ def drafting_contract(request):
         content = request.POST.get('content')
         userName = request.user.username
         nowTime = datetime.datetime.now()
+
+
+        file=request.FILES.get('files')
+        print(file)
+        print(file.name)
+
         my_contract = Contract.objects.create(name=name, customer=customer, beginTime=beginTime, endTime=endTime, content=content,
                                 userName=userName)
         my_state = State.objects.create(conName=name,type=1,time=nowTime)
+
+        if file is not None:
+            my_attachment =Attachment.objects.create(conNum=my_contract.num,fileName=file.name,uploadTime=nowTime,file=file)
         print(my_contract)
         print(my_state)
         print(my_contract.beginTime)

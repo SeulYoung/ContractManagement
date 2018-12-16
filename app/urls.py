@@ -1,6 +1,8 @@
+from django.conf.urls.static import static
 from django.urls import path
 from django.conf.urls import url
 
+from ContractManagement import settings
 from . import views
 from . import DataManagement
 from . import ContractManagement
@@ -37,4 +39,4 @@ urlpatterns = [
     path('role_add.html', SystemManagement.role_add, name='role_add'),
     path('role_mod.html', SystemManagement.role_mod, name='role_mod'),
     path('role_sel.html', SystemManagement.role_sel, name='role_sel'),
-]
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
