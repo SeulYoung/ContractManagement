@@ -36,19 +36,19 @@ class Process(models.Model):
     state = models.IntegerField(verbose_name='state')
     userName = models.CharField(verbose_name='userName', max_length=40)
     content = models.TextField(verbose_name='content')
-    time = models.DateField(verbose_name='time')
+    time = models.DateTimeField(verbose_name='time')
 
 
 class State(models.Model):
     conName = models.CharField(verbose_name='conName', max_length=40, primary_key=True)
     type = models.IntegerField(verbose_name='type')
-    time = models.DateField(verbose_name='time')
+    time = models.DateTimeField(verbose_name='time')
 
 
 class Log(models.Model):
     userName = models.CharField(verbose_name='userName', max_length=40)
     content = models.TextField(verbose_name='content')
-    time = models.DateField(verbose_name='time')
+    time = models.DateTimeField(verbose_name='time')
 
 
 class Customer(models.Model):
@@ -68,5 +68,5 @@ class Attachment(models.Model):
     fileName = models.CharField(verbose_name='fileName', max_length=100)
     path = models.CharField(verbose_name='path', max_length=100)
     type = models.CharField(verbose_name='type', max_length=20)
-    uploadTime = models.DateField(verbose_name='uploadTime')
+    uploadTime = models.DateTimeField(verbose_name='uploadTime')
     file = models.FileField(verbose_name='file')

@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
@@ -11,7 +11,6 @@ def drafting_contract(request):
     if request.method == "GET":
         return render(request, 'DraftingContract.html')
     if request.method == "POST":
-
         name = request.POST.get('name')
         customer = request.POST.get('customer')
         beginTime = request.POST.get('beginTime')
@@ -44,24 +43,65 @@ def drafting_contract(request):
 
 
 def list_contract(request):
-    contract_list = Contract.objects.all()
+    contract_list = []
+    process_list = Process.objects.filter(state=0, userName=request.user.username)
+    for process in process_list:
+        if process.type == 1:
+            p_type = '会签'
+        elif process.type == 2:
+            p_type = '审批'
+        else:
+            p_type = '签订'
+        contract = Contract.objects.filter(num=process.conNum).first()
+        contract_list.append([process.conNum, contract.name, process.time, p_type])
     return render(request, 'ListContract.html', {'contract_list': contract_list})
 
 
-def sign_contract(request):
-    return render(request, 'SignContract.html')
+def contract_info(request):
+    if request.method == "POST":
+        num = request.POST.get('num')
+        p_type = request.POST.get('type')
+        contract = Contract.objects.filter(num=num).first()
+        if p_type == '会签':
+            contract['type'] = '会签'
+            return render(request, 'SigningContract.html', {'contract': contract})
+        elif p_type == '定稿':
+            contract['type'] = '定稿'
+            return render(request, 'FinalContract.html', {'contract': contract})
+        elif p_type == '会签':
+            contract['type'] = '审批'
+            return render(request, 'ApprovalContract.html', {'contract': contract})
+        else:
+            contract['type'] = '签订'
+            return render(request, 'SignContract.html', {'contract': contract})
+
+
+def signing_contract(request):
+    if request.method == "POST":
+        num = request.POST.get('num')
+        opinion = request.POST.get('opinion')
+        Process.objects.filter(conNum=num, userName=request.user.username).update(state=1,
+                                                                                  content=opinion,
+                                                                                  time=datetime.datetime.now())
+        return redirect('/ListContract.html')
 
 
 def final_contract(request):
+    if request.method == "POST":
+        pass
     return render(request, 'FinalContract.html')
 
 
 def approval_contract(request):
+    if request.method == "POST":
+        pass
     return render(request, 'ApprovalContract.html')
 
 
-def signing_contract(request):
-    return render(request, 'SigningContract.html')
+def sign_contract(request):
+    if request.method == "POST":
+        pass
+    return render(request, 'SignContract.html')
 
 
 def C_Select(request):
