@@ -69,6 +69,8 @@ def list_draft(request):
             contract['state'] = '待审批'
         elif state.type == 4:
             contract['state'] = '待签订'
+        else:
+            contract['state'] = '已签订'
         contract_list.append(contract)
     return render(request, 'ListDraft.html', {'contract_list': contract_list})
 
@@ -82,7 +84,7 @@ def contract_info(request):
             return render(request, 'SigningContract.html', {'contract': contract})
         elif p_type == '定稿':
             return render(request, 'FinalContract.html', {'contract': contract})
-        elif p_type == '会签':
+        elif p_type == '审批':
             return render(request, 'ApprovalContract.html', {'contract': contract})
         else:
             return render(request, 'SignContract.html', {'contract': contract})
@@ -114,13 +116,30 @@ def final_contract(request):
 
 def approval_contract(request):
     if request.method == "POST":
-        pass
+        num = request.POST.get('num')
+        state = request.POST.get('state')
+        opinion = request.POST.get('opinion')
+        Process.objects.filter(conNum=num, type=2, userName=request.user.username).update(state=state,
+                                                                                          content=opinion,
+                                                                                          time=datetime.datetime.now())
+        filter_result = Process.objects.filter(Q(state=0) | Q(state=2), conNum=num, type=2)
+        if not filter_result:
+            State.objects.create(conNum=num, type=4, time=datetime.datetime.now())
+        return redirect('/ListContract.html')
     return render(request, 'ApprovalContract.html')
 
 
 def sign_contract(request):
     if request.method == "POST":
-        pass
+        num = request.POST.get('num')
+        content = request.POST.get('content')
+        Process.objects.filter(conNum=num, type=3, userName=request.user.username).update(state=1,
+                                                                                          content=content,
+                                                                                          time=datetime.datetime.now())
+        filter_result = Process.objects.filter(conNum=num, type=3, state=0)
+        if not filter_result:
+            State.objects.create(conNum=num, type=5, time=datetime.datetime.now())
+        return redirect('/ListContract.html')
     return render(request, 'SignContract.html')
 
 
