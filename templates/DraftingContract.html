@@ -52,7 +52,7 @@
 				</ul>
 			</div>
 			<div class="col-lg-7 col-md-7 col-sm-12" data-aos="zoom-in">
-				<form action="" method="post">
+				<form action="" method="post" enctype="multipart/form-data">
 					{% csrf_token %}
 					<div class="col-lg-8 col-md-8 col-sm-8">
 						<div class="control-group form-group">
@@ -99,6 +99,16 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="control-group form-group">
+							<div class="controls">
+								<label>上传附件:</label>
+								<input type="file"  name="files">
+							</div>
+						</div>
+					</div>
+
+
 					{% for field in form %}
 					{{ field.errors }}
 					{% if field.help_text %}
@@ -107,10 +117,11 @@
 					{% endfor %}
 					<!-- For success/fail messages -->
 					<div class="col-lg-6 col-md-6 col-sm-6">
-						<button type="submit" class="btn btn-primary">登陆</button>
+						<button type="submit" class="btn btn-primary">起草合同</button>
 					</div>
 					<div class="col-lg-6 col-md-6 col-sm-6">
-						<button onclick="location.href='registration.html'" type="button" class="btn btn-primary">注册</button>
+
+						 <a href="/DraftingContract.html" type="button" class="btn btn-primary">重置</a>
 					</div>
 					<div class="clearfix"></div>
 				</form>

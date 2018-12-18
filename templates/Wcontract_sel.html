@@ -2,9 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>待分配合同列表</title>
 </head>
 <body>
+
+<div class="col-md-6">
+        
+    {% for wcon_lists in wcon_list %}
+        <p>{{ wcon_lists.conName }}     {{ wcon_lists.time }}</p>
+
+
+    {% endfor %}
+    <div>
+        <a class="regBut" href="{% url 'app:con_assign' %}">分配</a>
+        </div>
+
+
+</div>
+
 
 </body>
 </html>

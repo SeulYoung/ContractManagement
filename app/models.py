@@ -14,14 +14,14 @@ class Right(models.Model):
 
 
 class Function(models.Model):
-    num = models.CharField(verbose_name='num', max_length=10, primary_key=True)
+    num = models.AutoField(verbose_name='num', primary_key=True)
     name = models.CharField(verbose_name='description', max_length=40)
     URL = models.CharField(verbose_name='URL', max_length=100)
     description = models.CharField(verbose_name='description', max_length=100)
 
 
 class Contract(models.Model):
-    num = models.CharField(verbose_name='num', max_length=20, primary_key=True)
+    num = models.AutoField(verbose_name='num', primary_key=True)
     name = models.CharField(verbose_name='name', max_length=40)
     customer = models.CharField(verbose_name='customer', max_length=40)
     beginTime = models.DateTimeField(verbose_name='beginTime')
@@ -31,28 +31,28 @@ class Contract(models.Model):
 
 
 class Process(models.Model):
-    conNum = models.CharField(verbose_name='conNum', max_length=20, primary_key=True)
+    conNum = models.IntegerField(verbose_name='conNum', primary_key=True)
     type = models.IntegerField(verbose_name='type')
     state = models.IntegerField(verbose_name='state')
     userName = models.CharField(verbose_name='userName', max_length=40)
     content = models.TextField(verbose_name='content')
-    time = models.DateField(verbose_name='time')
+    time = models.DateTimeField(verbose_name='time')
 
 
 class State(models.Model):
-    conName = models.CharField(verbose_name='conName', max_length=40, primary_key=True)
+    conNum = models.IntegerField(verbose_name='conNum')
     type = models.IntegerField(verbose_name='type')
-    time = models.DateField(verbose_name='time')
+    time = models.DateTimeField(verbose_name='time')
 
 
 class Log(models.Model):
     userName = models.CharField(verbose_name='userName', max_length=40)
     content = models.TextField(verbose_name='content')
-    time = models.DateField(verbose_name='time')
+    time = models.DateTimeField(verbose_name='time')
 
 
 class Customer(models.Model):
-    # num = models.BigAutoField(verbose_name='num', max_length=20, primary_key=True)
+    num = models.AutoField(verbose_name='num', primary_key=True)
     name = models.CharField(verbose_name='name', max_length=40)
     address = models.CharField(verbose_name='address', max_length=100)
     tel = models.CharField(verbose_name='tel', max_length=20)
@@ -68,4 +68,5 @@ class Attachment(models.Model):
     fileName = models.CharField(verbose_name='fileName', max_length=100)
     path = models.CharField(verbose_name='path', max_length=100)
     type = models.CharField(verbose_name='type', max_length=20)
-    uploadTime = models.DateField(verbose_name='uploadTime')
+    uploadTime = models.DateTimeField(verbose_name='uploadTime')
+    file = models.FileField(verbose_name='file')
