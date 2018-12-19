@@ -46,7 +46,6 @@ def drafting_contract(request):
         #
         # send_mass_mail((message1, message2), fail_silently=False)
 
-
         return render(request, 'DraftingContract.html')
 
 
@@ -173,6 +172,25 @@ def C_Select(request, pagenum='1'):
         s_name = request.POST['name']
         contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
         paginator = Paginator(contract_list, 2)
+
+        try:
+            page = paginator.page(pagenum)
+        except PageNotAnInteger:
+            page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+
+        return render(request, 'Contract_select.html',
+                      {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
+                       'currentpage': page.number})
+
+
+def C_Process(request, type=0, pagenum='1'):
+    print(request.method)
+    if request.method == "GET":
+        process_list = Process.objects.all()
+        # 分页构建
+        paginator = Paginator(process_list, 2)
         # 获取某页对象
         try:
             page = paginator.page(pagenum)
@@ -180,8 +198,22 @@ def C_Select(request, pagenum='1'):
             page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
         except EmptyPage:
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-        print(page.object_list[0].name)
+        # print(page.object_list[0].name)
+        return render(request, 'Contract_process.html',
+                      {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
+                       'currentpage': page.number})
+    if request.method == "POST":
+        s_name = request.POST['name']
+        contract_list = Process.objects.filter(Q(name__icontains=s_name)).order_by('num')
+        paginator = Paginator(contract_list, 2)
+
+        try:
+            page = paginator.page(pagenum)
+        except PageNotAnInteger:
+            page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
                        'currentpage': page.number})
-        # return render(request, 'Contract_select.html', {'contract_list': contract_list})

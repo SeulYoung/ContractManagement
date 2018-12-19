@@ -40,8 +40,8 @@
 							<ul class="nav navbar-nav">
 								<li ><a href="/customer_add">客户</a></li>
 								<li><a href="/customer_delete">用户删除</a></li>
-								<li><a href={% url 'app:contract_process_null' %}>合同流程查询</a></li>
-								<li class="active"><a href={% url 'app:contract_select_null' %}>合同信息查询</a></li>
+								<li class="active"><a href={% url 'app:contract_process_null' %}>合同流程查询</a></li>
+								<li><a href={% url 'app:contract_select_null' %}>合同信息查询</a></li>
 							</ul>
 						</div>
 						</div>
@@ -55,16 +55,17 @@
 				<div class="col-md-12">
 
 					<form id="form_email" action="#" method="POST">
-					  {% csrf_token %}
-							<div class="col-md-3">
-								<div class="input-group">
-
-									<input type="text" class="form-control" name="name">
-									<span class="input-group-btn">
-										<button class="btn btn-default" type="submit">查询合同信息</button>
-									</span>
-								</div><!-- /input-group -->
-							 </div><!-- /.col-lg-6 -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">合同状态
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href={% url 'app:contract_select_null' %}>显示全部</a></li>
+                                <li><a href="#">已会签</a></li>
+                                <li><a href="#">已审批</a></li>
+                                <li><a href="#">已签订</a></li>
+                            </ul>
+                        </div>
 					</form>
 				</div>
 
@@ -79,32 +80,24 @@
 							<tr>
                                 <th>编号</th>
 								<th>
-									合同名称
+									类型
 								</th>
 								<th>
-									合同客户
+									状态
 								</th>
 								<th>
-									开始时间
-								</th>
-								<th>
-									结束时间
-								</th>
-                                <th>
-									合同使用者
+									使用者
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 						{% if page %}
-							{% for contract in page.object_list%}
+							{% for process in page.object_list%}
 							<tr>
-                                <td>{{ contract.num }}</td>
-								<td>{{contract.name}}</td>
-								<td>{{contract.customer}}</td>
-								<td>{{contract.beginTime}}</td>
-								<td>{{contract.endTime}}</td>
-                                <td>{{contract.userName}}</td>
+                                <td>{{ process.conNum }}</td>
+								<td>{{process.type}}</td>
+								<td>{{process.state}}</td>
+								<td>{{process.username}}</td>
 								<!--<td>-->
 									<!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
 								<!--</td>-->
@@ -122,7 +115,7 @@
                             {% if page.has_previous %}
                                 <li>
                                     {# 点击超链接,对上一页的页面发起访问 #}
-                                    <a href="{% url 'app:contract_select' page.previous_page_number %}" aria-label="Previous">
+                                    <a href="{% url 'app:contract_process' page.previous_page_number %}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -145,10 +138,10 @@
                                 {% ifequal p currentpage %}
                                     {# 被选中的页码具有高亮效果,阅读bootrap文档得知,对当前li使用active样式 #}
                                     {# {% url 'app:blogs' p %} 点击页码,对第p页的路由发起访问 #}
-                                    <li class="active"><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
+                                    <li class="active"><a href="{% url 'app:contract_process' p %}">{{ p }}</a></li>
                                 {% else %}
                                     {# 非当前页页码普通显示 #}
-                                    <li><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
+                                    <li><a href="{% url 'app:contract_process' p %}">{{ p }}</a></li>
                                 {% endifequal %}
                             {% endfor %}
 
@@ -157,7 +150,7 @@
                             {% if page.has_next %}
                                 <li>
                                     {# 点击超链接,对下一页的页面发起访问 #}
-                                    <a href="{% url 'app:contract_select' page.next_page_number %}" aria-label="Next">
+                                    <a href="{% url 'app:contract_process' page.next_page_number %}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a></li>
                             {% else %}
