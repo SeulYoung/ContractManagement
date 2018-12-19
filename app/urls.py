@@ -31,7 +31,8 @@ urlpatterns = [
                   url(r'^customer_select/$', DataManagement.customer_select.as_view(), name='customer_select'),
                   url(r'^customer_delete/$', DataManagement.customer_delete.as_view(), name='customer_delete'),
                   ######################合同查询####################
-                  path('contract_select/', ContractManagement.C_Select, name="contract_select"),
+                  url(r'^contract_select/$', ContractManagement.C_Select, name="contract_select"),
+                  url(r'^contract_select/(?P<pagenum>\d+)/$', ContractManagement.C_Select, name="contract_select"),
 
                   path('Wcontract_sel.html', SystemManagement.Wcon_sel, name='Wcon_sel'),
                   path('contract_assign.html', SystemManagement.con_assign, name='con_assign'),
