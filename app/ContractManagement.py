@@ -42,21 +42,6 @@ def drafting_contract(request):
         return render(request, 'DraftingContract.html')
 
 
-def list_contract(request):
-    contract_list = []
-    process_list = Process.objects.filter(state=0, userName=request.user.username)
-    for process in process_list:
-        if process.type == 1:
-            p_type = '会签'
-        elif process.type == 2:
-            p_type = '审批'
-        else:
-            p_type = '签订'
-        contract = Contract.objects.filter(num=process.conNum).first()
-        contract_list.append([process.conNum, contract.name, process.time, p_type])
-    return render(request, 'ListContract.html', {'contract_list': contract_list})
-
-
 def list_draft(request):
     contract_list = Contract.objects.filter(userName=request.user.username)
     for contract in contract_list:
@@ -73,6 +58,21 @@ def list_draft(request):
             contract['state'] = '已签订'
         contract_list.append(contract)
     return render(request, 'ListDraft.html', {'contract_list': contract_list})
+
+
+def list_contract(request):
+    contract_list = []
+    process_list = Process.objects.filter(state=0, userName=request.user.username)
+    for process in process_list:
+        if process.type == 1:
+            p_type = '会签'
+        elif process.type == 2:
+            p_type = '审批'
+        else:
+            p_type = '签订'
+        contract = Contract.objects.filter(num=process.conNum).first()
+        contract_list.append([process.conNum, contract.name, process.time, p_type])
+    return render(request, 'ListContract.html', {'contract_list': contract_list})
 
 
 def contract_info(request):
@@ -143,14 +143,14 @@ def sign_contract(request):
     return render(request, 'SignContract.html')
 
 
-def C_Select(request,pagenum='1'):
+def C_Select(request, pagenum='1'):
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
 
-        #分页构建
-        paginator = Paginator(contract_list,2)
-        #获取某页对象
+        # 分页构建
+        paginator = Paginator(contract_list, 2)
+        # 获取某页对象
         try:
             page = paginator.page(pagenum)
         except PageNotAnInteger:
@@ -158,12 +158,14 @@ def C_Select(request,pagenum='1'):
         except EmptyPage:
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
         print(page.object_list[0].name)
-        return render(request, 'Contract_select.html', {'page': page,"paginator":paginator,'pagerange':paginator.page_range,'currentpage': page.number})
+        return render(request, 'Contract_select.html',
+                      {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
+                       'currentpage': page.number})
     if request.method == "POST":
         s_name = request.POST['name']
         contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
-        paginator = Paginator(contract_list,2)
-        #获取某页对象
+        paginator = Paginator(contract_list, 2)
+        # 获取某页对象
         try:
             page = paginator.page(pagenum)
         except PageNotAnInteger:
@@ -171,5 +173,7 @@ def C_Select(request,pagenum='1'):
         except EmptyPage:
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
         print(page.object_list[0].name)
-        return render(request, 'Contract_select.html', {'page': page,"paginator":paginator,'pagerange':paginator.page_range,'currentpage': page.number})
-        #return render(request, 'Contract_select.html', {'contract_list': contract_list})
+        return render(request, 'Contract_select.html',
+                      {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
+                       'currentpage': page.number})
+        # return render(request, 'Contract_select.html', {'contract_list': contract_list})
