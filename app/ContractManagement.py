@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 import datetime
 
@@ -143,13 +143,33 @@ def sign_contract(request):
     return render(request, 'SignContract.html')
 
 
-def C_Select(request):
+def C_Select(request,pagenum='1'):
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
-        # print(contract_list[0].beginTime)
-        return render(request, 'Contract_select.html', {'contract_list': contract_list})
+
+        #分页构建
+        paginator = Paginator(contract_list,2)
+        #获取某页对象
+        try:
+            page = paginator.page(pagenum)
+        except PageNotAnInteger:
+            page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+        print(page.object_list[0].name)
+        return render(request, 'Contract_select.html', {'page': page,"paginator":paginator,'pagerange':paginator.page_range,'currentpage': page.number})
     if request.method == "POST":
         s_name = request.POST['name']
         contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
-        return render(request, 'Contract_select.html', {'contract_list': contract_list})
+        paginator = Paginator(contract_list,2)
+        #获取某页对象
+        try:
+            page = paginator.page(pagenum)
+        except PageNotAnInteger:
+            page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+        print(page.object_list[0].name)
+        return render(request, 'Contract_select.html', {'page': page,"paginator":paginator,'pagerange':paginator.page_range,'currentpage': page.number})
+        #return render(request, 'Contract_select.html', {'contract_list': contract_list})
