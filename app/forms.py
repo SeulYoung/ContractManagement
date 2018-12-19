@@ -21,8 +21,8 @@ class RegistrationForm(forms.Form):
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
-        if len(password1) < 6:
-            raise forms.ValidationError("密码最短6个字符")
+        if len(password1) < 4:
+            raise forms.ValidationError("密码最短4个字符")
         elif len(password1) > 20:
             raise forms.ValidationError("密码最长20个字符")
         return password1

@@ -50,20 +50,22 @@ def drafting_contract(request):
 
 
 def list_draft(request):
-    contract_list = Contract.objects.filter(userName=request.user.username)
-    for contract in contract_list:
+    contract_list = []
+    data_list = Contract.objects.filter(userName=request.user.username)
+    for contract in data_list:
         state = State.objects.filter(conNum=contract.num).last()
         if state.type == 1:
-            contract['state'] = '待会签'
+            state = '待会签'
         elif state.type == 2:
-            contract['state'] = '待定稿'
+            state = '待定稿'
         elif state.type == 3:
-            contract['state'] = '待审批'
+            state = '待审批'
         elif state.type == 4:
-            contract['state'] = '待签订'
+            state = '待签订'
         else:
-            contract['state'] = '已签订'
-        contract_list.append(contract)
+            state = '已签订'
+        temp = State.objects.filter(conNum=contract.num).first()
+        contract_list.append({'num': contract.num, 'name': contract.name, 'time': temp.time, 'state': state})
     return render(request, 'ListDraft.html', {'contract_list': contract_list})
 
 
@@ -78,7 +80,8 @@ def list_contract(request):
         else:
             p_type = '签订'
         contract = Contract.objects.filter(num=process.conNum).first()
-        contract_list.append([process.conNum, contract.name, process.time, p_type])
+        temp = State.objects.filter(conNum=contract.num).first()
+        contract_list.append({'conNum': process.conNum, 'name': contract.name, 'time': temp.time, 'p_type': p_type})
     return render(request, 'ListContract.html', {'contract_list': contract_list})
 
 
