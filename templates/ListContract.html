@@ -54,14 +54,34 @@
 			<div class="col-lg-7 col-md-7 col-sm-12" data-aos="zoom-in">
 				<form action="" method="post">
 					{% csrf_token %}
-					{% for contract in contract_list%}
-					<tr>
-						<td>{{Customer.num}}</td>
-						<td>{{Customer.name}}</td>
-						<td>{{Customer.userName}}</td>
-						<button type="submit" class="btn btn-primary">会签</button>
-					</tr>
-					{% endfor %}
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									合同编号
+								</th>
+								<th>
+									合同名称
+								</th>
+								<th>
+									起草时间
+								</th>
+								<th>
+									操作
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for contract in contract_list%}
+							<tr>
+								<td>{{contract.num}}</td>
+								<td>{{contract.name}}</td>
+								<td>{{contract.time}}</td>
+								<button type="submit" class="btn btn-primary">{{contract.p_type}}</button>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</form>
 			</div>
 			<div class="clearfix"></div>
