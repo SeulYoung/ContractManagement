@@ -162,17 +162,14 @@ def C_Select(request,pagenum='1'):
     if request.method == "POST":
         s_name = request.POST['name']
         contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
-        paginator = Paginator(contract_list,1)
-        page = request.GET.get('page',1)
-        currentPage = int(page)
-        # 每个条数据的编号（防止第二页从第一个开始）
-        number = int((currentPage - 1) * 1)
+        paginator = Paginator(contract_list,2)
+        #获取某页对象
         try:
-            # print(page)
-            contract_list = paginator.page(page)  # 获取当前页码的记录
+            page = paginator.page(pagenum)
         except PageNotAnInteger:
-            contract_list = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+            page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
         except EmptyPage:
-            contract_list = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-        return render(request, 'Contract_select.html', {'contract_list': contract_list,"paginator":paginator,"currentPage":currentPage,"number":number})
+            page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+        print(page.object_list[0].name)
+        return render(request, 'Contract_select.html', {'page': page,"paginator":paginator,'pagerange':paginator.page_range,'currentpage': page.number})
         #return render(request, 'Contract_select.html', {'contract_list': contract_list})
