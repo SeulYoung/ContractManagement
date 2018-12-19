@@ -34,7 +34,8 @@ urlpatterns = [
                   url(r'^contract_select/$', ContractManagement.C_Select, name="contract_select"),
                   url(r'^contract_select/(?P<pagenum>\d+)/$', ContractManagement.C_Select, name="contract_select"),
 
-                  path('Wcontract_sel.html', SystemManagement.Wcon_sel, name='Wcon_sel'),
+                  path('Wcontract_sel.html', SystemManagement.wcon_sel, name='Wcon_sel'),
+                  path('Wpermission_sel.html', SystemManagement.wper_sel, name='Wper_sel'),
                   path('contract_assign.html', SystemManagement.con_assign, name='con_assign'),
                   path('permission_assign.html', SystemManagement.permission_assign, name='permission_assign'),
                   path('role_add.html', SystemManagement.role_add, name='role_add'),
