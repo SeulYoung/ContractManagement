@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>待分配合同列表</title>
 </head>
 <body>
+
+<div>
+
+    {% for contract in wcon_list %}
+        <form action="" method="post" class="con_list">
+            <tr>
+                <td>{{ contract.conNum }}</td>
+                <td>{{ contract.time }}</td>
+                <button type="submit" class="assign">分配</button>
+            </tr>
+            {% csrf_token %}
+        </form>
+
+    {% endfor %}
+
+</div>
 
 </body>
 </html>
