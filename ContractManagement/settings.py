@@ -125,6 +125,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.qq.com'  # 如果是 163 改成 smtp.163.com
 EMAIL_PORT = 465
-EMAIL_HOST_USER = '948525147@qq.com' # 帐号
+EMAIL_HOST_USER = '948525147@qq.com'  # 帐号
 EMAIL_HOST_PASSWORD = 'anrrwvtrjlfwbdea'  # 密码
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
