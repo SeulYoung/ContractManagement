@@ -9,9 +9,10 @@
 <div>
 
     {% for contract in wcon_list %}
-        <form action="" method="post" class="con_list">
+        <form action="contract_assign.html" method="post" class="con_list">
             <tr>
-                <td>{{ contract.conNum }}</td>
+                <input id="conNum" name="conNum" readonly value="{{ contract.conNum }}">
+{#                <td>{{ contract.conNum }}</td>#}
                 <td>{{ contract.time }}</td>
                 <button type="submit" class="assign">分配</button>
             </tr>
