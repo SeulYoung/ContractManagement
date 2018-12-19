@@ -19,7 +19,7 @@
 
     {% endfor %}
     {% for user in user_list %}
-        <form id='per_a' action="permission_assign.html" method="post" class="u_list">
+        <form action="permission_assign.html" method="post" class="u_list">
 
             <input id="user_w" name="user_w" readonly value="{{ user.username }}">
             <button type="submit" class="assign">授权</button>

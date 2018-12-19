@@ -31,7 +31,7 @@ class Contract(models.Model):
 
 
 class Process(models.Model):
-    conNum = models.IntegerField(verbose_name='conNum', primary_key=True)
+    conNum = models.IntegerField(verbose_name='conNum')
     type = models.IntegerField(verbose_name='type')
     state = models.IntegerField(verbose_name='state')
     userName = models.CharField(verbose_name='userName', max_length=40)

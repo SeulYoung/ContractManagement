@@ -3,56 +3,36 @@ from .models import *
 from django.contrib.auth.models import User
 import django.utils.timezone as timezone
 
-DatsList1=[{'name'}]
-DatsList2=[{'name'}]
-DatsList3=[{'name'}]
-
 
 def wcon_sel(request):
-    if request.method == "post":
-        num = request.POST.get('conNum')
-        return render(request, 'contract_assign.html', {'con_num': num})
-
     con_list = State.objects.filter(type=1)
     return render(request, 'Wcontract_sel.html', {'wcon_list': con_list})
 
 
 def con_assign(request):
-
     if request.method == "POST":
-        countersignP = request.POST.get('wsign_field')
-        approvalP = request.POST.get('approval_field')
-        signP = request.POST.get('sign_field')
+        num = request.POST.get('conNum')
+        countersignp = request.POST.getlist('check_box_list1')
+        if not countersignp:
+            role_list1 = Right.objects.filter(description__contains='会签合同')
+            role_list2 = Right.objects.filter(description__contains='审批合同')
+            role_list3 = Right.objects.filter(description__contains='签订合同')
+            return render(request, 'contract_assign.html',{'role_list1': role_list1,'role_list2': role_list2,
+                                                           'role_list3': role_list3, 'con_num':num})
 
-        contract_list = Contract.objects.all()
-        for user in contract_list:
-            if user.name == name:
-                con_id = user.num
+        else:
+            approvalp = request.POST.getlist('check_box_list2')
+            signp = request.POST.getlist('check_box_list3')
 
-        Process.objects.create(conNum=con_id, type=1, state=0, userName=countersignP)
-        Process.objects.create(conNum=con_id, type=2, state=0, userName=approvalP)
-        Process.objects.create(conNum=con_id, type=3, state=0, userName=signP)
-    else:
-        pending_list = Right.objects.all()
-        role_list = Role.objects.all()
+            Process.objects.create(conNum=num, type=1, state=0, userName=countersignp, time=timezone.now())
+            Process.objects.create(conNum=num, type=2, state=0, userName=approvalp, time=timezone.now())
+            Process.objects.create(conNum=num, type=3, state=0, userName=signp, time=timezone.now())
 
-        for user in pending_list:
-            for user2 in role_list:
-                if user.userName==user2.name:
-                    if user2.functions.find("会签合同") == -1:
-                        DatsList1.__add__(user2.name)
-                    if user2.functions.find("审批合同") == -1:
-                        DatsList2.append(user2.name)
-                    if user2.functions.find("签订合同") == -1:
-                        DatsList3.append(user2.name)
-    return render(request, 'Wcontract_sel.html', {'list1': DatsList1},{'list2': DatsList2},{'list3': DatsList3})
-
-
-    return render(request, 'contract_assign.html.html')
+    con_list = State.objects.filter(type=1)
+    return render(request, 'Wcontract_sel.html', {'wcon_list': con_list})
 
 
 def wper_sel(request):
-
     right_list = Right.objects.all()
     user_list = User.objects.all()
     return render(request, 'Wpermission_sel.html', {'right_list': right_list, 'user_list': user_list})

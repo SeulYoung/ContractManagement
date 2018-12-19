@@ -9,26 +9,24 @@
     <p>流程配置:{{ con_num }}</p>
 </div>
 
-<div>
-    <p id="error_mess">{{ list1 }}</p>
-    <p id="error_mess">{{ list2 }}</p>
-    <p id="error_mess">{{ list3 }}</p>
-
-</div>
-
-<form action="" method="post" class="AssignPanl" onsubmit="">
+<form action="" method="post" class="AssignPanl" >
+    <input type="hidden" value="{{ con_num }}" name="conNum"/>
     <label class="label1">已分配人员列表（会签）</label>
-    <input id="wsign_field" name="wsign_field" type="text" class="wsign_field">
+    {% for role in role_list1 %}
+        <input id='test' type="checkbox" value="{{ role.userName }}" name="check_box_list1"/>{{ role.userName }}
+    {% endfor %}
     <br>
     <label class="label2">已分配人员列表（审批）</label>
-    <input id="approval_field" name="approval_field" type="text" class="approval_field">
+    {% for role in role_list2 %}
+        <input id='test' type="checkbox" value="{{ role.userName }}" name="check_box_list2"/>{{ role.userName }}
+    {% endfor %}
     <br>
-    <label class="label2">已分配人员列表（签订）</label>
-    <input id="sign_field" name="sign_field" type="text" class="sign_field">
-    <div class="Buts">
-        <input class="okBut" type="submit">
-        <a class="logBut_R" href="{% url 'app:wcon_sel' %}">取消</a>
-    </div>
+    <label class="label3">已分配人员列表（签订）</label>
+    {% for role in role_list3 %}
+        <input id='test' type="checkbox" value="{{ role.userName }}" name="check_box_list3"/>{{ role.userName }}
+    {% endfor %}
+    <input type="submit" value="确定"/>
+    {% csrf_token %}
 </form>
 </body>
 </html>
