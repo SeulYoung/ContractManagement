@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
+from django.core.mail import send_mass_mail
 import datetime
 
 
@@ -21,7 +22,7 @@ def drafting_contract(request):
 
         file = request.FILES.get('files')
         print(file)
-        print(file.name)
+        # print(file.name)
 
         my_contract = Contract.objects.create(name=name,
                                               customer=customer,
@@ -39,6 +40,13 @@ def drafting_contract(request):
         print(my_contract)
         print(my_state)
         print(my_contract.beginTime)
+
+        # message1 = ('Subject here', 'Here is the message', '948525147@qq.com', ['719475327@qq.com'])
+        # message2 = ('Another Subject', 'Here is another message', '948525147@qq.com', ['719475327@qq.com'])
+        #
+        # send_mass_mail((message1, message2), fail_silently=False)
+
+
         return render(request, 'DraftingContract.html')
 
 
