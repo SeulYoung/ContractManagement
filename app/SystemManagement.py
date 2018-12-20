@@ -5,6 +5,14 @@ import django.utils.timezone as timezone
 
 
 def wcon_sel(request):
+    if request.method == "POST":
+        s_num = request.POST.get('num')
+        if s_num:
+            con_list = State.objects.filter(conNum=s_num, type=1)
+        else:
+            con_list = State.objects.filter(type=1)
+        return render(request, 'Wcontract_sel.html', {'wcon_list': con_list})
+
     con_list = State.objects.filter(type=1)
     return render(request, 'Wcontract_sel.html', {'wcon_list': con_list})
 
@@ -12,18 +20,20 @@ def wcon_sel(request):
 def con_assign(request):
     if request.method == "POST":
         num = request.POST.get('conNum')
+        contract_list = Contract.objects.get(num=num)
+
         countersignp = request.POST.getlist('check_box_list1')
-        if not countersignp:
+        approvalp = request.POST.getlist('check_box_list2')
+        signp = request.POST.getlist('check_box_list3')
+        if not countersignp or not approvalp or not signp:
             role_list1 = Right.objects.filter(description__contains='会签合同')
             role_list2 = Right.objects.filter(description__contains='审批合同')
             role_list3 = Right.objects.filter(description__contains='签订合同')
             return render(request, 'contract_assign.html',{'role_list1': role_list1,'role_list2': role_list2,
-                                                           'role_list3': role_list3, 'con_num':num})
+                                                           'role_list3': role_list3, 'con_list': contract_list})
 
         else:
-            approvalp = request.POST.getlist('check_box_list2')
-            signp = request.POST.getlist('check_box_list3')
-
+            State.objects.filter(conNum=num).update(type=6)
             Process.objects.create(conNum=num, type=1, state=0, userName=countersignp, time=timezone.now())
             Process.objects.create(conNum=num, type=2, state=0, userName=approvalp, time=timezone.now())
             Process.objects.create(conNum=num, type=3, state=0, userName=signp, time=timezone.now())
