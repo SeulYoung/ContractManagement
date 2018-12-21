@@ -17,11 +17,18 @@
 				<p>Lorem Ipsum is inting and typesetting in simply dummy text of the printing and typesetting industry. Lorem Ipsum
 					has been the is dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
 					make a type specimen book.</p>
+				{% for field in form %}
+					{{ field.errors }}
+						{% if field.help_text %}
+							<p class="help">{{ field.help_text|safe }}</p>
+					{% endif %}
+				{% endfor %}
 				<form action="#" method="post">
+					{% csrf_token %}
 					<label>Username or Email address</label>
-					<input type="text" name="Username" placeholder="Username or Email address" required="">
+					<input type="text" name="username" placeholder="Username or Email address" required="">
 					<label>Password</label>
-					<input type="password" name="Password" placeholder="Password" required="">
+					<input type="password" name="password" placeholder="Password" required="">
 					<input type="submit" value="Login">
 				</form>
 			</div>

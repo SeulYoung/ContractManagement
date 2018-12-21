@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db.models import Q
 
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(label='Username', max_length=40)
+    email = forms.EmailField(label='Email')
     password1 = forms.CharField(label='Password1', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password2', widget=forms.PasswordInput)
 
@@ -18,6 +21,16 @@ class RegistrationForm(forms.Form):
             if len(filter_result) > 0:
                 raise forms.ValidationError("用户名已存在")
         return username
+
+    def clean_email(self):
+        try:
+            email = self.cleaned_data.get('email')
+        except ValidationError:
+            raise forms.ValidationError("邮箱格式错误")
+        filter_result = User.objects.filter(email=email)
+        if len(filter_result) > 0:
+            raise forms.ValidationError("邮箱已被注册")
+        return email
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
@@ -41,21 +54,24 @@ class LoginForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        filter_result = User.objects.filter(username=username)
+        filter_result = User.objects.filter(Q(username=username) | Q(email=username))
         if not filter_result:
             raise forms.ValidationError("用户名不存在")
         return username
 
 
-class UsernameForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=40)
+class EmailForm(forms.Form):
+    email = forms.EmailField(label='Email')
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        filter_result = User.objects.filter(username=username)
+    def clean_email(self):
+        try:
+            email = self.cleaned_data.get('email')
+        except ValidationError:
+            raise forms.ValidationError("邮箱格式错误")
+        filter_result = User.objects.filter(email=email)
         if len(filter_result) > 0:
-            raise forms.ValidationError("用户名已存在")
-        return username
+            raise forms.ValidationError("邮箱已被注册")
+        return email
 
 
 class PasswordForm(forms.Form):
