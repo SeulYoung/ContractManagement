@@ -18,7 +18,7 @@ def login(request):
             if user is not None:
                 if user.is_active:
                     auth.login(request, user)
-                    return redirect('/profile.html')
+                    return redirect('/profile')
             else:
                 form.add_error('password', '密码错误')
     else:
@@ -33,7 +33,7 @@ def register(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password2']
             User.objects.create_user(username=username, password=password)
-            return redirect('/login.html')
+            return redirect('/login')
     else:
         form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
@@ -43,7 +43,7 @@ def profile(request):
     if request.user.is_authenticated:
         info = User.objects.filter(username=request.user.username).first()
         return render(request, 'profile.html', {'username': info.username})
-    return redirect('/login.html')
+    return redirect('/login')
 
 
 def username_update(request):
@@ -52,7 +52,7 @@ def username_update(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             User.objects.filter(username=username).update(username=username)
-            return redirect('/login.html')
+            return redirect('/login')
     else:
         form = RegistrationForm()
     return render(request, 'UsernameUpdate.html', {'form': form})
@@ -68,7 +68,7 @@ def password_update(request):
             if request.user.check_password(old_password):
                 request.user.set_password(password)
                 request.user.save()
-                return redirect('/login.html')
+                return redirect('/login')
             else:
                 form.add_error('password', '密码错误')
     else:

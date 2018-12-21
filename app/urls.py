@@ -12,12 +12,12 @@ app_name = 'app'
 
 urlpatterns = [
                   path('', views.landing, name='landing'),
-                  path('login.html/', views.login, name='login'),
-                  path('register.html/', views.register, name='register'),
-                  path('profile.html/', views.profile, name='profile'),
+                  path('login/', views.login, name='login'),
+                  path('register/', views.register, name='register'),
+                  path('profile/', views.profile, name='profile'),
                   path('logout/', views.logout, name='logout'),
-                  path('UsernameUpdate.html/', views.username_update, name='username_update'),
-                  path('PasswordUpdate.html/', views.password_update, name='password_update'),
+                  path('usernameUpdate/', views.username_update, name='username_update'),
+                  path('passwordUpdate/', views.password_update, name='password_update'),
 
                   path('DraftingContract.html/', ContractManagement.drafting_contract, name='drafting_contract'),
                   path('ListDraft.html/', ContractManagement.list_draft, name='list_draft'),
