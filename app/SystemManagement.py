@@ -43,9 +43,31 @@ def con_assign(request):
 
 
 def wper_sel(request):
-    right_list = Right.objects.all()
+    out_list = []
+    if request.method == "POST":
+        s_name = request.POST.get('s_name')
+        if s_name:
+            user_list = User.objects.filter(username=s_name).first()
+            if not user_list:
+                return render(request, 'Wpermission_sel.html', {'msg': '所查找的用户不存在'})
+            else:
+                right_list = Right.objects.filter(userName=user_list.username).first()
+                if right_list:
+                    out_list.append({'username': user_list.username, 'rolename': right_list.userName})
+                else:
+                    out_list.append({'username': user_list.username, 'rolename': '无'})
+                return render(request, 'Wpermission_sel.html', {'out_list': out_list})
+
     user_list = User.objects.all()
-    return render(request, 'Wpermission_sel.html', {'right_list': right_list, 'user_list': user_list})
+    for user in user_list:
+        right_list= Right.objects.filter(userName=user.username).first()
+        if right_list:
+            out_list.append({'username':user.username, 'rolename':right_list.userName})
+        else:
+            out_list.append({'username': user.username, 'rolename': '无'})
+
+
+    return render(request, 'Wpermission_sel.html', {'out_list': out_list})
 
 
 def permission_assign(request):
@@ -67,17 +89,20 @@ def permission_assign(request):
 def role_sel(request):
     if request.method == "POST":
         name = request.POST.get('s_name')
+        d_name = request.POST.get('d_name')
         if name:
-            role_list = Role.objects.all()
-            for user in role_list:
-                if user.name == name:
-                    return render(request, 'role_sel.html', {'user': user})
-                else:
-                    continue
+            role_list = Role.objects.filter(name=name)
+            if not role_list:
+                return render(request, 'role_sel.html', {'d_msg': '未找到要查询的角色'})
+            return render(request, 'role_sel.html', {'role_list': role_list})
         else:
-            d_name = request.POST.get('d_name')
-            Role.objects.filter(name=d_name).delete()
-            return render(request, 'role_sel.html', {'d_msg': '删除成功'})
+            if d_name:
+                Role.objects.filter(name=d_name).delete()
+                role_list = Role.objects.all()
+                return render(request, 'role_sel.html', {'role_list': role_list, 'd_msg': '删除成功'})
+            role_list = Role.objects.all()
+            return render(request, 'role_sel.html', {'role_list': role_list})
+
     else:
         role_list = Role.objects.all()
         return render(request, 'role_sel.html', {'role_list': role_list})
@@ -89,7 +114,7 @@ def role_add(request):
         role_name = request.POST.get('role_name')
         description = request.POST.get('description')
         permission = request.POST.getlist('check_box_list')
-        if role_name is None:
+        if not role_name:
             return render(request, 'role_add.html', {'r_error': '未输入角色名称'})
         else:
             role_list = Role.objects.all()

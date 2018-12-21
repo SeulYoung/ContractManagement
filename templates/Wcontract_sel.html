@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <title>待分配合同列表</title>
-
-
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -53,7 +50,8 @@
                             {% for contract in wcon_list %}
                                 <tr>
                                     <form action="contract_assign.html" method="post" class="con_list">
-                                        <td><input id="conNum" name="conNum" style="border-style:none" value="{{ contract.conNum }}">
+                                        <td><input id="conNum" name="conNum" style="border-style:none" readonly
+                                                   value="{{ contract.conNum }}">
                                         </td>
                                         <td>{{ contract.time }}</td>
                                         <td>
