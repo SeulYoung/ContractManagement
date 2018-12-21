@@ -26,7 +26,7 @@ def login(request):
     return render(request, 'login.html', {'form': form})
 
 
-def registration(request):
+def register(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -36,7 +36,7 @@ def registration(request):
             return redirect('/login.html')
     else:
         form = RegistrationForm()
-    return render(request, 'registration.html', {'form': form})
+    return render(request, 'register.html', {'form': form})
 
 
 def profile(request):

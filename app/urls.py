@@ -13,9 +13,9 @@ app_name = 'app'
 urlpatterns = [
                   path('', views.landing, name='landing'),
                   path('login.html/', views.login, name='login'),
-                  path('registration.html/', views.registration, name='registration'),
-                  path('logout/', views.logout, name='logout'),
+                  path('register.html/', views.register, name='register'),
                   path('profile.html/', views.profile, name='profile'),
+                  path('logout/', views.logout, name='logout'),
                   path('UsernameUpdate.html/', views.username_update, name='username_update'),
                   path('PasswordUpdate.html/', views.password_update, name='password_update'),
 
