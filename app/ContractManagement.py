@@ -46,7 +46,7 @@ def drafting_contract(request):
         #
         # send_mass_mail((message1, message2), fail_silently=False)
 
-        return render(request, 'DraftingContract.html')
+        return render(request, 'draftingContract.html')
 
 
 def list_draft(request):
@@ -66,7 +66,7 @@ def list_draft(request):
             state = '已签订'
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'num': contract.num, 'name': contract.name, 'time': temp.time, 'state': state})
-    return render(request, 'ListDraft.html', {'contract_list': contract_list})
+    return render(request, 'listDraft.html', {'contract_list': contract_list})
 
 
 def list_contract(request):
@@ -82,7 +82,7 @@ def list_contract(request):
         contract = Contract.objects.filter(num=process.conNum).first()
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'conNum': process.conNum, 'name': contract.name, 'time': temp.time, 'p_type': p_type})
-    return render(request, 'ListContract.html', {'contract_list': contract_list})
+    return render(request, 'listContract.html', {'contract_list': contract_list})
 
 
 def contract_info(request):
@@ -91,13 +91,13 @@ def contract_info(request):
         p_type = request.POST.get('type')
         contract = Contract.objects.filter(num=num).first()
         if p_type == '会签':
-            return render(request, 'SigningContract.html', {'contract': contract})
+            return render(request, 'signingContract.html', {'contract': contract})
         elif p_type == '定稿':
-            return render(request, 'FinalContract.html', {'contract': contract})
+            return render(request, 'finalContract.html', {'contract': contract})
         elif p_type == '审批':
-            return render(request, 'ApprovalContract.html', {'contract': contract})
+            return render(request, 'approvalContract.html', {'contract': contract})
         else:
-            return render(request, 'SignContract.html', {'contract': contract})
+            return render(request, 'signContract.html', {'contract': contract})
 
 
 def signing_contract(request):
@@ -110,8 +110,8 @@ def signing_contract(request):
         filter_result = Process.objects.filter(conNum=num, type=1, state=0)
         if not filter_result:
             State.objects.create(conNum=num, type=2, time=datetime.datetime.now())
-        return redirect('/ListContract.html')
-    return render(request, 'SigningContract.html')
+        return redirect('/listContract')
+    return render(request, 'signingContract.html')
 
 
 def final_contract(request):
@@ -120,8 +120,8 @@ def final_contract(request):
         content = request.POST.get('content')
         Contract.objects.filter(num=num).update(content=content)
         State.objects.create(conNum=num, type=3, time=datetime.datetime.now())
-        return redirect('/ListDraft.html')
-    return render(request, 'FinalContract.html')
+        return redirect('/listDraft')
+    return render(request, 'finalContract.html')
 
 
 def approval_contract(request):
@@ -135,8 +135,8 @@ def approval_contract(request):
         filter_result = Process.objects.filter(Q(state=0) | Q(state=2), conNum=num, type=2)
         if not filter_result:
             State.objects.create(conNum=num, type=4, time=datetime.datetime.now())
-        return redirect('/ListContract.html')
-    return render(request, 'ApprovalContract.html')
+        return redirect('/listContract')
+    return render(request, 'approvalContract.html')
 
 
 def sign_contract(request):
@@ -149,8 +149,8 @@ def sign_contract(request):
         filter_result = Process.objects.filter(conNum=num, type=3, state=0)
         if not filter_result:
             State.objects.create(conNum=num, type=5, time=datetime.datetime.now())
-        return redirect('/ListContract.html')
-    return render(request, 'SignContract.html')
+        return redirect('/listContract')
+    return render(request, 'signContract.html')
 
 
 def C_Select(request, pagenum='1'):
