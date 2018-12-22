@@ -44,4 +44,7 @@ urlpatterns = [
                   path('role_add.html', SystemManagement.role_add, name='role_add'),
                   path('role_mod.html', SystemManagement.role_mod, name='role_mod'),
                   path('role_sel.html', SystemManagement.role_sel, name='role_sel'),
+                  path('user_add.html', SystemManagement.user_add, name='user_add'),
+                  path('user_mod.html', SystemManagement.user_mod, name='user_mod'),
+                  path('user_sel.html', SystemManagement.user_sel, name='user_sel'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

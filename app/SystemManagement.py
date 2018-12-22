@@ -176,3 +176,19 @@ def role_mod(request):
     role_list = Role.objects.all()
     return render(request, 'role_mod.html', {'role_list': role_list})
 
+
+def user_sel(request):
+    return render(request, 'user_sel.html')
+
+
+def user_add(request):
+    return render(request, 'user_add.html')
+
+
+def user_mod(request):
+    return render(request, 'user_mod.html')
+
+
+def user_del(request):
+    return render(request, 'user_sel.html')
+
