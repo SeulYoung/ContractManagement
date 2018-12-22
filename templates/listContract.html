@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}List Draft{% endblock %}
+{% block title %}List Contract{% endblock %}
 
 {% block content %}
 <!-- banner -->
@@ -10,7 +10,7 @@
 <!-- products -->
 <div class="agile-prod">
 	<div class="container">
-		<h2 class="w3ls_head">定稿 <span>合同</span></h2>
+		<h2 class="w3ls_head">处理 <span>流程</span></h2>
 		<div class="bs-docs-example">
 			<table class="table table-striped">
 				<thead>
@@ -23,18 +23,20 @@
 				</thead>
 				<tbody>
 					{% for contract in contract_list%}
-					<form action="#" method="post">
+					{% if contract.p_type == '会签' %}
+					<form action="/signingContract/" method="post">
+					{% elif contract.p_type == '审批' %}
+					<form action="/approvalContract/" method="post">
+					{% else %}
+					<form action="/signContract/" method="post">
+					{% endif %}
 						{% csrf_token %}
 						<tr>
-							<td>{{contract.num}}</td>
+							<td>{{contract.conNum}}</td>
 							<input type="hidden" name="num" value="{{contract.num}}">
 							<td>{{contract.name}}</td>
 							<td>{{contract.time}}</td>
-							{% if contract.state == '待定稿' %}
-							<td><input type="submit" class="btn btn-primary" name="table" value="定稿" style="font-size: 0.9em; padding: 0px 10px;"></td>
-							{% else %}
-							<td>{{contract.state}}</td>
-							{% endif %}
+							<td><input type="submit" class="btn btn-primary" name="table" value="{{contract.p_type}}" style="font-size: 0.9em; padding: 0px 10px;"></td>
 						</tr>
 					</form>
 					{% endfor %}
@@ -59,12 +61,5 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	jQuery(document).ready(function () {
-		$("form").submit(function () {
-			alert("提交");
-		});
-	});
-</script>
 <!-- //products -->
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Final Contract{% endblock %}
+{% block title %}Sign Contract{% endblock %}
 
 {% block content %}
 <!-- banner -->
@@ -10,7 +10,7 @@
 <!-- products -->
 <div class="agile-prod">
 	<div class="container">
-		<h2 class="w3ls_head">定稿 <span>合同</span></h2>
+		<h2 class="w3ls_head">签订 <span>合同</span></h2>
 		<div class="col-md-7 contact-grid agileits-5">
 			<div class="contact-left">
 				<h4>合同信息</h4>
@@ -23,12 +23,10 @@
 					<p>{{contract.beginTime}}</p>
 					<h5>结束时间</h5>
 					<p>{{contract.endTime}}</p>
-					<h5>会签意见</h5>
-					<p>{{content}}</p>
 				</div>
 			</div>
 			<div class="contact-bottom wthree-5">
-				<h4>合同内容</h4>
+				<h4>签订信息</h4>
 				<form action="#" method="post">
 					{% csrf_token %}
 					<input type="hidden" name="num" value="{{contract.num}}">
