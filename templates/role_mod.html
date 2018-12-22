@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h2 class="w3ls_head">角色<span>修改</span></h2>
+            <h3 class="bars">请选择需修改的角色：</h3>
+
+            <div class="bs-docs-example">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>角色名</th>
+                        <th>描述</th>
+                        <th>角色权限</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for role in role_list %}
+                        <tr>
+                            <form action="" method="post" class="con_list">
+                                <input type="hidden" value="{{ role.name }}" name="m_name"/>
+                                </td>
+                                <td>{{ role.name }}</td>
+                                <td>{{ role.description }}</td>
+                                <td>{{ role.functions }}</td>
+                                <td>
+                                    <button type="submit" class="assign">修改</button>
+                                </td>
+                                {% csrf_token %}
+                            </form>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if mod %}
+                <h3 id="error_mess">{{ r_error }}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span
+                        class="anchorjs-icon"></span></a></h3>
+                <form action="" method="POST">
+
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ m_name }}" name="m_name"/>
+                    <h3 class="bars">请修改角色{{ m_name }}：</h3>
+                    <h3 class="bars">修改描述</h3>
+                    <div class="input-group input-group-lg w3_w3layouts">
+                        <span class="input-group-addon" id="sizing-addon1">@</span>
+                        <input type="text" class="form-control" name="description" placeholder="Username"
+                               aria-describedby="sizing-addon1">
+                    </div>
+
+                    <h3 class="bars">合同管理</h3>
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="起草合同" name="check_box_list"/>起草合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="定稿合同" name="check_box_list"/>定稿合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="查询合同" name="check_box_list"/>查询合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="删除合同" name="check_box_list"/>删除合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <h3 class="bars">流程管理</h3>
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="会签合同" name="check_box_list"/>会签合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="审批合同" name="check_box_list"/>审批合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="签订合同" name="check_box_list"/>签订合同
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="分配会签" name="check_box_list"/>分配会签
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="分配审批" name="check_box_list"/>分配审批
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="分配签订" name="check_box_list"/>分配签订
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="流程查询" name="check_box_list"/>流程查询
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <h3 class="bars">用户管理</h3>
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="新增用户" name="check_box_list"/>新增用户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="编辑用户" name="check_box_list"/>编辑用户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="查询用户" name="check_box_list"/>查询用户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="删除用户" name="check_box_list"/>删除用户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <h3 class="bars">权限管理</h3>
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="配置权限" name="check_box_list"/>配置权限
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <h3 class="bars">客户管理</h3>
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="新增客户" name="check_box_list"/>新增客户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="编辑客户" name="check_box_list"/>编辑客户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="查询客户" name="check_box_list"/>查询客户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+						<span class="input-group-addon">
+							<input type="checkbox" aria-label="..." value="删除客户" name="check_box_list"/>删除客户
+						</span>
+                                {#						<input type="text" class="form-control" aria-label="...">#}
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="col-md-7 contact-grid agileinfo-5">
+                    <input type="submit" value="提交"/>
+                </div>
+                </form>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

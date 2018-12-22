@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h3 id="error_mess">{{ r_error }}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span
+                    class="anchorjs-icon"></span></a></h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <h2 class="w3ls_head">配置<span>权限</span></h2>
+
+                <h3 class="hdg">用户名称：{{ user_w }}</h3>
+                <input type="hidden" class="form-control" name="user_w" value="{{ user_w }}">
+                <h3 id="h3.-bootstrap-heading">配置权限</h3>
+                {% for role in role_list %}
+                    <div class="row">
+                        <div class="col-lg-6 in-gp-tl">
+                            <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <input id='test' type="checkbox" value="{{ role.name }}" name="check_box_list"/>{{ role.name }}
+						            </span>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                {% endfor %}
+                <div class="col-md-7 contact-grid agileinfo-5">
+                    <input type="submit" value="提交"/>
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限分配</title>
+</head>
+<body>
+
+<form action="" method="POST">
+
+    {% csrf_token %}
+    <label class="label1">用户名称</label>
+    <input id="user_w" name="user_w" readonly value="{{ user_w }}">
+    <br/>配置权限：<br/>
+    {% for role in role_list %}
+        <input id='test' type="checkbox" value="{{ role.name }}" name="check_box_list"/>{{ role.name }}
+    {% endfor %}
+    <input type="submit" value="提交"/>
+</form>
+
+{#<script>#}
+{#    $(document).ready(function () {#}
+{#        $('#test').find('input[type=checkbox]').bind('click', function () {#}
+{#            $('#test').find('input[type=checkbox]').not(this).attr("checked", false);#}
+{#        });#}
+{#    });#}
+{#</script>#}
+</body>
+</html>

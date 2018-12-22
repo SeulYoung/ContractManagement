@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h2 class="w3ls_head">角色<span>查询</span></h2>
+            <div class="col-lg-6 in-gp-tb">
+                <form id="form_email" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="请输入要查找的角色名称..." name="s_name">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">查询</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </form>
+            </div><!-- /.col-lg-6 -->
+
+            <div class="bs-docs-example">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>角色名</th>
+                        <th>描述</th>
+                        <th>角色权限</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for role in role_list %}
+                        <tr>
+                            <form action="" method="post" class="con_list">
+                                <input type="hidden" value="{{ role.name }}" name="d_name"/>
+                                </td>
+                                <td>{{ role.name }}</td>
+                                <td>{{ role.description }}</td>
+                                <td>{{ role.functions }}</td>
+                                <td>
+                                    <button type="submit" class="assign">删除</button>
+                                </td>
+                                {% csrf_token %}
+                            </form>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h3 id="error_mess">{{ r_error }}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span
+                    class="anchorjs-icon"></span></a></h3>
+            <form action="" method="POST">
+
+                <input type="hidden" value="{{ conName }}" name="conName"/>
+                {% csrf_token %}
+                <h2 class="w3ls_head">流程<span>配置</span></h2>
+                <h3 class="bars">{{ conName }}合同</h3>
+
+                <h3 class="bars">分配会签人</h3>
+                <div class="row">
+                    <div class="col-lg-6 in-gp-tl">
+                        <div class="input-group">
+						<span class="input-group-addon">
+                            {% for role in role_list1 %}
+                                <input id='test' type="checkbox" value="{{ role.userName }}" name="check_box_list1"/>
+                                {{ role.userName }}
+                            {% endfor %}
+						</span>
+                            {#						<input type="text" class="form-control" aria-label="...">#}
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+                <h3 class="bars">分配审批人</h3>
+                <div class="row">
+                    <div class="col-lg-6 in-gp-tl">
+                        <div class="input-group">
+						<span class="input-group-addon">
+							{% for role in role_list2 %}
+                                <input id='test' type="checkbox" value="{{ role.userName }}" name="check_box_list2"/>
+                                {{ role.userName }}
+                            {% endfor %}
+						</span>
+                            {#						<input type="text" class="form-control" aria-label="...">#}
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+                <h3 class="bars">分配签订人</h3>
+                <div class="row">
+                    <div class="col-lg-6 in-gp-tl">
+                        <div class="input-group">
+						<span class="input-group-addon">
+							{% for role in role_list3 %}
+                                <input id='test' type="checkbox" value="{{ role.userName }}" name="check_box_list3"/>
+                                {{ role.userName }}
+                            {% endfor %}
+						</span>
+                            {#						<input type="text" class="form-control" aria-label="...">#}
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+                <input type="submit" value="确定"/>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}
