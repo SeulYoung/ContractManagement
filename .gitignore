@@ -116,4 +116,3 @@ dmypy.json
 # PyCharm
 .idea/
 templates/test.html
-app/migrations/0001_initial.py
