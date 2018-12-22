@@ -24,6 +24,7 @@
 					{% endif %}
 				{% endfor %}
 				<form action="#" method="post">
+					{% csrf_token %}
 					<label>Username</label>
 					<input type="text" name="username" placeholder="Username" required="">
 					<label>Email</label>
