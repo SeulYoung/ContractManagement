@@ -1025,7 +1025,7 @@ i.fa.fa-arrow-right {
     line-height: 1.8em;
 	margin:16px 0;
 }
-.contact-grid input[type="text"],input[type="email"],input[type="password"], .contact-grid textarea {
+.contact-grid input[type="text"], .contact-grid textarea {
     width: 100%;
     padding: 0.8em;
     font-size: 1em;

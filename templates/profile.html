@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<!-- banner -->
+<div class="agile-banner">
+</div>
+<!-- //banner -->
+<!-- products -->
+<div class="agile-prod">
+	<div class="container">
+		<h2 class="w3ls_head">Your <span>Profile</span></h2>
+		<div class="agile-prod1">
+			<div class="col-md-6 agile-sub">
+				<h4>Username</h4>
+				<p>{{ user.username }}</p>
+				<h4>Email Address</h4>
+				<p>{{ user.email }}</p>
+				<ul>
+					<li><i class="fa fa-arrow-right" aria-hidden="true"></i> <a href="/emailUpdate">Modify Email</a></li>
+					<li><i class="fa fa-arrow-right" aria-hidden="true"></i> <a href="/passwordUpdate">Modify Password</a></li>
+				</ul>
+			</div>
+			<div class="col-md-6 agile-img">
+				<img src="/static/images/g5.jpg" alt="image">
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+		<div class="agile-prod1">
+			<div class="col-md-6 agile-img">
+				<img src="/static/images/g6.jpg" alt="image">
+			</div>
+			<div class="col-md-6 agile-sub">
+				<h4>Permission</h4>
+				<p>{{ user.email }}</p>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+</div>
+<!-- //products -->
+{% endblock %}

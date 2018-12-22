@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<!-- banner -->
+<div class="agile-banner">
+</div>
+<!-- //banner -->
+<!--contact-->
+<div class="contact w3l-2">
+	<div class="container">
+		<h2 class="w3ls_head">Login <span>Account</span></h2>
+		<div class="contact-grids">
+			<div class="col-md-7 contact-grid agileinfo-5">
+				<h4>Your Message</h4>
+				<p>Lorem Ipsum is inting and typesetting in simply dummy text of the printing and typesetting industry. Lorem Ipsum
+					has been the is dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+					make a type specimen book.</p>
+				{% for field in form %}
+					{{ field.errors }}
+						{% if field.help_text %}
+							<p class="help">{{ field.help_text|safe }}</p>
+					{% endif %}
+				{% endfor %}
+				<form action="#" method="post">
+					{% csrf_token %}
+					<label>Username or Email address</label>
+					<input type="text" name="username" placeholder="Username or Email address" required="">
+					<label>Password</label>
+					<input type="password" name="password" placeholder="Password" required="">
+					<input type="submit" value="Login">
+				</form>
+			</div>
+			<div class="col-md-5 contact-grid agileits-5">
+				<div class="contact-left">
+					<h4> Address</h4>
+					<div class="cont-info">
+						<h5>Address</h5>
+						<p>7th Street, Melbourne City, Australiae</p>
+						<h5>Email</h5>
+						<a href="mailto:example@mail.com"> example@mail.com</a>
+						<h5>Phone</h5>
+						<p> +080 264 995</p>
+					</div>
+				</div>
+				<div class="contact-bottom wthree-5">
+					<h4>Get connected</h4>
+					<p>Lorem Ipsum is inting and typesetting in simply dummy text of the printing and typesetting industry. Lorem
+						Ipsum has been the is dummy text ever since the 1500s, when an unknown printer took a galley of type and
+						scrambled it to make a type specimen book.</p>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+<!--contact-->
+{% endblock %}

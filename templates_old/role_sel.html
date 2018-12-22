@@ -2,46 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>角色列表</title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-    <form action="" method="post" class="search" >
-        <p id="error_mess" style="color:red">{{ r_error }}</p>
-        <label class="label1">请输入要查询的角色名称</label>
-        <input id="s_name" name="s_name" type="text" class="s_name">
-        <input class="se_R" type="submit" value="查询">
 
-        {% csrf_token %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>
+                角色列表：
+            </h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <form id="form_email" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="col-md-3">
+                            <div class="input-group">
 
-    </form>
-    <label class="label1">查询到的角色</label>
-    <p>角色名： {{ user.name }}</p>
-    <p>描述：   {{ user.description }}</p>
+                                <input type="text" class="form-control" placeholder="请输入要查找的角色名称" name="s_name">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">查询</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>
+                                    角色名
+                                </th>
+                                <th>
+                                    描述
+                                </th>
+                                <th>
+                                    角色权限
+                                </th>
+                                <th>
+                                    操作一
+                                </th>
+                                <th>
+                                    操作二
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-    <label class="label1">当前全部角色：</label><br>
-    {% for role in role_list %}
-        <form action="" method="post" class="con_list">
-            <tr>
-                <td>角色名：{{ role.name }}</td>
-                <td>描述：  {{ role.description }}</td>
-            </tr>
-            {% csrf_token %}
-        </form>
-    {% endfor %}
-    <div class="Buts">
-        <a class="add_R" href="role_add.html">添加角色</a>
+                            {% for role in role_list %}
+                                <tr>
+                                    <form action="" method="post" class="con_list">
+                                        <input type="hidden" value="{{ role.name }}" name="d_name"/>
+                                        </td>
+                                        <td>{{ role.name }}</td>
+                                        <td>{{ role.description }}</td>
+                                        <td>{{ role.functions }}</td>
+                                        <td>
+                                            <button type="submit" class="assign">删除</button>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="assign">修改</button>
+                                        </td>
+                                        {% csrf_token %}
+                                    </form>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+                <p id="error_mess" style="color:red">{{ d_msg }}</p>
+                <div class="Buts">
+                    <a class="add_R" href="role_add.html">添加角色</a>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 
-    <form action="" method="post" class="del" >
-        <p id="error_mess" style="color:red">{{ d_msg }}</p>
-        <label class="label2">请输入要删除的角色名称</label>
-        <input id="d_name" name="d_name" type="text" class="d_name">
-        <input class="del_R" type="submit" value="删除">
 
-        {% csrf_token %}
-
-    </form>
+{#<form action="" method="post" class="search">#}
+{#    <p id="error_mess" style="color:red">{{ r_error }}</p>#}
+{#    <label class="label1">请输入要查询的角色名称</label>#}
+{#    <input id="s_name" name="s_name" type="text" class="s_name">#}
+{#    <input class="se_R" type="submit" value="查询">#}
+{##}
+{#    {% csrf_token %}#}
+{##}
+{#</form>#}
+{#<label class="label1">查询到的角色</label>#}
+{#<p>角色名： {{ user.name }}</p>#}
+{#<p>描述： {{ user.description }}</p>#}
+{##}
+{#<label class="label1">当前全部角色：</label><br>#}
+{#{% for role in role_list %}#}
+{#    <form action="" method="post" class="con_list">#}
+{#        <tr>#}
+{#            <td>角色名：{{ role.name }}</td>#}
+{#            <td>描述： {{ role.description }}</td>#}
+{#        </tr>#}
+{#        {% csrf_token %}#}
+{#    </form>#}
+{#{% endfor %}#}
+{#<div class="Buts">#}
+{#    <a class="add_R" href="role_add.html">添加角色</a>#}
+{#</div>#}
+{##}
+{#<form action="" method="post" class="del">#}
+{#    <p id="error_mess" style="color:red">{{ d_msg }}</p>#}
+{#    <label class="label2">请输入要删除的角色名称</label>#}
+{#    <input id="d_name" name="d_name" type="text" class="d_name">#}
+{#    <input class="del_R" type="submit" value="删除">#}
+{##}
+{#    {% csrf_token %}#}
+{##}
+{#</form>#}
 
 </body>
 </html>
