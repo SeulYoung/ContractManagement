@@ -12,8 +12,8 @@ class RegistrationForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if len(username) < 6:
-            raise forms.ValidationError("用户名最短6个字符")
+        if len(username) < 4:
+            raise forms.ValidationError("用户名最短4个字符")
         elif len(username) > 50:
             raise forms.ValidationError("用户名最长50个字符")
         else:
@@ -35,7 +35,7 @@ class RegistrationForm(forms.Form):
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         if len(password1) < 4:
-            raise forms.ValidationError("密码最短4个字符")
+            raise forms.ValidationError("密码最短6个字符")
         elif len(password1) > 20:
             raise forms.ValidationError("密码最长20个字符")
         return password1
@@ -56,7 +56,7 @@ class LoginForm(forms.Form):
         username = self.cleaned_data.get('username')
         filter_result = User.objects.filter(Q(username=username) | Q(email=username))
         if not filter_result:
-            raise forms.ValidationError("用户名不存在")
+            raise forms.ValidationError("用户不存在")
         return username
 
 

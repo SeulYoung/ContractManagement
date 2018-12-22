@@ -118,7 +118,7 @@ STATICFILES_DIRS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'user.views.UserBackend',
+    'app.views.UserBackend',
 )
 
 MEDIA_URL = '/media/'

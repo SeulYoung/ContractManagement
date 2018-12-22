@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}List Draft{% endblock %}
+
+{% block content %}
+<!-- banner -->
+<div class="agile-banner">
+</div>
+<!-- //banner -->
+<!-- products -->
+<div class="agile-prod">
+	<div class="container">
+		<h2 class="w3ls_head">定稿 <span>合同</span></h2>
+		<div class="bs-docs-example">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>编号</th>
+						<th>合同名称</th>
+						<th>起草时间</th>
+						<th>合同操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for contract in contract_list%}
+					<form action="#" method="post">
+						{% csrf_token %}
+						<tr>
+							<td>{{contract.num}}</td>
+							<input type="hidden" name="num" value="{{contract.num}}">
+							<td>{{contract.name}}</td>
+							<td>{{contract.time}}</td>
+							{% if contract.state == '待定稿' %}
+							<td><input type="submit" class="btn btn-primary" name="table" value="定稿" style="font-size: 0.9em; padding: 0px 10px;"></td>
+							{% else %}
+							<td>{{contract.state}}</td>
+							{% endif %}
+						</tr>
+					</form>
+					{% endfor %}
+					<form action="/finalContract/" method="post">
+						{% csrf_token %}
+						<tr>
+							<td name="num">1</td>
+							<input type="hidden" name="num" value="1">
+							<td>名称</td>
+							<td>2018-10-30</td>
+							<td><input type="submit" class="btn btn-primary" name="table" value="会签" style="font-size: 0.9em; padding: 0px 10px;"></td>
+						</tr>
+					</form>
+					<tr>
+						<td>2</td>
+						<td>Jacob</td>
+						<td>Thornton</td>
+						<td>@fat</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function () {
+		$("form").submit(function () {
+			alert("提交");
+		});
+	});
+</script>
+<!-- //products -->
+{% endblock %}
