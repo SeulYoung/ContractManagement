@@ -3,6 +3,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
 
 from app.forms import *
+from app.models import *
 
 
 class UserBackend(ModelBackend):
@@ -51,7 +52,12 @@ def register(request):
 def profile(request):
     if request.user.is_authenticated:
         user = User.objects.filter(username=request.user.username).first()
-        return render(request, 'profile.html', {'user': user})
+        permission = 'None'
+        right = Right.objects.filter(userName=request.user.username).first()
+        if right is not None:
+            role = Role.objects.filter(name=right.roleName).first()
+            permission = role.functions
+        return render(request, 'profile.html', {'user': user, 'permission': permission})
     return redirect('/login')
 
 
@@ -60,11 +66,15 @@ def email_update(request):
         form = EmailForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            User.objects.filter(username=request.user.username).update(email=email)
-            return redirect('/login')
+            password = form.cleaned_data['password']
+            if request.user.check_password(password):
+                User.objects.filter(username=request.user.username).update(email=email)
+                return redirect('/profile')
+            else:
+                form.add_error('password', '密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'UsernameUpdate.html', {'form': form})
+    return render(request, 'emailUpdate.html', {'form': form})
 
 
 def password_update(request):
@@ -73,16 +83,15 @@ def password_update(request):
         if form.is_valid():
             old_password = form.cleaned_data['old_password']
             password = form.cleaned_data['password2']
-
             if request.user.check_password(old_password):
                 request.user.set_password(password)
                 request.user.save()
                 return redirect('/login')
             else:
-                form.add_error('password', '原密码错误')
+                form.add_error('old_password', '原密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'PasswordUpdate.html', {'form': form})
+    return render(request, 'passwordUpdate.html', {'form': form})
 
 
 def logout(request):
