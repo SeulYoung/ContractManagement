@@ -1,6 +1,8 @@
+from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import *
+from app.forms import *
 from django.contrib.auth.models import User
 import django.utils.timezone as timezone
 
@@ -178,17 +180,69 @@ def role_mod(request):
 
 
 def user_sel(request):
-    return render(request, 'user_sel.html')
+    if request.method == "POST":
+        name = request.POST.get('s_name')
+        d_name = request.POST.get('d_name')
+        if name:
+            user_list = User.objects.filter(username=name)
+            if not user_list:
+                return render(request, 'user_sel.html', {'d_msg': '未找到要查询的角色'})
+            return render(request, 'user_sel.html', {'user_list': user_list})
+        else:
+            if d_name:
+                User.objects.filter(username=d_name).delete()
+                user_list = User.objects.all()
+                return render(request, 'user_sel.html', {'user_list': user_list, 'd_msg': '删除成功'})
+            user_list = User.objects.all()
+            return render(request, 'user_sel.html', {'user_list': user_list})
+
+    else:
+        user_list = User.objects.all()
+        return render(request, 'user_sel.html', {'user_list': user_list})
 
 
 def user_add(request):
-    return render(request, 'user_add.html')
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password2']
+            User.objects.create_user(username=username, email=email, password=password)
+    else:
+        form = RegistrationForm()
+    return render(request, 'user_add.html', {'form': form})
 
 
 def user_mod(request):
-    return render(request, 'user_mod.html')
+    user_list = User.objects.all()
+    if request.method == 'POST':
+        user_name = request.POST.get('m_name')
+        email = request.POST.get('email')
+        if not email :
+            password1 = request.POST.get('password1')
+            if not password1:
+                return render(request, 'user_mod.html', {'m_name': user_name, 'user_list': user_list, 'mod':"mod"})
+            else:
+                error = 'ok'
+                password2 = request.POST.get('password2')
+                if len(password1) < 6:
+                    error = "密码最短6个字符"
+                elif len(password1) > 20:
+                    error = "密码最长20个字符"
+                if password1 and password2 and password1 != password2:
+                    error = "两次密码不一致"
+                if error == 'ok':
+                    User.objects.filter(username=user_name).update(password=make_password(password1))
+                    return HttpResponseRedirect("user_mod.html")
+                return render(request, 'user_mod.html', {'r_error': error, 'm_name': user_name, 'user_list': user_list, 'mod':"mod"})
+        else:
+            form = EmailForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                User.objects.filter(username=user_name).update(email=email)
+                return HttpResponseRedirect("user_mod.html")
+            return render(request, 'user_mod.html', {'form': form, 'm_name': user_name, 'user_list': user_list, 'mod':"mod"})
 
-
-def user_del(request):
-    return render(request, 'user_sel.html')
+    return render(request, 'user_mod.html', {'user_list': user_list})
 

@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}角色添加{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h3 id="error_mess">{{ r_error }}<a class="anchorjs-link"><span class="anchorjs-icon"></span></a></h3>
+            {% for field in form %}
+					{{ field.errors }}
+						{% if field.help_text %}
+							<p class="help">{{ field.help_text|safe }}</p>
+					{% endif %}
+				{% endfor %}
+            <form action="" method="POST">
+
+                {% csrf_token %}
+                <h2 class="w3ls_head">用户<span>添加</span></h2>
+                <h3 class="bars">用户名</h3>
+                <div class="input-group w3_w3layouts">
+                    <span class="input-group-addon" id="basic-addon1">@</span>
+                    <input type="text" name="username" placeholder="Username" required="" class="form-control">
+{#                    <input type="text" class="form-control" name="role_name" aria-describedby="basic-addon1">#}
+                </div>
+                <h3 class="bars">电子邮件</h3>
+                <div class="input-group input-group-lg w3_w3layouts">
+                    <span class="input-group-addon" id="sizing-addon1">@</span>
+                    <input type="email" name="email" placeholder="Email address" required="" class="form-control">
+                </div>
+                <h3 class="bars">密码</h3>
+                <div class="input-group input-group-lg w3_w3layouts">
+                    <span class="input-group-addon" id="sizing-addon1">@</span>
+                    <input type="password" name="password1" placeholder="Password" required="" class="form-control">
+                </div>
+                <h3 class="bars">确认密码</h3>
+                <div class="input-group input-group-lg w3_w3layouts">
+                    <span class="input-group-addon" id="sizing-addon1">@</span>
+                    <input type="password" name="password2" placeholder="Password Confirmation" required="" class="form-control">
+                </div>
+
+
+                <div class="col-md-7 contact-grid agileinfo-5">
+                    <input type="submit" value="提交"/>
+                </div>
+{#                <input type="submit" value="提交"/>#}
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

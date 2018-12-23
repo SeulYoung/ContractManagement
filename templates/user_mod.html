@@ -1,10 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}用户修改{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h2 class="w3ls_head">用户<span>修改</span></h2>
+            <h3 class="bars">请选择需修改的用户：</h3>
+
+            <div class="bs-docs-example">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in user_list %}
+                        <tr>
+                            <form action="" method="post" class="con_list">
+                                <input type="hidden" value="{{ user.username }}" name="m_name"/>
+                                </td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <button type="submit" class="assign">修改</button>
+                                </td>
+                                {% csrf_token %}
+                            </form>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if mod %}
+                <h3 id="error_mess">{{ r_error }}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span
+                        class="anchorjs-icon"></span></a></h3>
+                {% for field in form %}
+					{{ field.errors }}
+						{% if field.help_text %}
+							<p class="help">{{ field.help_text|safe }}</p>
+					{% endif %}
+				{% endfor %}
+                <h3 class="bars">请修改角色{{ m_name }}：</h3>
+                <h3 class="bars">修改邮箱或密码：</h3>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ m_name }}" name="m_name"/>
+                    <div class="input-group input-group-lg w3_w3layouts">
+                        <span class="input-group-addon" id="sizing-addon1">@</span>
+                        <input type="text" class="form-control" name="email" placeholder="请输入更改后的邮箱"
+                               aria-describedby="sizing-addon1">
+                    </div>
+
+                    <div class="col-md-7 contact-grid agileinfo-5">
+                        <input type="submit" value="提交"/>
+                    </div>
+
+                </form>
+                <div class="clearfix"></div>
+                <br/>
+
+                <form action="" method="POST">
+                    <h3 class="bars">修改密码：</h3>
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ m_name }}" name="m_name"/>
+
+                    <div class="input-group input-group-lg w3_w3layouts">
+                        <span class="input-group-addon" id="sizing-addon1">@</span>
+                        <input type="password" name="password1" placeholder="Password" required="" class="form-control">
+                        <input type="password" name="password2" placeholder="Password Confirmation" required="" class="form-control">
+                    </div>
+
+                    <div class="col-md-7 contact-grid agileinfo-5">
+                    <input type="submit" value="提交"/>
+                </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
