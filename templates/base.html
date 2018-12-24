@@ -95,7 +95,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="dropdown">
-							<a href="home.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">主页
+							<a href="home.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+							 aria-expanded="false">主页
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="/login">登陆</a></li>
@@ -108,7 +109,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-                                {% if per_list.a1 == True %}<li><a href="/draftingContract">起草合同</a></li>{% endif %}
+								{% if per_list.a1 == True %}<li><a href="/draftingContract">起草合同</a></li>{% endif %}
 								{% if per_list.a2 == True %}<li><a href="/listDraft">定稿合同</a></li>{% endif %}
 								{% if per_list.a3 == True %}<li><a href="/login">查询合同</a></li>{% endif %}
 								{% if per_list.a4 == True %}<li><a href="/login">删除合同</a></li>{% endif %}
@@ -137,13 +138,12 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">角色管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-                                {% if per_list.d1 == True %}<li><a href="/role_sel.html">查询角色</a></li>{% endif %}
+								{% if per_list.d1 == True %}<li><a href="/role_sel.html">查询角色</a></li>{% endif %}
 								{% if per_list.d2 == True %}<li><a href="/role_add.html">新增角色</a></li>{% endif %}
 								{% if per_list.d3 == True %}<li><a href="/role_mod.html">编辑角色</a></li>{% endif %}
-{#								<li><a href="/role_del.html">删除角色</a></li>#}
 							</ul>
 						</li>
-						<li class="dropdown">
+						<!-- <li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">功能管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -152,7 +152,7 @@
 								<li><a href="/logout">查询功能</a></li>
 								<li><a href="/logout">删除功能</a></li>
 							</ul>
-						</li>
+						</li> -->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">权限管理
 								<span class="caret"></span></a>

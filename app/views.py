@@ -17,17 +17,17 @@ class UserBackend(ModelBackend):
 def judgeP(name):
     right_list = Right.objects.filter(userName=name).first()
     permission = right_list.description
-    per_list = {'a1': False,'a2': False,'a3': False,'a4': False,
-        'b1': False,'b2': False,'b3': False,
-        'c1': False,'c2': False,'c3': False,
-        'd1': False,'d2': False,'d3': False,
-        'e1': False,
-        'f1': False,'f2': False,'f3': False,'f4': False}
-    if permission.find('起草合同')!= -1:
+    per_list = {'a1': False, 'a2': False, 'a3': False, 'a4': False,
+                'b1': False, 'b2': False, 'b3': False,
+                'c1': False, 'c2': False, 'c3': False,
+                'd1': False, 'd2': False, 'd3': False,
+                'e1': False,
+                'f1': False, 'f2': False, 'f3': False, 'f4': False}
+    if permission.find('起草合同') != -1:
         per_list['a1'] = True
-    if permission.find('定稿合同')!= -1:
+    if permission.find('定稿合同') != -1:
         per_list['a2'] = True
-    if permission.find('查询合同')!= -1:
+    if permission.find('查询合同') != -1:
         per_list['a3'] = True
     if permission.find('删除合同') != -1:
         per_list['a4'] = True
