@@ -1,57 +1,24 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-<head>
-	<title>Login</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="" />
-	<!-- css files -->
-	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/jQuery.lightninBox.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/team.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/portfolio.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/services.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/pogo-slider.min.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/nav.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/aos.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
-	<!-- /css files -->
-	<!-- fonts -->
-	<link href="http://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-	<link href="http://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
-	<link href="/static/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css">
-	<!-- fonts -->
-	<!-- js files -->
-	<script src="/static/js/modernizr.js"></script>
-	<!-- /js files -->
-</head>
+{% block title %}Login{% endblock %}
 
-<body>
-	<section class="contact-w3layouts jarallax" id="contact">
-		<div class="container">
-			<h3 class="text-center">用户登陆</h3>
-			<span class="fa fa-star-o" aria-hidden="true"></span>
-			<div class="col-lg-5 col-md-5 col-sm-12" data-aos="zoom-in">
-				<p class="contact-p1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at risus facilisis, semper
-					justo ut, sagittis urna. Donec libero velit, consectetur nec aliquet ac, fermentum vel felis. </p>
-				<ul class="contact-w3ls">
-					<li>
-						<i class="fa fa-map-marker" aria-hidden="true"></i>
-						<p>27 Jack Street, Chicago, USA.</p>
-					</li>
-					<li>
-						<i class="fa fa-mobile" aria-hidden="true"></i>
-						<p>+01 010 101010</p>
-					</li>
-					<li>
-						<i class="fa fa-envelope-o" aria-hidden="true"></i>
-						<p><a href="mailto:support@company.com">mail@example.com</a></p>
-					</li>
-				</ul>
-			</div>
-			<div class="col-lg-7 col-md-7 col-sm-12" data-aos="zoom-in">
+{% block content %}
+<!-- banner -->
+<div class="agile-banner">
+</div>
+<!-- //banner -->
+<!--contact-->
+<div class="contact w3l-2">
+	<div class="container">
+		<h2 class="w3ls_head">起草 <span>合同</span></h2>
+		<div class="contact-grids">
+			<div class="col-md-7 contact-grid agileinfo-5">
+				{% for field in form %}
+					{{ field.errors }}
+						{% if field.help_text %}
+							<p class="help">{{ field.help_text|safe }}</p>
+					{% endif %}
+				{% endfor %}
 				<form action="" method="post" enctype="multipart/form-data" onsubmit="return myjudge()">
 					{% csrf_token %}
 					<p id="errormsg"></p>
@@ -120,33 +87,39 @@
 					</div>
 					<div class="col-lg-6 col-md-6 col-sm-6">
 
-						<a href="/DraftingContract.html" type="button" class="btn btn-primary">重置</a>
+						<a href="/draftingContract" type="button" class="btn btn-primary">重置</a>
 					</div>
 					<div class="clearfix"></div>
 				</form>
 			</div>
+			<div class="col-md-5 contact-grid agileits-5">
+				<div class="contact-left">
+					<h4> Address</h4>
+					<div class="cont-info">
+						<h5>Address</h5>
+						<p>7th Street, Melbourne City, Australiae</p>
+						<h5>Email</h5>
+						<a href="mailto:example@mail.com"> example@mail.com</a>
+						<h5>Phone</h5>
+						<p> +080 264 995</p>
+					</div>
+				</div>
+				<div class="contact-bottom wthree-5">
+					<h4>Get connected</h4>
+					<p>Lorem Ipsum is inting and typesetting in simply dummy text of the printing and typesetting industry. Lorem
+						Ipsum has been the is dummy text ever since the 1500s, when an unknown printer took a galley of type and
+						scrambled it to make a type specimen book.</p>
+				</div>
+			</div>
 			<div class="clearfix"></div>
 		</div>
-	</section>
+	</div>
+</div>
+<!--contact-->
+{% endblock %}
 
-	<!-- js files -->
-	<script src="../static/js/draftjudge.js"></script>
-	<script src="/static/js/jquery.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/smoothscroll.js"></script>
-	<script src='/static/js/aos.js'></script>
-	<script src="/static/js/lazyload.js"></script>
-	<script src="/static/js/jquery.easing.min.js"></script>
-	<script src="/static/js/grayscale.js"></script>
-	<script src="/static/js/jarallax.js"></script>
-	<script type="text/javascript">
-		$('.jarallax').jarallax({
-			speed: 0.5,
-			imgWidth: 1680,
-			imgHeight: 925
-		})
-	</script>
-	<!-- /js files -->
-</body>
 
-</html>
+
+
+
+
