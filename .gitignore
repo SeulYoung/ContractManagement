@@ -115,4 +115,6 @@ dmypy.json
 
 # PyCharm
 .idea/
-templates/test.html
+
+# Contract Management
+media/

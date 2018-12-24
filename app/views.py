@@ -2,7 +2,6 @@ from django.contrib import auth
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
 
-from .models import *
 from app.forms import *
 from app.models import *
 
