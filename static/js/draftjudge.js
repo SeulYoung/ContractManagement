@@ -4,7 +4,14 @@ function myjudge(){
     var beginTime = document.getElementById("beginTime").value;
     var endTime = document.getElementById("endTime").value;
     var content = document.getElementById("content").value;
+    var Date1 = new Date(Date.parse(beginTime));
+    var Date2 = new Date(Date.parse(endTime));
 
+    if(Date1.getTime() > Date2.getTime())
+    {
+        alert("日期输入错误，开始日期大于结束日期");
+        return false;
+    }
     document.getElementById("errormsg").style.display="none";
 
     if(name.length == 0){

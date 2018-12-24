@@ -26,6 +26,16 @@ def drafting_contract(request):
         # print(newTime)
         # print(begin)
         # print(end)
+
+        customer_list = Customer.objects.all()
+        customer_exist = False
+        for user in customer_list:
+            if user.name == customer:
+                customer_exist = True
+            else:
+                continue
+        if customer_exist is False:
+            return render(request, 'draftingContract.html',{"errormsg":"该客户不存在"})
         file = request.FILES.get('files')
 
         my_contract = Contract.objects.create(name=name,

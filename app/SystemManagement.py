@@ -5,6 +5,7 @@ from .models import *
 from app.forms import *
 from django.contrib.auth.models import User
 import django.utils.timezone as timezone
+import re
 
 
 def wcon_sel(request):
@@ -115,6 +116,7 @@ def role_sel(request):
         else:
             if d_name:
                 Role.objects.filter(name=d_name).delete()
+                Right.objects.filter(roleName=d_name).delete()
                 role_list = Role.objects.all()
                 return render(request, 'role_sel.html', {'role_list': role_list, 'd_msg': '删除成功'})
             role_list = Role.objects.all()
@@ -133,10 +135,9 @@ def role_add(request):
         if not role_name:
             return render(request, 'role_add.html', {'r_error': '未输入角色名称'})
         else:
-            role_list = Role.objects.all()
-            for user in role_list:
-                if user.name == role_name:
-                    return render(request, 'role_add.html', {'r_error': '该角色已存在，请重新输入'})
+            judge = Role.objects.filter(name=role_name)
+            if judge:
+                return render(request, 'role_add.html', {'r_error': '该角色已存在，请重新输入'})
 
             Role.objects.create(name=role_name, description=description, functions=permission)
             return HttpResponseRedirect("role_sel.html")
@@ -153,7 +154,10 @@ def role_mod(request):
             role_list = Role.objects.all()
             return render(request, 'role_mod.html', {'m_name': role_name, 'role_list': role_list, 'mod': "mod"})
         else:
-            Role.objects.filter(name=role_name).update(description=description, functions=permission)
+            if permission:
+                Role.objects.filter(name=role_name).update(description=description, functions=permission)
+            else:
+                Role.objects.filter(name=role_name).update(description=description)
             return HttpResponseRedirect("role_sel.html")
 
     role_list = Role.objects.all()
@@ -191,6 +195,7 @@ def user_add(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password2']
             User.objects.create_user(username=username, email=email, password=password)
+            return HttpResponseRedirect("user_sel.html")
     else:
         form = RegistrationForm()
     return render(request, 'user_add.html', {'form': form})
@@ -217,15 +222,15 @@ def user_mod(request):
                 if error == 'ok':
                     User.objects.filter(username=user_name).update(password=make_password(password1))
                     return HttpResponseRedirect("user_mod.html")
-                return render(request, 'user_mod.html',
-                              {'r_error': error, 'm_name': user_name, 'user_list': user_list, 'mod': "mod"})
+                return render(request, 'user_mod.html', {'r_error': error, 'm_name': user_name,
+                                                         'user_list': user_list, 'mod': "mod"})
         else:
-            form = EmailForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data['email']
+            valid_email = '\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{1,14}'
+            if re.match(valid_email, email) != None:
                 User.objects.filter(username=user_name).update(email=email)
                 return HttpResponseRedirect("user_mod.html")
-            return render(request, 'user_mod.html',
-                          {'form': form, 'm_name': user_name, 'user_list': user_list, 'mod': "mod"})
+            error = '邮箱格式错误'
+            return render(request, 'user_mod.html', {'r_error': error, 'm_name': user_name, 'user_list': user_list,
+                                                     'mod': "mod"})
 
     return render(request, 'user_mod.html', {'user_list': user_list})
