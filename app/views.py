@@ -2,6 +2,7 @@ from django.contrib import auth
 from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
 
+from .models import *
 from app.forms import *
 from app.models import *
 
@@ -11,6 +12,58 @@ class UserBackend(ModelBackend):
         user = User.objects.get(Q(username=username) | Q(email=username))
         if user.check_password(password):
             return user
+
+
+def judgeP(name):
+    right_list = Right.objects.filter(userName=name).first()
+    per_list = {'a1': False, 'a2': False, 'a3': False, 'a4': False,
+                'b1': False, 'b2': False, 'b3': False,
+                'c1': False, 'c2': False, 'c3': False,
+                'd1': False, 'd2': False, 'd3': False,
+                'e1': False,
+                'f1': False, 'f2': False, 'f3': False, 'f4': False}
+    if right_list:
+        permission = right_list.description
+    else:
+        return per_list
+
+    if permission.find('起草合同') != -1:
+        per_list['a1'] = True
+    if permission.find('定稿合同') != -1:
+        per_list['a2'] = True
+    if permission.find('查询合同') != -1:
+        per_list['a3'] = True
+    if permission.find('删除合同') != -1:
+        per_list['a4'] = True
+    if permission.find('会签合同') != -1:
+        per_list['b1'] = True
+    if permission.find('分配会签') != -1:
+        per_list['b2'] = True
+    if permission.find('流程查询') != -1:
+        per_list['b3'] = True
+    if permission.find('新增用户') != -1:
+        per_list['c1'] = True
+    if permission.find('编辑用户') != -1:
+        per_list['c2'] = True
+    if permission.find('查询用户') != -1:
+        per_list['c3'] = True
+    if permission.find('查询角色') != -1:
+        per_list['d1'] = True
+    if permission.find('新增角色') != -1:
+        per_list['d2'] = True
+    if permission.find('编辑角色') != -1:
+        per_list['d3'] = True
+    if permission.find('配置权限') != -1:
+        per_list['e1'] = True
+    if permission.find('新增客户') != -1:
+        per_list['f1'] = True
+    if permission.find('编辑客户') != -1:
+        per_list['f2'] = True
+    if permission.find('查询客户') != -1:
+        per_list['f3'] = True
+    if permission.find('删除客户') != -1:
+        per_list['f4'] = True
+    return per_list
 
 
 def landing(request):
@@ -52,12 +105,8 @@ def register(request):
 def profile(request):
     if request.user.is_authenticated:
         user = User.objects.filter(username=request.user.username).first()
-        permission = 'None'
-        right = Right.objects.filter(userName=request.user.username).first()
-        if right is not None:
-            role = Role.objects.filter(name=right.roleName).first()
-            permission = role.functions
-        return render(request, 'profile.html', {'user': user, 'permission': permission})
+        per = judgeP(user.username)
+        return render(request, 'profile.html', {'user': user, 'per_list': per})
     return redirect('/login')
 
 
