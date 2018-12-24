@@ -105,8 +105,14 @@ def register(request):
 def profile(request):
     if request.user.is_authenticated:
         user = User.objects.filter(username=request.user.username).first()
+        permission = 'None'
+        right = Right.objects.filter(userName=user.username).first()
+        if right is not None:
+            role = Role.objects.filter(name=right.roleName).first()
+            permission = role.functions
+
         per = judgeP(user.username)
-        return render(request, 'profile.html', {'user': user, 'per_list': per})
+        return render(request, 'profile.html', {'user': user, 'permission': permission, 'per_list': per})
     return redirect('/login')
 
 
