@@ -52,9 +52,12 @@ def con_assign(request):
             return render(request, 'contract_assign.html',{'role_list1': role_list1,'role_list2': role_list2,
                                                            'role_list3': role_list3, 'conName': con_name})
         else:
-            Process.objects.create(conNum=num_list.num, type=1, state=0, userName=countersignp, time=timezone.now())
-            Process.objects.create(conNum=num_list.num, type=2, state=0, userName=approvalp, time=timezone.now())
-            Process.objects.create(conNum=num_list.num, type=3, state=0, userName=signp, time=timezone.now())
+            for sign in countersignp:
+                Process.objects.create(conNum=num_list.num, type=1, state=0, userName=sign, time=timezone.now())
+            for app in approvalp:
+                Process.objects.create(conNum=num_list.num, type=2, state=0, userName=app, time=timezone.now())
+            for sig in signp:
+                Process.objects.create(conNum=num_list.num, type=3, state=0, userName=sig, time=timezone.now())
             return HttpResponseRedirect('Wcontract_sel.html')
 
 
@@ -142,27 +145,6 @@ def role_add(request):
     return render(request, 'role_add.html')
 
 
-def role_del(request):
-    delr_name = request.POST.get('delR_name')
-    role_list = Role.objects.all()
-    right_list = Right.objects.all()
-    ise = False
-    for user in role_list:
-        if user.name == delr_name:
-            ise = True
-            Role.objects.filter(name = delr_name).delete()
-
-    for user in right_list:
-        if user.roleName == delr_name:
-            ise = True
-            Right.objects.filter(roleName = delr_name).delete()
-
-    if ise:
-        return render(request, 'role_sel.html',{'isn_exist': '该角色不存在，请重新输入'})
-    else:
-        return render(request, 'role_sel.html')
-
-
 def role_mod(request):
     if request.method == 'POST':
         role_name = request.POST.get('m_name')
@@ -191,6 +173,7 @@ def user_sel(request):
         else:
             if d_name:
                 User.objects.filter(username=d_name).delete()
+                Right.objects.filter(userName=d_name).delete()
                 user_list = User.objects.all()
                 return render(request, 'user_sel.html', {'user_list': user_list, 'd_msg': '删除成功'})
             user_list = User.objects.all()
