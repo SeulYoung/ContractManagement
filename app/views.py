@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 
 from .models import *
 from app.forms import *
+from app.models import *
 
 
 class UserBackend(ModelBackend):
@@ -110,11 +111,15 @@ def email_update(request):
         form = EmailForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            User.objects.filter(username=request.user.username).update(email=email)
-            return redirect('/login')
+            password = form.cleaned_data['password']
+            if request.user.check_password(password):
+                User.objects.filter(username=request.user.username).update(email=email)
+                return redirect('/profile')
+            else:
+                form.add_error('password', '密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'UsernameUpdate.html', {'form': form})
+    return render(request, 'emailUpdate.html', {'form': form})
 
 
 def password_update(request):
@@ -123,16 +128,15 @@ def password_update(request):
         if form.is_valid():
             old_password = form.cleaned_data['old_password']
             password = form.cleaned_data['password2']
-
             if request.user.check_password(old_password):
                 request.user.set_password(password)
                 request.user.save()
                 return redirect('/login')
             else:
-                form.add_error('password', '原密码错误')
+                form.add_error('old_password', '原密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'PasswordUpdate.html', {'form': form})
+    return render(request, 'passwordUpdate.html', {'form': form})
 
 
 def logout(request):

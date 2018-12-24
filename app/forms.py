@@ -62,6 +62,7 @@ class LoginForm(forms.Form):
 
 class EmailForm(forms.Form):
     email = forms.EmailField(label='Email')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     def clean_email(self):
         try:
