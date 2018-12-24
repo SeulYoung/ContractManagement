@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Contract Info{% endblock %}
+
+{% block content %}
+<!-- banner -->
+<div class="agile-banner">
+</div>
+<!-- //banner -->
+<!-- products -->
+<div class="agile-prod">
+	<div class="container">
+		<h2 class="w3ls_head">合同 <span>详情</span></h2>
+		<div class="col-md-7 contact-grid agileits-5">
+			<div class="contact-left">
+				<h4>合同信息</h4>
+				<div class="cont-info">
+					<h5>合同名称</h5>
+					<p>{{contract.name}}</p>
+					<h5>客 户</h5>
+					<p>{{contract.customer}}</p>
+					<h5>开始时间</h5>
+					<p>{{contract.beginTime}}</p>
+					<h5>结束时间</h5>
+					<p>{{contract.endTime}}</p>
+					<h5>合同内容</h5>
+					<p>{{contract.content}}</p>
+				</div>
+				<h4>流程信息</h4>
+				<div class="cont-info">
+					{% if content.singing %}
+					<h5>会签意见</h5>
+					<p>{{content.singing}}</p>
+					{% endif %}
+					{% if content.approval %}
+					<h5>审批意见</h5>
+					<p>{{content.approval}}</p>
+					{% endif %}
+					{% if content.sing %}
+					<h5>签订信息</h5>
+					<p>{{content.sing}}</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //products -->
+{% endblock %}

@@ -49,8 +49,8 @@ def con_assign(request):
             role_list1 = Right.objects.filter(description__contains='会签合同')
             role_list2 = Right.objects.filter(description__contains='审批合同')
             role_list3 = Right.objects.filter(description__contains='签订合同')
-            return render(request, 'contract_assign.html',{'role_list1': role_list1,'role_list2': role_list2,
-                                                           'role_list3': role_list3, 'conName': con_name})
+            return render(request, 'contract_assign.html', {'role_list1': role_list1, 'role_list2': role_list2,
+                                                            'role_list3': role_list3, 'conName': con_name})
         else:
             for sign in countersignp:
                 Process.objects.create(conNum=num_list.num, type=1, state=0, userName=sign, time=timezone.now())
@@ -89,11 +89,11 @@ def wper_sel(request):
 
 def permission_assign(request):
     if request.method == "POST":
-        u_name=request.POST.get('user_w')
+        u_name = request.POST.get('user_w')
         permission = request.POST.get('check_box_list')
         if permission:
-            role_msg = Role.objects.filter(name = permission).first()
-            Right.objects.create(userName = u_name, roleName = permission, description = role_msg.functions)
+            role_msg = Role.objects.filter(name=permission).first()
+            Right.objects.create(userName=u_name, roleName=permission, description=role_msg.functions)
             return HttpResponseRedirect('Wpermission_sel.html')
         else:
             right_list = Right.objects.filter(userName=u_name).first()
@@ -126,7 +126,6 @@ def role_sel(request):
 
 
 def role_add(request):
-
     if request.method == "POST":
         role_name = request.POST.get('role_name')
         description = request.POST.get('description')
@@ -139,7 +138,7 @@ def role_add(request):
                 if user.name == role_name:
                     return render(request, 'role_add.html', {'r_error': '该角色已存在，请重新输入'})
 
-            Role.objects.create(name = role_name, description = description, functions = permission)
+            Role.objects.create(name=role_name, description=description, functions=permission)
             return HttpResponseRedirect("role_sel.html")
 
     return render(request, 'role_add.html')
@@ -152,7 +151,7 @@ def role_mod(request):
         permission = request.POST.getlist('check_box_list')
         if not description:
             role_list = Role.objects.all()
-            return render(request, 'role_mod.html', {'m_name': role_name, 'role_list': role_list, 'mod':"mod"})
+            return render(request, 'role_mod.html', {'m_name': role_name, 'role_list': role_list, 'mod': "mod"})
         else:
             Role.objects.filter(name=role_name).update(description=description, functions=permission)
             return HttpResponseRedirect("role_sel.html")
@@ -202,10 +201,10 @@ def user_mod(request):
     if request.method == 'POST':
         user_name = request.POST.get('m_name')
         email = request.POST.get('email')
-        if not email :
+        if not email:
             password1 = request.POST.get('password1')
             if not password1:
-                return render(request, 'user_mod.html', {'m_name': user_name, 'user_list': user_list, 'mod':"mod"})
+                return render(request, 'user_mod.html', {'m_name': user_name, 'user_list': user_list, 'mod': "mod"})
             else:
                 error = 'ok'
                 password2 = request.POST.get('password2')
@@ -218,14 +217,15 @@ def user_mod(request):
                 if error == 'ok':
                     User.objects.filter(username=user_name).update(password=make_password(password1))
                     return HttpResponseRedirect("user_mod.html")
-                return render(request, 'user_mod.html', {'r_error': error, 'm_name': user_name, 'user_list': user_list, 'mod':"mod"})
+                return render(request, 'user_mod.html',
+                              {'r_error': error, 'm_name': user_name, 'user_list': user_list, 'mod': "mod"})
         else:
             form = EmailForm(request.POST)
             if form.is_valid():
                 email = form.cleaned_data['email']
                 User.objects.filter(username=user_name).update(email=email)
                 return HttpResponseRedirect("user_mod.html")
-            return render(request, 'user_mod.html', {'form': form, 'm_name': user_name, 'user_list': user_list, 'mod':"mod"})
+            return render(request, 'user_mod.html',
+                          {'form': form, 'm_name': user_name, 'user_list': user_list, 'mod': "mod"})
 
     return render(request, 'user_mod.html', {'user_list': user_list})
-

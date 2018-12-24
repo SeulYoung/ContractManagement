@@ -7,6 +7,7 @@ from django.core.mail import send_mass_mail
 import datetime
 import time
 
+
 @csrf_exempt
 def drafting_contract(request):
     if request.method == "GET":
@@ -66,29 +67,28 @@ def list_draft(request):
             state = '待审批'
         elif state.type == 4:
             state = '待签订'
-        else:
+        elif state.type == 5:
             state = '已签订'
+        else:
+            state = '审批拒绝'
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'num': contract.num, 'name': contract.name, 'time': temp.time, 'state': state})
     return render(request, 'listDraft.html', {'contract_list': contract_list})
 
 
 def list_contract(request):
-    # right = Right.objects.filter(userName=request.user.username).first()
-    # role = Role.objects.filter(name=right.userName).first()
-    # flag = [False, False, False]
-    # if '会签合同' in role.functions:
-    #     flag[0] = True
-
     contract_list = []
     process_list = Process.objects.filter(state=0, userName=request.user.username)
     for process in process_list:
-        if process.type == 1:
+        state = State.objects.filter(conNum=process.conNum).last()
+        if state.type == 1 and process.type == 1:
             p_type = '会签'
-        elif process.type == 2:
+        elif state.type == 3 and process.type == 2:
             p_type = '审批'
-        else:
+        elif state.type == 4 and process.type == 3:
             p_type = '签订'
+        else:
+            continue
         contract = Contract.objects.filter(num=process.conNum).first()
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'conNum': process.conNum, 'name': contract.name, 'time': temp.time, 'p_type': p_type})
@@ -98,16 +98,18 @@ def list_contract(request):
 def contract_info(request):
     if request.method == "POST":
         num = request.POST.get('num')
-        p_type = request.POST.get('type')
         contract = Contract.objects.filter(num=num).first()
-        if p_type == '会签':
-            return render(request, 'signingContract.html', {'contract': contract})
-        elif p_type == '定稿':
-            return render(request, 'finalContract.html', {'contract': contract})
-        elif p_type == '审批':
-            return render(request, 'approvalContract.html', {'contract': contract})
-        else:
-            return render(request, 'signContract.html', {'contract': contract})
+        content = {}
+        singing = Process.objects.filter(conNum=num, type=1).last()
+        if singing is not None:
+            content['singing'] = singing.content
+        approval = Process.objects.filter(conNum=num, type=2).last()
+        if singing is not None:
+            content['approval'] = approval.content
+        sing = Process.objects.filter(conNum=num, type=3).last()
+        if singing is not None:
+            content['sing'] = sing.content
+        return render(request, 'contractInfo.html', {'contract': contract, 'content': content})
 
 
 def signing_contract(request):
@@ -135,7 +137,7 @@ def final_contract(request):
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
             process = Process.objects.filter(conNum=num, type=1).first()
-            return render(request, 'signingContract.html', {'contract': contract, 'content': process.content})
+            return render(request, 'finalContract.html', {'contract': contract, 'content': process.content})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
@@ -150,17 +152,21 @@ def approval_contract(request):
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'signingContract.html', {'contract': contract})
+            return render(request, 'approvalContract.html', {'contract': contract})
         else:
             num = request.POST.get('num')
             state = request.POST.get('state')
-            opinion = request.POST.get('opinion')
+            content = request.POST.get('content')
             Process.objects.filter(conNum=num, type=2, userName=request.user.username).update(state=state,
-                                                                                              content=opinion,
+                                                                                              content=content,
                                                                                               time=datetime.datetime.now())
-            filter_result = Process.objects.filter(Q(state=0) | Q(state=2), conNum=num, type=2)
+            filter_result = Process.objects.filter(state=0, conNum=num, type=2)
             if not filter_result:
-                State.objects.create(conNum=num, type=4, time=datetime.datetime.now())
+                filter_result = Process.objects.filter(state=2, conNum=num, type=2)
+                if not filter_result:
+                    State.objects.create(conNum=num, type=4, time=datetime.datetime.now())
+                else:
+                    State.objects.create(conNum=num, type=6, time=datetime.datetime.now())
             return redirect('/listContract')
     return render(request, 'approvalContract.html')
 
@@ -170,7 +176,7 @@ def sign_contract(request):
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'signingContract.html', {'contract': contract})
+            return render(request, 'signContract.html', {'contract': contract})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')

@@ -21,6 +21,7 @@ urlpatterns = [
 
                   path('draftingContract/', ContractManagement.drafting_contract, name='drafting_contract'),
                   path('listDraft/', ContractManagement.list_draft, name='list_draft'),
+                  path('contractInfo/', ContractManagement.contract_info, name='contract_info'),
                   path('listContract/', ContractManagement.list_contract, name='list_contract'),
                   path('signingContract/', ContractManagement.signing_contract, name='signing_contract'),
                   path('finalContract/', ContractManagement.final_contract, name='final_contract'),

@@ -33,29 +33,13 @@
 						{% csrf_token %}
 						<tr>
 							<td>{{contract.conNum}}</td>
-							<input type="hidden" name="num" value="{{contract.num}}">
+							<input type="hidden" name="num" value="{{contract.conNum}}">
 							<td>{{contract.name}}</td>
 							<td>{{contract.time}}</td>
 							<td><input type="submit" class="btn btn-primary" name="table" value="{{contract.p_type}}" style="font-size: 0.9em; padding: 0px 10px;"></td>
 						</tr>
 					</form>
 					{% endfor %}
-					<form action="/finalContract/" method="post">
-						{% csrf_token %}
-						<tr>
-							<td name="num">1</td>
-							<input type="hidden" name="num" value="1">
-							<td>名称</td>
-							<td>2018-10-30</td>
-							<td><input type="submit" class="btn btn-primary" name="table" value="会签" style="font-size: 0.9em; padding: 0px 10px;"></td>
-						</tr>
-					</form>
-					<tr>
-						<td>2</td>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>

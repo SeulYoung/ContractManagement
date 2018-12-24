@@ -10,7 +10,7 @@
 <!-- products -->
 <div class="agile-prod">
 	<div class="container">
-		<h2 class="w3ls_head">定稿 <span>合同</span></h2>
+		<h2 class="w3ls_head">我的 <span>合同</span></h2>
 		<div class="bs-docs-example">
 			<table class="table table-striped">
 				<thead>
@@ -23,48 +23,36 @@
 				</thead>
 				<tbody>
 					{% for contract in contract_list%}
-					<form action="#" method="post">
-						{% csrf_token %}
-						<tr>
-							<td>{{contract.num}}</td>
-							<input type="hidden" name="num" value="{{contract.num}}">
-							<td>{{contract.name}}</td>
-							<td>{{contract.time}}</td>
-							{% if contract.state == '待定稿' %}
-							<td><input type="submit" class="btn btn-primary" name="table" value="定稿" style="font-size: 0.9em; padding: 0px 10px;"></td>
-							{% else %}
-							<td>{{contract.state}}</td>
-							{% endif %}
-						</tr>
-					</form>
-					{% endfor %}
-					<form action="/finalContract/" method="post">
-						{% csrf_token %}
-						<tr>
-							<td name="num">1</td>
-							<input type="hidden" name="num" value="1">
-							<td>名称</td>
-							<td>2018-10-30</td>
-							<td><input type="submit" class="btn btn-primary" name="table" value="会签" style="font-size: 0.9em; padding: 0px 10px;"></td>
-						</tr>
-					</form>
 					<tr>
-						<td>2</td>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
+						<td>{{contract.num}}</td>
+						<form action="/contractInfo/" method="post" id="{{contract.num}}">
+							{% csrf_token %}
+							<input type="hidden" name="num" value="{{contract.num}}">
+							<td><a href="javascript:document.getElementById({{contract.num}}).submit();">{{contract.name}}</a></td>
+						</form>
+						<td>{{contract.time}}</td>
+						{% if contract.state == '待定稿' %}
+						<form action="/finalContract/" method="post">
+							{% csrf_token %}
+							<input type="hidden" name="num" value="{{contract.num}}">
+							<td><input type="submit" class="btn btn-primary" name="table" value="定稿" style="font-size: 0.9em; padding: 0px 10px;"></td>
+						</form>
+						{% else %}
+						<td>{{contract.state}}</td>
+						{% endif %}
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	jQuery(document).ready(function () {
 		$("form").submit(function () {
 			alert("提交");
 		});
 	});
-</script>
+</script> -->
 <!-- //products -->
 {% endblock %}
