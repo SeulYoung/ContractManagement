@@ -108,37 +108,38 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/draftingContract">起草合同</a></li>
-								<li><a href="/listDraft">定稿合同</a></li>
-								<li><a href="/login">查询合同</a></li>
-								<li><a href="/login">删除合同</a></li>
+                                {% if per_list.a1 == True %}<li><a href="/draftingContract">起草合同</a></li>{% endif %}
+								{% if per_list.a2 == True %}<li><a href="/listDraft">定稿合同</a></li>{% endif %}
+								{% if per_list.a3 == True %}<li><a href="/login">查询合同</a></li>{% endif %}
+								{% if per_list.a4 == True %}<li><a href="/login">删除合同</a></li>{% endif %}
+
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">流程管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/listContract">处理流程</a></li>
-								<li><a href="/Wcontract_sel.html">分配合同</a></li>
-								<li><a href="/logout">查询流程</a></li>
+								{% if per_list.b1 == True %}<li><a href="/listContract">处理流程</a></li>{% endif %}
+								{% if per_list.b2 == True %}<li><a href="/Wcontract_sel.html">分配合同</a></li>{% endif %}
+								{% if per_list.b3 == True %}<li><a href="/logout">查询流程</a></li>{% endif %}
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/user_add.html">新增用户</a></li>
-								<li><a href="/user_mod.html">编辑用户</a></li>
-								<li><a href="/user_sel.html">查询用户</a></li>
+								{% if per_list.c1 == True %}<li><a href="/user_add.html">新增用户</a></li>{% endif %}
+								{% if per_list.c2 == True %}<li><a href="/user_mod.html">编辑用户</a></li>{% endif %}
+								{% if per_list.c3 == True %}<li><a href="/user_sel.html">查询用户</a></li>{% endif %}
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">角色管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-                                <li><a href="/role_sel.html">查询角色</a></li>
-								<li><a href="/role_add.html">新增角色</a></li>
-								<li><a href="/role_mod.html">编辑角色</a></li>
+                                {% if per_list.d1 == True %}<li><a href="/role_sel.html">查询角色</a></li>{% endif %}
+								{% if per_list.d2 == True %}<li><a href="/role_add.html">新增角色</a></li>{% endif %}
+								{% if per_list.d3 == True %}<li><a href="/role_mod.html">编辑角色</a></li>{% endif %}
 {#								<li><a href="/role_del.html">删除角色</a></li>#}
 							</ul>
 						</li>
@@ -156,17 +157,17 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">权限管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/Wpermission_sel.html">配置权限</a></li>
+								{% if per_list.e1 == True %}<li><a href="/Wpermission_sel.html">配置权限</a></li>{% endif %}
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/login">新增客户</a></li>
-								<li><a href="/login">编辑客户</a></li>
-								<li><a href="/logout">查询客户</a></li>
-								<li><a href="/logout">删除客户</a></li>
+								{% if per_list.f1 == True %}<li><a href="/login">新增客户</a></li>{% endif %}
+								{% if per_list.f2 == True %}<li><a href="/login">编辑客户</a></li>{% endif %}
+								{% if per_list.f3 == True %}<li><a href="/logout">查询客户</a></li>{% endif %}
+								{% if per_list.f4 == True %}<li><a href="/logout">删除客户</a></li>{% endif %}
 							</ul>
 						</li>
 					</ul>
