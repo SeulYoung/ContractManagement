@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Final Contract{% endblock %}
+
+{% block content %}
+<!-- banner -->
+<div class="agile-banner">
+</div>
+<!-- //banner -->
+<!-- products -->
+<div class="agile-prod">
+	<div class="container">
+		<h2 class="w3ls_head">定稿 <span>合同</span></h2>
+		<div class="col-md-7 contact-grid agileits-5">
+			<div class="contact-left">
+				<h4>合同信息</h4>
+				<div class="cont-info">
+					<h5>合同名称</h5>
+					<p>{{contract.name}}</p>
+					<h5>客 户</h5>
+					<p>{{contract.customer}}</p>
+					<h5>开始时间</h5>
+					<p>{{contract.beginTime}}</p>
+					<h5>结束时间</h5>
+					<p>{{contract.endTime}}</p>
+					<h5>会签意见</h5>
+					<p>{{content}}</p>
+				</div>
+			</div>
+			<div class="contact-bottom wthree-5">
+				<h4>合同内容</h4>
+				<form action="#" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="num" value="{{contract.num}}">
+					<textarea placeholder="Content..." name="content"></textarea>
+					<input type="submit" value="提交">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //products -->
+{% endblock %}

@@ -1,0 +1,33 @@
+.content{
+    width: 100%;
+}
+.right-align{
+    width: 50%;
+    margin: auto;
+}
+.menu-show{
+    width: 100%;
+}
+.search{
+    margin: 0px 0px 20px 0px;
+}
+.wid-limit{
+}
+.clearfix{
+    height: 40px;
+}
+.title{
+    padding: 20px;
+    text-align: center;
+}
+.btn-check{
+    padding-left:680px;
+}
+ table {width:90%;background:#ccc; margin: 10px auto;border-collapse:collapse;}
+/*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
+ th, td {height:25px;line-height:25px;text-align:center;border:1px solid #ccc;}
+ th {background:#eee;font-weight:normal;}
+ tr {background:#fff;}
+ tr:hover {background:#cc0;}
+ td a {color:#06f;text-decoration:none;}
+ td a:hover {color:#06f;text-decoration:underline;}

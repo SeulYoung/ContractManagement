@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}待分配合同{% endblock %}
+
+{% block content %}
+
+    <div class="typo">
+        <div class="container">
+            <h2 class="w3ls_head">合同<span>分配</span></h2>
+            <div class="col-lg-6 in-gp-tb">
+                <form id="form_email" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="请输入要查找的合同名称..." name="s_con">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">查询</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </form>
+            </div><!-- /.col-lg-6 -->
+
+            <div class="bs-docs-example">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>合同名称</th>
+                        <th>起草时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for contract in wcon_list %}
+                        <tr>
+                            <form action="contract_assign.html" method="post" class="con_list">
+                                <input type="hidden" value="{{ contract.conName }}" name="conName"/>
+                                </td>
+                                <td>{{ contract.conName }}</td>
+                                <td>{{ contract.time }}</td>
+                                <td>
+                                    <button type="submit" class="assign">分配</button>
+                                </td>
+                                {% csrf_token %}
+                            </form>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,7 +1,16 @@
 from django.contrib import auth
+from django.contrib.auth.backends import ModelBackend
 from django.shortcuts import render, redirect
 
 from app.forms import *
+from app.models import *
+
+
+class UserBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        user = User.objects.get(Q(username=username) | Q(email=username))
+        if user.check_password(password):
+            return user
 
 
 def landing(request):
@@ -31,8 +40,9 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password2']
-            User.objects.create_user(username=username, password=password)
+            User.objects.create_user(username=username, email=email, password=password)
             return redirect('/login')
     else:
         form = RegistrationForm()
@@ -41,21 +51,30 @@ def register(request):
 
 def profile(request):
     if request.user.is_authenticated:
-        info = User.objects.filter(username=request.user.username).first()
-        return render(request, 'profile.html', {'username': info.username})
+        user = User.objects.filter(username=request.user.username).first()
+        permission = 'None'
+        right = Right.objects.filter(userName=request.user.username).first()
+        if right is not None:
+            role = Role.objects.filter(name=right.roleName).first()
+            permission = role.functions
+        return render(request, 'profile.html', {'user': user, 'permission': permission})
     return redirect('/login')
 
 
-def username_update(request):
+def email_update(request):
     if request.method == "POST":
-        form = UsernameForm(request.POST)
+        form = EmailForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            User.objects.filter(username=username).update(username=username)
-            return redirect('/login')
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            if request.user.check_password(password):
+                User.objects.filter(username=request.user.username).update(email=email)
+                return redirect('/profile')
+            else:
+                form.add_error('password', '密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'UsernameUpdate.html', {'form': form})
+    return render(request, 'emailUpdate.html', {'form': form})
 
 
 def password_update(request):
@@ -64,16 +83,15 @@ def password_update(request):
         if form.is_valid():
             old_password = form.cleaned_data['old_password']
             password = form.cleaned_data['password2']
-
             if request.user.check_password(old_password):
                 request.user.set_password(password)
                 request.user.save()
                 return redirect('/login')
             else:
-                form.add_error('password', '密码错误')
+                form.add_error('old_password', '原密码错误')
     else:
         form = RegistrationForm()
-    return render(request, 'PasswordUpdate.html', {'form': form})
+    return render(request, 'passwordUpdate.html', {'form': form})
 
 
 def logout(request):
