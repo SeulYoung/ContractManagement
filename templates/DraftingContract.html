@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}起草合同{% endblock %}
 
 {% block content %}
 <!-- banner -->
@@ -44,7 +44,7 @@
 						<div class="control-group form-group">
 							<div class="controls">
 								<label>开始时间：</label>
-								<input type="date" class="form-control" id="beginTime" name="beginTime">
+								<input type="date" class="form-control" id="beginTime" name="beginTime" pattern="yyyy-MM-dd">
 								<p class="help-block"></p>
 							</div>
 						</div>
@@ -53,7 +53,7 @@
 						<div class="control-group form-group">
 							<div class="controls">
 								<label>结束时间：</label>
-								<input type="date" class="form-control" id="endTime" name="endTime">
+								<input type="date" class="form-control" id="endTime" name="endTime" pattern="yyyy-MM-dd">
 								<p class="help-block"></p>
 							</div>
 						</div>

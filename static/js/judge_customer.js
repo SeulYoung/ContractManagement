@@ -17,9 +17,9 @@ function isEmpty(obj){
  }
 function mycustomer(){
 
-    var uname = document.getElementById("name").value;
-    var utel = document.getElementById("tel").value;
-    var uaddress = document.getElementById("address").value;
+    var uname = document.getElementById("cusname").value;
+    var utel = document.getElementById("custel").value;
+    var uaddress = document.getElementById("cusaddress").value;
 
     document.getElementById("errormsg").style.display="none";
 

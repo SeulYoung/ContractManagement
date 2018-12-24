@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 from django.core.mail import send_mass_mail
 import datetime
-
+import time
 
 @csrf_exempt
 def drafting_contract(request):
@@ -19,10 +19,13 @@ def drafting_contract(request):
         content = request.POST.get('content')
         userName = request.user.username
         nowTime = datetime.datetime.now()
-
+        newTime = time.strftime("%Y-%m-%d", time.localtime())
+        begin = datetime.datetime.strptime(beginTime, "%Y-%m-%d")
+        end = datetime.datetime.strptime(endTime, "%Y-%m-%d")
+        # print(newTime)
+        # print(begin)
+        # print(end)
         file = request.FILES.get('files')
-        print(file)
-        # print(file.name)
 
         my_contract = Contract.objects.create(name=name,
                                               customer=customer,
@@ -30,17 +33,18 @@ def drafting_contract(request):
                                               endTime=endTime,
                                               content=content,
                                               userName=userName)
-        my_state = State.objects.create(conNum=my_contract.num, type=1, time=nowTime)
+        my_state = State.objects.create(conNum=my_contract.num, type=1, time=newTime)
 
         if file is not None:
             my_attachment = Attachment.objects.create(conNum=my_contract.num,
                                                       fileName=file.name,
-                                                      uploadTime=nowTime,
+                                                      uploadTime=newTime,
                                                       file=file)
-        print(my_contract)
-        print(my_state)
-        print(my_contract.beginTime)
+        # print(my_contract)
+        # print(my_state)
+        # print(my_contract.beginTime)
 
+        # 发送邮件
         # message1 = ('Subject here', 'Here is the message', '948525147@qq.com', ['719475327@qq.com'])
         # message2 = ('Another Subject', 'Here is another message', '948525147@qq.com', ['719475327@qq.com'])
         #
