@@ -164,10 +164,11 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								{% if per_list.f1 == True %}<li><a href="/login">新增客户</a></li>{% endif %}
-								{% if per_list.f2 == True %}<li><a href="/login">编辑客户</a></li>{% endif %}
-								{% if per_list.f3 == True %}<li><a href="/logout">查询客户</a></li>{% endif %}
-								{% if per_list.f4 == True %}<li><a href="/logout">删除客户</a></li>{% endif %}
+								{% if per_list.f1 == True %}<li><a href="/customer_add">新增客户</a></li>{% endif %}
+								{% if per_list.f2 == True %}<li><a href="/customer_modify">编辑客户</a></li>{% endif %}
+								{% if per_list.f3 == True %}<li><a href="/customer_select">查询客户</a></li>{% endif %}
+								{% if per_list.f4 == True %}<li><a href="/customer_delete">删除客户</a></li>{% endif %}
+
 							</ul>
 						</li>
 					</ul>
@@ -224,6 +225,8 @@
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="/static/js/bootstrap.js"></script>
 	<script type="text/javascript" src="/static/js/numscroller-1.0.js"></script>
+	<script type="text/javascript" src="/static/js/draftjudge.js"></script>
+	<script type="text/javascript" src="/static/js/judge_customer.js"></script>
 </body>
 
 </html>
