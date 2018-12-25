@@ -7,11 +7,16 @@ from .models import *
 from django.core.mail import send_mass_mail
 import time
 
+from django.contrib.auth.models import User
+from app.views import judgeP
+
 
 @csrf_exempt
 def drafting_contract(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "GET":
-        return render(request, 'DraftingContract.html')
+        return render(request, 'DraftingContract.html', {'per_list': per})
     if request.method == "POST":
         name = request.POST.get('name')
         customer = request.POST.get('customer')
@@ -35,7 +40,7 @@ def drafting_contract(request):
             else:
                 continue
         if customer_exist is False:
-            return render(request, 'draftingContract.html', {"errormsg": "该客户不存在"})
+            return render(request, 'draftingContract.html',{"errormsg":"该客户不存在", 'per_list': per})
         file = request.FILES.get('files')
 
         my_contract = Contract.objects.create(name=name,
@@ -64,10 +69,12 @@ def drafting_contract(request):
         #
         # send_mass_mail((message1, message2), fail_silently=False)
 
-        return render(request, 'draftingContract.html')
+        return render(request, 'draftingContract.html',{'per_list': per})
 
 
 def list_draft(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     contract_list = []
     data_list = Contract.objects.filter(userName=request.user.username)
     for contract in data_list:
@@ -86,10 +93,12 @@ def list_draft(request):
             state = '审批拒绝'
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'num': contract.num, 'name': contract.name, 'time': temp.time, 'state': state})
-    return render(request, 'listDraft.html', {'contract_list': contract_list})
+    return render(request, 'listDraft.html', {'contract_list': contract_list, 'per_list': per})
 
 
 def list_contract(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     contract_list = []
     process_list = Process.objects.filter(state=0, userName=request.user.username)
     for process in process_list:
@@ -105,10 +114,12 @@ def list_contract(request):
         contract = Contract.objects.filter(num=process.conNum).first()
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'conNum': process.conNum, 'name': contract.name, 'time': temp.time, 'p_type': p_type})
-    return render(request, 'listContract.html', {'contract_list': contract_list})
+    return render(request, 'listContract.html', {'contract_list': contract_list,'per_list': per})
 
 
 def contract_info(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         num = request.POST.get('num')
         contract = Contract.objects.filter(num=num).first()
@@ -122,15 +133,17 @@ def contract_info(request):
         sing = Process.objects.filter(conNum=num, type=3).last()
         if singing is not None:
             content['sing'] = sing.content
-        return render(request, 'contractInfo.html', {'contract': contract, 'content': content})
+        return render(request, 'contractInfo.html', {'contract': contract, 'content': content,'per_list': per})
 
 
 def signing_contract(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'signingContract.html', {'contract': contract})
+            return render(request, 'signingContract.html', {'contract': contract,'per_list': per})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
@@ -141,31 +154,35 @@ def signing_contract(request):
             if not filter_result:
                 State.objects.create(conNum=num, type=2, time=datetime.datetime.now())
             return redirect('/listContract')
-    return render(request, 'signingContract.html')
+    return render(request, 'signingContract.html',{'per_list': per})
 
 
 def final_contract(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
             process = Process.objects.filter(conNum=num, type=1).first()
-            return render(request, 'finalContract.html', {'contract': contract, 'content': process.content})
+            return render(request, 'finalContract.html', {'contract': contract, 'content': process.content,'per_list': per})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
             Contract.objects.filter(num=num).update(content=content)
             State.objects.create(conNum=num, type=3, time=datetime.datetime.now())
             return redirect('/listDraft')
-    return render(request, 'finalContract.html')
+    return render(request, 'finalContract.html',{'per_list': per})
 
 
 def approval_contract(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'approvalContract.html', {'contract': contract})
+            return render(request, 'approvalContract.html', {'contract': contract, 'per_list': per})
         else:
             num = request.POST.get('num')
             state = request.POST.get('state')
@@ -181,15 +198,17 @@ def approval_contract(request):
                 else:
                     State.objects.create(conNum=num, type=6, time=datetime.datetime.now())
             return redirect('/listContract')
-    return render(request, 'approvalContract.html')
+    return render(request, 'approvalContract.html',{'per_list': per})
 
 
 def sign_contract(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'signContract.html', {'contract': contract})
+            return render(request, 'signContract.html', {'contract': contract,'per_list': per})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
@@ -200,10 +219,12 @@ def sign_contract(request):
             if not filter_result:
                 State.objects.create(conNum=num, type=5, time=datetime.datetime.now())
             return redirect('/listContract')
-    return render(request, 'signContract.html')
+    return render(request, 'signContract.html',{'per_list': per})
 
 
 def Contract_Select(request, pagenum='1'):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
@@ -220,7 +241,7 @@ def Contract_Select(request, pagenum='1'):
         print(page.object_list[0].name)
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number})
+                       'currentpage': page.number,'per_list': per})
     if request.method == "POST":
         s_name = request.POST['name']
         contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
@@ -235,10 +256,12 @@ def Contract_Select(request, pagenum='1'):
 
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number})
+                       'currentpage': page.number,'per_list': per})
 
 
 def Process_select(request, type='0', pagenum='1'):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     print(request.method)
     if request.method == "GET":
         if type == '0':
@@ -270,10 +293,12 @@ def Process_select(request, type='0', pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number, 'type': type})
+                       'currentpage': page.number,'type':type, 'per_list': per})
+
     if request.method == "POST":
         pid = request.POST['P_id']
-        process_list = Process.objects.filter(Q(id__icontains=pid)).order_by('id')
+        int(pid)
+        process_list = Process.objects.filter(conNum=pid)
 
         paginator = Paginator(process_list, 2)
         try:
@@ -285,4 +310,5 @@ def Process_select(request, type='0', pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number, 'type': type})
+                       'currentpage': page.number,'type':type, 'per_list': per})
+

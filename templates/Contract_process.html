@@ -60,7 +60,18 @@
 							{% for process in page.object_list%}
 							<tr>
                                 <td>{{ process.conNum }}</td>
-								<td>{{process.type}}</td>
+								<td>
+                                    {% if process.type == 1%}
+                                        会签阶段
+								    {% endif %}
+                                    {% if process.type == 2%}
+                                        审批阶段
+								    {% endif %}
+                                    {% if process.type == 3%}
+                                        签订阶段
+								    {% endif %}
+
+                                </td>
 								<td>
                                     {% if process.type == 1 and process.state == 1%}
                                         会签完成
