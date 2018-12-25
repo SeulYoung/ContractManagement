@@ -36,6 +36,11 @@
 								<th>
 									客户地址
 								</th>
+								{% if query %}
+								<th>
+									合同附件
+								</th>
+								{% endif %}
 							</tr>
 						</thead>
 						<tbody>
@@ -50,6 +55,16 @@
 								<td>{{user.tel}}</td>
 								<td>{{user.fax}}</td>
 								<td>{{user.address}}</td>
+									{% if query %}
+								<td>
+									<form action="#" method="POST">
+										{% csrf_token %}
+										<input type="hidden" class="form-control" name="download" value="{{user.name}}">
+
+										<button class="btn btn-default" type="submit">下载附件</button>
+									</form>
+								</td>
+                        			{% endif %}
 							</tr>
                         {% endif %}
 						{% if customer_list %}

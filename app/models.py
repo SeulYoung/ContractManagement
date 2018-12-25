@@ -65,6 +65,7 @@ class Customer(models.Model):
 
 class Attachment(models.Model):
     conNum = models.CharField(verbose_name='conNum', max_length=20, primary_key=True)
+    cusName = models.CharField(verbose_name='cusName', max_length=100)
     fileName = models.CharField(verbose_name='fileName', max_length=100)
     path = models.CharField(verbose_name='path', max_length=100)
     type = models.CharField(verbose_name='type', max_length=20)
