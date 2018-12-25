@@ -235,7 +235,7 @@ def C_Select(request, pagenum='1'):
                        'currentpage': page.number})
 
 
-def C_Process(request, type=0, pagenum='1'):
+def Process_select(request, type=0, pagenum='1'):
     print(request.method)
     if request.method == "GET":
         process_list = Process.objects.all()
@@ -253,6 +253,18 @@ def C_Process(request, type=0, pagenum='1'):
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
                        'currentpage': page.number})
     if request.method == "POST":
+        if type==0:
+            contract_list = Process.objects.all()
+        elif type==1:
+            aa=1
+        elif type==2:
+            aa=2
+        elif type==3:
+            aa=3
+        elif type==4:
+            aa=4
+        elif type==5:
+            aa=5
         s_name = request.POST['name']
         contract_list = Process.objects.filter(Q(name__icontains=s_name)).order_by('num')
         paginator = Paginator(contract_list, 2)
@@ -264,6 +276,6 @@ def C_Process(request, type=0, pagenum='1'):
         except EmptyPage:
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
 
-        return render(request, 'Contract_select.html',
+        return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
                        'currentpage': page.number})
