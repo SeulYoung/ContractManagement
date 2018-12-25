@@ -23,6 +23,9 @@
 .btn-check{
     padding-left:680px;
 }
+.btn-upprocess{
+    margin-left: 20px;
+}
  table {width:90%;background:#ccc; margin: 10px auto;border-collapse:collapse;}
 /*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
  th, td {height:25px;line-height:25px;text-align:center;border:1px solid #ccc;}

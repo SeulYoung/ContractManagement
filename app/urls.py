@@ -35,6 +35,8 @@ urlpatterns = [
                   ######################合同查询####################
                   url(r'^contract_select/$', ContractManagement.Contract_Select, name="contract_select_all"),
                   url(r'^contract_select/(?P<pagenum>\d+)/$', ContractManagement.Contract_Select, name="contract_select"),
+                  url(r'^contract_delete/$', ContractManagement.Contract_Delete, name="contract_delete"),
+                  url(r'^process_detail/$', ContractManagement.Process_Detail, name="process_detail"),
                   url(r'^contract_process/$', ContractManagement.Process_select, name="contract_process_all"),
                   url(r'^contract_process/(?P<type>\d+)/$', ContractManagement.Process_select, name="contract_process"),
                   url(r'^contract_process/(?P<type>\d+)/(?P<pagenum>\d+)/$', ContractManagement.Process_select, name="contract_process2"),
