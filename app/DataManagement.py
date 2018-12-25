@@ -4,13 +4,17 @@ from django.http import HttpResponseRedirect,StreamingHttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
+from django.contrib.auth.models import User
+from app.views import judgeP
 
 
 class customer_add(TemplateView):
     template_name = "customer_add.html"
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'customer_add.html')
+        user = User.objects.filter(username=request.user.username).first()
+        per = judgeP(user.username)
+        return render(request, 'customer_add.html',{'per_list': per})
 
     def post(self, request, *args, **kwargs):
         name = request.POST.get('name')

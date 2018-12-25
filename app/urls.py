@@ -33,11 +33,11 @@ urlpatterns = [
                   url(r'^customer_select/$', DataManagement.customer_select.as_view(), name='customer_select'),
                   url(r'^customer_delete/$', DataManagement.customer_delete.as_view(), name='customer_delete'),
                   ######################合同查询####################
-                  url(r'^contract_select/$', ContractManagement.C_Select, name="contract_select_all"),
-                  url(r'^contract_select/(?P<pagenum>\d+)/$', ContractManagement.C_Select, name="contract_select"),
+                  url(r'^contract_select/$', ContractManagement.Contract_Select, name="contract_select_all"),
+                  url(r'^contract_select/(?P<pagenum>\d+)/$', ContractManagement.Contract_Select, name="contract_select"),
                   url(r'^contract_process/$', ContractManagement.Process_select, name="contract_process_all"),
-                  url(r'^contract_process/(?P<state>\d+)/$', ContractManagement.Process_select,
-                      name="contract_process"),
+                  url(r'^contract_process/(?P<type>\d+)/$', ContractManagement.Process_select, name="contract_process"),
+                  url(r'^contract_process/(?P<type>\d+)/(?P<pagenum>\d+)/$', ContractManagement.Process_select, name="contract_process2"),
 
                   path('Wcontract_sel.html', SystemManagement.wcon_sel, name='Wcon_sel'),
                   path('Wpermission_sel.html', SystemManagement.wper_sel, name='Wper_sel'),
