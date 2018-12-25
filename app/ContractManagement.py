@@ -47,8 +47,11 @@ def drafting_contract(request):
         my_state = State.objects.create(conNum=my_contract.num, type=1, time=newTime)
 
         if file is not None:
+            path = 'media//' + file.name
             my_attachment = Attachment.objects.create(conNum=my_contract.num,
+                                                      cusName=customer,
                                                       fileName=file.name,
+                                                      path=path,
                                                       uploadTime=newTime,
                                                       file=file)
         # print(my_contract)

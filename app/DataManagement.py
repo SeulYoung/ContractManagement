@@ -1,4 +1,6 @@
-from django.http import HttpResponseRedirect
+import os
+
+from django.http import HttpResponseRedirect,StreamingHttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
@@ -71,20 +73,46 @@ class customer_select(TemplateView):
     def get(self, request, *args, **kwargs):
         customer_list = Customer.objects.all()
 
-        return render(request, 'customer_select.html', {'customer_list': customer_list})
+        file = open('media/新建文本文档.txt', 'rb')
+        response = StreamingHttpResponse(file)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="models.txt"'
+        # return response
+        return render(request, 'customer_select.html',{'customer_list': customer_list})
 
     def post(self, request, *args, **kwargs):
         name = request.POST.get('name')
-        customer_list = Customer.objects.all()
-        user_exist = False
-        for user in customer_list:
-            if user.name == name:
-                user_exist = True
-                return render(request, 'customer_select.html', {'user': user})
-            else:
-                continue
+        download =request.POST.get('download')
+        if download is None:
+            customer_list = Customer.objects.all()
+            attach_list = Attachment.objects.all()
+            user_exist = False
+            for user in customer_list:
+                if user.name == name:
+                    user_exist = True
+                    for attach in attach_list:
+                        if attach.cusName == user.name:
+                            return render(request, 'customer_select.html', {'user': user, 'query': "query"})
+                    return render(request, 'customer_select.html', {'user': user})
+                else:
+                    continue
 
-        return render(request, 'customer_select.html', {'not_found': "User not found"})
+            return render(request, 'customer_select.html', {'not_found': "User not found"})
+        else:
+            attach_list = Attachment.objects.all()
+            file = ''
+            path = ''
+            for attach in attach_list:
+                print(attach.cusName)
+                print(attach.path)
+                if attach.cusName == download:
+                    path = attach.path
+                    file = open(attach.path, 'rb')
+            response = StreamingHttpResponse(file)
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment;filename=' + os.path.basename(path)
+            return response
+            # return render(request, 'customer_select.html', {'not_found': "User not found"})
 
 
 class customer_delete(TemplateView):
