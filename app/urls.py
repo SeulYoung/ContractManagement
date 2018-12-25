@@ -36,7 +36,8 @@ urlpatterns = [
                   url(r'^contract_select/$', ContractManagement.C_Select, name="contract_select_all"),
                   url(r'^contract_select/(?P<pagenum>\d+)/$', ContractManagement.C_Select, name="contract_select"),
                   url(r'^contract_process/$', ContractManagement.Process_select, name="contract_process_all"),
-                  url(r'^contract_process/(?P<state>\d+)/$', ContractManagement.Process_select, name="contract_process"),
+                  url(r'^contract_process/(?P<state>\d+)/$', ContractManagement.Process_select,
+                      name="contract_process"),
 
                   path('Wcontract_sel.html', SystemManagement.wcon_sel, name='Wcon_sel'),
                   path('Wpermission_sel.html', SystemManagement.wper_sel, name='Wper_sel'),
@@ -48,4 +49,5 @@ urlpatterns = [
                   path('user_add.html', SystemManagement.user_add, name='user_add'),
                   path('user_mod.html', SystemManagement.user_mod, name='user_mod'),
                   path('user_sel.html', SystemManagement.user_sel, name='user_sel'),
+                  path('listLog/', SystemManagement.list_log, name='list_log'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -57,7 +57,8 @@ def con_assign(request):
             role_list2 = Right.objects.filter(description__contains='审批合同')
             role_list3 = Right.objects.filter(description__contains='签订合同')
             return render(request, 'contract_assign.html', {'role_list1': role_list1, 'role_list2': role_list2,
-                                                            'role_list3': role_list3, 'conName': con_name, 'per_list': per})
+                                                            'role_list3': role_list3, 'conName': con_name,
+                                                            'per_list': per})
         else:
             for sign in countersignp:
                 Process.objects.create(conNum=num_list.num, type=1, state=0, userName=sign, time=timezone.now())
@@ -120,7 +121,8 @@ def permission_assign(request):
             if right_list:
                 return HttpResponseRedirect('Wpermission_sel.html')
             role_list = Role.objects.all()
-            return render(request, 'permission_assign.html', {'user_w': u_name, 'role_list': role_list, 'per_list': per})
+            return render(request, 'permission_assign.html',
+                          {'user_w': u_name, 'role_list': role_list, 'per_list': per})
 
 
 def role_sel(request):
@@ -165,7 +167,7 @@ def role_add(request):
             Role.objects.create(name=role_name, description=description, functions=permission)
             return HttpResponseRedirect("role_sel.html")
 
-    return render(request, 'role_add.html',{'per_list': per})
+    return render(request, 'role_add.html', {'per_list': per})
 
 
 def role_mod(request):
@@ -267,3 +269,8 @@ def user_mod(request):
                                                      'mod': "mod", 'per_list': per})
 
     return render(request, 'user_mod.html', {'user_list': user_list, 'per_list': per})
+
+
+def list_log(request):
+    log_list = Log.objects.all()
+    return render(request, 'listLog.html', {'log_list': log_list})

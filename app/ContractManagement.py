@@ -1,10 +1,10 @@
 from django.db.models import Q
+from django.db.models.functions import datetime
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 from django.core.mail import send_mass_mail
-import datetime
 import time
 
 
@@ -35,7 +35,7 @@ def drafting_contract(request):
             else:
                 continue
         if customer_exist is False:
-            return render(request, 'draftingContract.html',{"errormsg":"该客户不存在"})
+            return render(request, 'draftingContract.html', {"errormsg": "该客户不存在"})
         file = request.FILES.get('files')
 
         my_contract = Contract.objects.create(name=name,
@@ -256,18 +256,18 @@ def Process_select(request, type=0, pagenum='1'):
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
                        'currentpage': page.number})
     if request.method == "POST":
-        if type==0:
+        if type == 0:
             contract_list = Process.objects.all()
-        elif type==1:
-            aa=1
-        elif type==2:
-            aa=2
-        elif type==3:
-            aa=3
-        elif type==4:
-            aa=4
-        elif type==5:
-            aa=5
+        elif type == 1:
+            aa = 1
+        elif type == 2:
+            aa = 2
+        elif type == 3:
+            aa = 3
+        elif type == 4:
+            aa = 4
+        elif type == 5:
+            aa = 5
         s_name = request.POST['name']
         contract_list = Process.objects.filter(Q(name__icontains=s_name)).order_by('num')
         paginator = Paginator(contract_list, 2)
