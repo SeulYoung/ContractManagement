@@ -6,7 +6,7 @@
 	<link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" /><!-- fontawesome -->
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" /><!-- Bootstrap stylesheet -->
 	<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" /><!-- stylesheet -->
-    <link href="/static/css/xdd.css" rel="stylesheet" type="text/css" media="all"/>
+	<link href="/static/css/xdd.css" rel="stylesheet" type="text/css" media="all" />
 	<!-- meta tags -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -123,7 +123,7 @@
 							<ul class="dropdown-menu">
 								{% if per_list.b1 == True %}<li><a href="/listContract">处理流程</a></li>{% endif %}
 								{% if per_list.b2 == True %}<li><a href="/Wcontract_sel.html">分配合同</a></li>{% endif %}
-								{% if per_list.b3 == True %}<li><a href={% url 'app:contract_process_all'%}>查询流程</a></li>{% endif %}
+								{% if per_list.b3 == True %}<li><a href={% url 'app:contract_process_all' %}>查询流程</a></li>{% endif %}
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -169,7 +169,13 @@
 								{% if per_list.f2 == True %}<li><a href="/customer_modify">编辑客户</a></li>{% endif %}
 								{% if per_list.f3 == True %}<li><a href="/customer_select">查询客户</a></li>{% endif %}
 								{% if per_list.f4 == True %}<li><a href="/customer_delete">删除客户</a></li>{% endif %}
-
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统信息
+								<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="/listLog">查看日志</a></li>
 							</ul>
 						</li>
 					</ul>

@@ -1,10 +1,10 @@
 from django.db.models import Q
+from django.db.models.functions import datetime
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 from django.core.mail import send_mass_mail
-import datetime
 import time
 
 from django.contrib.auth.models import User
@@ -260,26 +260,25 @@ def Contract_Select(request, pagenum='1'):
 
 
 def Process_select(request, type='0', pagenum='1'):
-
     user = User.objects.filter(username=request.user.username).first()
     per = judgeP(user.username)
     print(request.method)
     if request.method == "GET":
-        if type=='0':
+        if type == '0':
             process_list = Process.objects.all()
-        elif type=='1':
-            process_list = Process.objects.filter(type=1,state=0)
+        elif type == '1':
+            process_list = Process.objects.filter(type=1, state=0)
             process_list = process_list
-        elif type=='2':
-            process_list = Process.objects.filter(type=1,state=1)
-        elif type=='3':
-            process_list = Process.objects.filter(type=2,state=0)
-        elif type=='4':
-            process_list = Process.objects.filter(type=2,state=1)
-        elif type=='5':
-            process_list = Process.objects.filter(type=3,state=1)
+        elif type == '2':
+            process_list = Process.objects.filter(type=1, state=1)
+        elif type == '3':
+            process_list = Process.objects.filter(type=2, state=0)
+        elif type == '4':
+            process_list = Process.objects.filter(type=2, state=1)
+        elif type == '5':
+            process_list = Process.objects.filter(type=3, state=1)
         else:
-            #已取消合同
+            # 已取消合同
             process_list = Process.objects.filter(state=2)
 
         # 分页构建
@@ -295,13 +294,13 @@ def Process_select(request, type='0', pagenum='1'):
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
                        'currentpage': page.number,'type':type, 'per_list': per})
+
     if request.method == "POST":
         pid = request.POST['P_id']
         int(pid)
         process_list = Process.objects.filter(conNum=pid)
 
         paginator = Paginator(process_list, 2)
-
         try:
             page = paginator.page(pagenum)
         except PageNotAnInteger:
@@ -312,3 +311,4 @@ def Process_select(request, type='0', pagenum='1'):
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
                        'currentpage': page.number,'type':type, 'per_list': per})
+
