@@ -10,24 +10,28 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="row">
-				<form id="form_email" class="wid-limit" action="#" method="POST">
+				<form id="form_email" class="wid-limit" action="" method="POST">
+                    {% csrf_token %}
 					<div class="input-group">
-						<input type="text" class="form-control" name="name">
+						<input type="text" class="form-control" name="P_id" placeholder="请输入编号">
 						<span class="input-group-btn">
 							<button class="btn btn-primary" type="submit">查询合同信息</button>
 						</span>
 					</div>
 				</form>
-                <form id="form_email" action="#" method="POST">
+                <form id="form_email" method="POST">
                         <div class="btn-group dropdown">
                             <button class="btn btn-primary" data-toggle="dropdown">合同状态
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">显示全部</a></li>
-                                <li><a href="#">已会签</a></li>
-                                <li><a href="#">已审批</a></li>
-                                <li><a href="#">已签订</a></li>
+                                <li><a href={% url 'app:contract_process_all' %}>显示全部</a></li>
+                                <li><a href={% url 'app:contract_process' '1' %}>未会签</a></li>
+                                <li><a href={% url 'app:contract_process' '2' %}>会签完成</a></li>
+                                <li><a href={% url 'app:contract_process' '3' %}>定稿完成</a></li>
+                                <li><a href={% url 'app:contract_process' '4' %}>审批完成</a></li>
+                                <li><a href={% url 'app:contract_process' '5' %}>签订完成</a></li>
+                                <li><a href={% url 'app:contract_process' '6' %}>已取消列表</a></li>
                             </ul>
                         </div>
                 </form>
@@ -46,6 +50,9 @@
 								<th>
 									使用者
 								</th>
+                                <th>
+									操作内容
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -54,8 +61,31 @@
 							<tr>
                                 <td>{{ process.conNum }}</td>
 								<td>{{process.type}}</td>
-								<td>{{process.state}}</td>
-								<td>{{process.username}}</td>
+								<td>
+                                    {% if process.type == 1 and process.state == 1%}
+                                        会签完成
+								    {% endif %}
+                                    {% if process.type == 1 and process.state == 0%}
+                                        会签未完成
+								    {% endif %}
+                                    {% if process.state == 2%}
+                                        合同已取消
+								    {% endif %}
+                                    {% if process.type == 2 and process.state == 0%}
+                                        审批未完成
+								    {% endif %}
+                                    {% if process.type == 2 and process.state == 1%}
+                                        审批已完成
+								    {% endif %}
+                                    {% if process.type == 3 and process.state == 1%}
+                                        签订完成
+								    {% endif %}
+                                    {% if process.type == 3 and process.state == 0%}
+                                        签订未完成
+								    {% endif %}
+                                </td>
+								<td>{{process.userName}}</td>
+                                <td>{{ process.content }}</td>
 								<!--<td>-->
 									<!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
 								<!--</td>-->
@@ -69,7 +99,7 @@
 
                             {% if page.has_previous %}
                                 <li>
-                                    <a href="{% url 'app:contract_select' page.previous_page_number %}" aria-label="Previous">
+                                    <a href="{% url 'app:contract_process2' type page.previous_page_number %}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -84,15 +114,15 @@
 
                             {% for p in pagerange %}
                                 {% ifequal p currentpage %}
-                                    <li class="active"><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
+                                    <li class="active"><a href="{% url 'app:contract_process2' type p %}">{{ p }}</a></li>
                                 {% else %}
-                                    <li><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
+                                    <li><a href="{% url 'app:contract_process2' type p %}">{{ p }}</a></li>
                                 {% endifequal %}
                             {% endfor %}
 
                             {% if page.has_next %}
                                 <li>
-                                    <a href="{% url 'app:contract_select' page.next_page_number %}" aria-label="Next">
+                                    <a href="{% url 'app:contract_process2' type page.next_page_number %}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a></li>
                             {% else %}

@@ -203,7 +203,7 @@ def sign_contract(request):
     return render(request, 'signContract.html')
 
 
-def C_Select(request, pagenum='1'):
+def Contract_Select(request, pagenum='1'):
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
@@ -238,10 +238,27 @@ def C_Select(request, pagenum='1'):
                        'currentpage': page.number})
 
 
-def Process_select(request, type=0, pagenum='1'):
+def Process_select(request, type='0', pagenum='1'):
+
     print(request.method)
     if request.method == "GET":
-        process_list = Process.objects.all()
+        if type=='0':
+            process_list = Process.objects.all()
+        elif type=='1':
+            process_list = Process.objects.filter(type=1,state=0)
+            process_list = process_list
+        elif type=='2':
+            process_list = Process.objects.filter(type=1,state=1)
+        elif type=='3':
+            process_list = Process.objects.filter(type=2,state=0)
+        elif type=='4':
+            process_list = Process.objects.filter(type=2,state=1)
+        elif type=='5':
+            process_list = Process.objects.filter(type=3,state=1)
+        else:
+            #已取消合同
+            process_list = Process.objects.filter(state=2)
+
         # 分页构建
         paginator = Paginator(process_list, 2)
         # 获取某页对象
@@ -251,26 +268,15 @@ def Process_select(request, type=0, pagenum='1'):
             page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
         except EmptyPage:
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-        # print(page.object_list[0].name)
+
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number})
+                       'currentpage': page.number,'type':type})
     if request.method == "POST":
-        if type==0:
-            contract_list = Process.objects.all()
-        elif type==1:
-            aa=1
-        elif type==2:
-            aa=2
-        elif type==3:
-            aa=3
-        elif type==4:
-            aa=4
-        elif type==5:
-            aa=5
-        s_name = request.POST['name']
-        contract_list = Process.objects.filter(Q(name__icontains=s_name)).order_by('num')
-        paginator = Paginator(contract_list, 2)
+        pid = request.POST['P_id']
+        process_list = Process.objects.filter(Q(id__icontains=pid)).order_by('id')
+
+        paginator = Paginator(process_list, 2)
 
         try:
             page = paginator.page(pagenum)
@@ -281,4 +287,4 @@ def Process_select(request, type=0, pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number})
+                       'currentpage': page.number,'type':type})
