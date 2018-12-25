@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.mail import send_mass_mail, send_mail
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import *
@@ -6,9 +7,12 @@ from app.forms import *
 from django.contrib.auth.models import User
 import django.utils.timezone as timezone
 import re
+from app.views import judgeP
 
 
 def wcon_sel(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     out_list = []
     if request.method == "POST":
         s_con = request.POST.get('s_con')
@@ -26,7 +30,7 @@ def wcon_sel(request):
                 isexist = Process.objects.filter(conNum=user.conNum)
                 if not isexist:
                     out_list.append({'conName': c_list.name, 'time': user.time})
-        return render(request, 'Wcontract_sel.html', {'wcon_list': out_list})
+        return render(request, 'Wcontract_sel.html', {'wcon_list': out_list, 'per_list': per})
 
     state_list = State.objects.filter(type=1)
     for user in state_list:
@@ -35,10 +39,12 @@ def wcon_sel(request):
         if not isexist:
             out_list.append({'conName': c_list.name, 'time': user.time})
 
-    return render(request, 'Wcontract_sel.html', {'wcon_list': out_list})
+    return render(request, 'Wcontract_sel.html', {'wcon_list': out_list, 'per_list': per})
 
 
 def con_assign(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         con_name = request.POST.get('conName')
         num_list = Contract.objects.filter(name=con_name).first()
@@ -51,32 +57,43 @@ def con_assign(request):
             role_list2 = Right.objects.filter(description__contains='审批合同')
             role_list3 = Right.objects.filter(description__contains='签订合同')
             return render(request, 'contract_assign.html', {'role_list1': role_list1, 'role_list2': role_list2,
-                                                            'role_list3': role_list3, 'conName': con_name})
+                                                            'role_list3': role_list3, 'conName': con_name, 'per_list': per})
         else:
             for sign in countersignp:
                 Process.objects.create(conNum=num_list.num, type=1, state=0, userName=sign, time=timezone.now())
+                # user = User.objects.get(username=sign)
+                # send_mail('合同管理系统', '尊敬的的用户' + user.username+ ',您有一条合同需要会签！',  '948525147@qq.com',
+                #           [user.email], fail_silently=False)
             for app in approvalp:
                 Process.objects.create(conNum=num_list.num, type=2, state=0, userName=app, time=timezone.now())
+                # user = User.objects.get(username=app)
+                # send_mail('合同管理系统', '尊敬的的用户' + user.username + ',您有一条合同需要审批！', '948525147@qq.com',
+                #           [user.email], fail_silently=False)
             for sig in signp:
                 Process.objects.create(conNum=num_list.num, type=3, state=0, userName=sig, time=timezone.now())
+                # user = User.objects.get(username=sig)
+                # send_mail('合同管理系统', '尊敬的的用户' + user.username + ',您有一条合同需要签订！', '948525147@qq.com',
+                #           [user.email], fail_silently=False)
             return HttpResponseRedirect('Wcontract_sel.html')
 
 
 def wper_sel(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     out_list = []
     if request.method == "POST":
         s_name = request.POST.get('s_name')
         if s_name:
             user_list = User.objects.filter(username=s_name).first()
             if not user_list:
-                return render(request, 'Wpermission_sel.html', {'msg': '所查找的用户不存在'})
+                return render(request, 'Wpermission_sel.html', {'msg': '所查找的用户不存在', 'per_list': per})
             else:
                 right_list = Right.objects.filter(userName=user_list.username).first()
                 if right_list:
                     out_list.append({'username': user_list.username, 'rolename': right_list.roleName})
                 else:
                     out_list.append({'username': user_list.username, 'rolename': '无'})
-                return render(request, 'Wpermission_sel.html', {'out_list': out_list})
+                return render(request, 'Wpermission_sel.html', {'out_list': out_list, 'per_list': per})
 
     user_list = User.objects.all()
     for user in user_list:
@@ -85,10 +102,12 @@ def wper_sel(request):
             out_list.append({'username': user.username, 'rolename': right_list.roleName})
         else:
             out_list.append({'username': user.username, 'rolename': '无'})
-    return render(request, 'Wpermission_sel.html', {'out_list': out_list})
+    return render(request, 'Wpermission_sel.html', {'out_list': out_list, 'per_list': per})
 
 
 def permission_assign(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         u_name = request.POST.get('user_w')
         permission = request.POST.get('check_box_list')
@@ -101,58 +120,65 @@ def permission_assign(request):
             if right_list:
                 return HttpResponseRedirect('Wpermission_sel.html')
             role_list = Role.objects.all()
-            return render(request, 'permission_assign.html', {'user_w': u_name, 'role_list': role_list})
+            return render(request, 'permission_assign.html', {'user_w': u_name, 'role_list': role_list, 'per_list': per})
 
 
 def role_sel(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         name = request.POST.get('s_name')
         d_name = request.POST.get('d_name')
         if name:
             role_list = Role.objects.filter(name=name)
             if not role_list:
-                return render(request, 'role_sel.html', {'d_msg': '未找到要查询的角色'})
-            return render(request, 'role_sel.html', {'role_list': role_list})
+                return render(request, 'role_sel.html', {'d_msg': '未找到要查询的角色', 'per_list': per})
+            return render(request, 'role_sel.html', {'role_list': role_list, 'per_list': per})
         else:
             if d_name:
                 Role.objects.filter(name=d_name).delete()
                 Right.objects.filter(roleName=d_name).delete()
                 role_list = Role.objects.all()
-                return render(request, 'role_sel.html', {'role_list': role_list, 'd_msg': '删除成功'})
+                return render(request, 'role_sel.html', {'role_list': role_list, 'd_msg': '删除成功', 'per_list': per})
             role_list = Role.objects.all()
-            return render(request, 'role_sel.html', {'role_list': role_list})
+            return render(request, 'role_sel.html', {'role_list': role_list, 'per_list': per})
 
     else:
         role_list = Role.objects.all()
-        return render(request, 'role_sel.html', {'role_list': role_list})
+        return render(request, 'role_sel.html', {'role_list': role_list, 'per_list': per})
 
 
 def role_add(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         role_name = request.POST.get('role_name')
         description = request.POST.get('description')
         permission = request.POST.getlist('check_box_list')
         if not role_name:
-            return render(request, 'role_add.html', {'r_error': '未输入角色名称'})
+            return render(request, 'role_add.html', {'r_error': '未输入角色名称', 'per_list': per})
         else:
             judge = Role.objects.filter(name=role_name)
             if judge:
-                return render(request, 'role_add.html', {'r_error': '该角色已存在，请重新输入'})
+                return render(request, 'role_add.html', {'r_error': '该角色已存在，请重新输入', 'per_list': per})
 
             Role.objects.create(name=role_name, description=description, functions=permission)
             return HttpResponseRedirect("role_sel.html")
 
-    return render(request, 'role_add.html')
+    return render(request, 'role_add.html',{'per_list': per})
 
 
 def role_mod(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == 'POST':
         role_name = request.POST.get('m_name')
         description = request.POST.get('description')
         permission = request.POST.getlist('check_box_list')
         if not description:
             role_list = Role.objects.all()
-            return render(request, 'role_mod.html', {'m_name': role_name, 'role_list': role_list, 'mod': "mod"})
+            return render(request, 'role_mod.html', {'m_name': role_name, 'role_list': role_list, 'mod': "mod",
+                                                     'per_list': per})
         else:
             if permission:
                 Role.objects.filter(name=role_name).update(description=description, functions=permission)
@@ -161,33 +187,37 @@ def role_mod(request):
             return HttpResponseRedirect("role_sel.html")
 
     role_list = Role.objects.all()
-    return render(request, 'role_mod.html', {'role_list': role_list})
+    return render(request, 'role_mod.html', {'role_list': role_list, 'per_list': per})
 
 
 def user_sel(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         name = request.POST.get('s_name')
         d_name = request.POST.get('d_name')
         if name:
             user_list = User.objects.filter(username=name)
             if not user_list:
-                return render(request, 'user_sel.html', {'d_msg': '未找到要查询的角色'})
-            return render(request, 'user_sel.html', {'user_list': user_list})
+                return render(request, 'user_sel.html', {'d_msg': '未找到要查询的角色', 'per_list': per})
+            return render(request, 'user_sel.html', {'user_list': user_list, 'per_list': per})
         else:
             if d_name:
                 User.objects.filter(username=d_name).delete()
                 Right.objects.filter(userName=d_name).delete()
                 user_list = User.objects.all()
-                return render(request, 'user_sel.html', {'user_list': user_list, 'd_msg': '删除成功'})
+                return render(request, 'user_sel.html', {'user_list': user_list, 'd_msg': '删除成功', 'per_list': per})
             user_list = User.objects.all()
-            return render(request, 'user_sel.html', {'user_list': user_list})
+            return render(request, 'user_sel.html', {'user_list': user_list, 'per_list': per})
 
     else:
         user_list = User.objects.all()
-        return render(request, 'user_sel.html', {'user_list': user_list})
+        return render(request, 'user_sel.html', {'user_list': user_list, 'per_list': per})
 
 
 def user_add(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -198,10 +228,12 @@ def user_add(request):
             return HttpResponseRedirect("user_sel.html")
     else:
         form = RegistrationForm()
-    return render(request, 'user_add.html', {'form': form})
+    return render(request, 'user_add.html', {'form': form, 'per_list': per})
 
 
 def user_mod(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     user_list = User.objects.all()
     if request.method == 'POST':
         user_name = request.POST.get('m_name')
@@ -209,7 +241,8 @@ def user_mod(request):
         if not email:
             password1 = request.POST.get('password1')
             if not password1:
-                return render(request, 'user_mod.html', {'m_name': user_name, 'user_list': user_list, 'mod': "mod"})
+                return render(request, 'user_mod.html', {'m_name': user_name, 'user_list': user_list,
+                                                         'mod': "mod", 'per_list': per})
             else:
                 error = 'ok'
                 password2 = request.POST.get('password2')
@@ -223,7 +256,7 @@ def user_mod(request):
                     User.objects.filter(username=user_name).update(password=make_password(password1))
                     return HttpResponseRedirect("user_mod.html")
                 return render(request, 'user_mod.html', {'r_error': error, 'm_name': user_name,
-                                                         'user_list': user_list, 'mod': "mod"})
+                                                         'user_list': user_list, 'mod': "mod", 'per_list': per})
         else:
             valid_email = '\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{1,14}'
             if re.match(valid_email, email) != None:
@@ -231,6 +264,6 @@ def user_mod(request):
                 return HttpResponseRedirect("user_mod.html")
             error = '邮箱格式错误'
             return render(request, 'user_mod.html', {'r_error': error, 'm_name': user_name, 'user_list': user_list,
-                                                     'mod': "mod"})
+                                                     'mod': "mod", 'per_list': per})
 
-    return render(request, 'user_mod.html', {'user_list': user_list})
+    return render(request, 'user_mod.html', {'user_list': user_list, 'per_list': per})
