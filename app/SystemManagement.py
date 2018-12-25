@@ -1,4 +1,4 @@
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mass_mail, send_mail
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
