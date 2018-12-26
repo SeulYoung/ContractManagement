@@ -11,12 +11,17 @@ from app.models import *
 def user_save_handler(sender, instance=None, **kwargs):
     if instance is not None:
         request = GlobalRequestMiddleware.getRequest()
-        if request is not None:
+        filter_result = User.objects.filter(username=instance.username)
+        if len(filter_result) > 0:
             username = request.user.username
-            content = '创建用户:' + instance.username
+            content = '登陆用户:' + instance.username
         else:
-            username = instance.username
-            content = '注册用户:' + instance.username
+            if request.user.username != '':
+                username = request.user.username
+                content = '创建用户:' + instance.username
+            else:
+                username = instance.username
+                content = '注册用户:' + instance.username
         Log.objects.create(userName=username, content=content, time=datetime.datetime.now())
 
 
