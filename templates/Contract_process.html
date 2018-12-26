@@ -206,11 +206,10 @@
         $(function () {
             $("#btn_search1").click(function () {
                 if ($('#searchid').val() == "") {
-                    alert('已显示所有合同流程')
-                    return;
+                    alert('显示所有合同流程')
                 }
                 console.log('btn_search1');
-                //$("#form_email").submit()
+                $("#form_email").submit()
             });
             $("#btn_search").click(function () {
                 if ($('#bianhao').val() == "" || $('#leixing').val() == "" || $('#user').val() == "") {
