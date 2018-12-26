@@ -28,7 +28,7 @@
                             <li><a href={% url 'app:contract_process_all' %}>显示全部</a></li>
                             <li><a href={% url 'app:contract_process' '1' %}>未会签</a></li>
                             <li><a href={% url 'app:contract_process' '2' %}>会签完成</a></li>
-                            <li><a href={% url 'app:contract_process' '3' %}>定稿完成</a></li>
+                            <li><a href={% url 'app:contract_process' '3' %}>审批未完成</a></li>
                             <li><a href={% url 'app:contract_process' '4' %}>审批完成</a></li>
                             <li><a href={% url 'app:contract_process' '5' %}>签订完成</a></li>
                             <li><a href={% url 'app:contract_process' '6' %}>已取消列表</a></li>
@@ -210,8 +210,8 @@
                     alert('请输入内容!!')
                     return;
                 }
-                if ($('#bianhao').val() != "1" && $('#bianhao').val() != "2" && $('#bianhao').val() != "3") {
-                    alert("编号不能为 1,2,3 之外的数！")
+                if ($('#leixing').val() != "1" && $('#leixing').val() != "2" && $('#leixing').val() != "3") {
+                    alert("类型不能为 1,2,3 之外的数！")
                     return;
                 }
                 console.log('btn_search');
