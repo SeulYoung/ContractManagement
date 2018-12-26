@@ -100,21 +100,21 @@ def contract_delete_handler(sender, instance=None, **kwargs):
 def process_save_handler(sender, instance=None, **kwargs):
     if instance is not None:
         request = GlobalRequestMiddleware.getRequest()
-        filter_result = Contract.objects.filter(num=instance.num)
+        filter_result = Process.objects.filter(conNum=instance.conNum, type=instance.type, userName=instance.userName)
         if len(filter_result) > 0:
             if instance.type == 1:
-                content = '合同:' + instance.conNum + ' 完成会签:' + instance.userName
+                content = '合同:' + str(instance.conNum) + ' 完成会签:' + instance.userName
             elif instance.type == 2:
-                content = '合同:' + instance.conNum + ' 完成审批:' + instance.userName
+                content = '合同:' + str(instance.conNum) + ' 完成审批:' + instance.userName
             else:
-                content = '合同:' + instance.conNum + ' 完成签订:' + instance.userName
+                content = '合同:' + str(instance.conNum) + ' 完成签订:' + instance.userName
         else:
             if instance.type == 1:
-                content = '合同:' + instance.conNum + ' 分配会签:' + instance.userName
+                content = '合同:' + str(instance.conNum) + ' 分配会签:' + instance.userName
             elif instance.type == 2:
-                content = '合同:' + instance.conNum + ' 分配审批:' + instance.userName
+                content = '合同:' + str(instance.conNum) + ' 分配审批:' + instance.userName
             else:
-                content = '合同:' + instance.conNum + ' 分配签订:' + instance.userName
+                content = '合同:' + str(instance.conNum) + ' 分配签订:' + instance.userName
         Log.objects.create(userName=request.user.username, content=content, time=datetime.datetime.now())
 
 
