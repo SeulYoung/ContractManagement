@@ -231,7 +231,7 @@ def Contract_Select(request, pagenum='1'):
         contract_list = Contract.objects.all()
 
         # 分页构建
-        paginator = Paginator(contract_list, 2)
+        paginator = Paginator(contract_list, 5)
         # 获取某页对象
         try:
             page = paginator.page(pagenum)
@@ -260,7 +260,7 @@ def Contract_Select(request, pagenum='1'):
         else:
             contract_list = Contract.objects.all()
 
-        paginator = Paginator(contract_list, 2)
+        paginator = Paginator(contract_list, 5)
 
         try:
             page = paginator.page(pagenum)
@@ -297,7 +297,7 @@ def Process_select(request, type='0', pagenum='1'):
             process_list = Process.objects.filter(state=2)
 
         # 分页构建
-        paginator = Paginator(process_list, 2)
+        paginator = Paginator(process_list, 5)
         # 获取某页对象
         try:
             page = paginator.page(pagenum)
@@ -317,7 +317,7 @@ def Process_select(request, type='0', pagenum='1'):
             process_list = Process.objects.filter(conNum=pid)
         else:
             process_list = Process.objects.all()
-        paginator = Paginator(process_list, 2)
+        paginator = Paginator(process_list, 5)
         try:
             page = paginator.page(pagenum)
         except PageNotAnInteger:
@@ -351,7 +351,7 @@ def Process_Detail(request):
 
     process_list = Process.objects.filter(conNum=num, type=type, userName=username)
     pagenum = 1
-    paginator = Paginator(process_list, 2)
+    paginator = Paginator(process_list, 5)
     try:
         page = paginator.page(pagenum)
     except PageNotAnInteger:

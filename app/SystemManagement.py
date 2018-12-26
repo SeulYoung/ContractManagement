@@ -62,19 +62,19 @@ def con_assign(request):
         else:
             for sign in countersignp:
                 Process.objects.create(conNum=num_list.num, type=1, state=0, userName=sign, time=timezone.now())
-                # user = User.objects.get(username=sign)
-                # send_mail('合同管理系统', '尊敬的的用户' + user.username+ ',您有一条合同需要会签！',  '948525147@qq.com',
-                #           [user.email], fail_silently=False)
+                user = User.objects.get(username=sign)
+                send_mail('合同管理系统', '尊敬的的用户' + user.username+ ',您有一条合同需要会签！',  '948525147@qq.com',
+                          [user.email], fail_silently=False)
             for app in approvalp:
                 Process.objects.create(conNum=num_list.num, type=2, state=0, userName=app, time=timezone.now())
-                # user = User.objects.get(username=app)
-                # send_mail('合同管理系统', '尊敬的的用户' + user.username + ',您有一条合同需要审批！', '948525147@qq.com',
-                #           [user.email], fail_silently=False)
+                user = User.objects.get(username=app)
+                send_mail('合同管理系统', '尊敬的的用户' + user.username + ',您有一条合同需要审批！', '948525147@qq.com',
+                          [user.email], fail_silently=False)
             for sig in signp:
                 Process.objects.create(conNum=num_list.num, type=3, state=0, userName=sig, time=timezone.now())
-                # user = User.objects.get(username=sig)
-                # send_mail('合同管理系统', '尊敬的的用户' + user.username + ',您有一条合同需要签订！', '948525147@qq.com',
-                #           [user.email], fail_silently=False)
+                user = User.objects.get(username=sig)
+                send_mail('合同管理系统', '尊敬的的用户' + user.username + ',您有一条合同需要签订！', '948525147@qq.com',
+                          [user.email], fail_silently=False)
             return HttpResponseRedirect('Wcontract_sel.html')
 
 
