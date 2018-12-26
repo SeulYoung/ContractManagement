@@ -251,11 +251,14 @@ def Contract_Select(request, pagenum='1'):
             for name in name_list:
                 if count == 0:
                     contract_list1 = Contract.objects.filter(Q(name__icontains=name))
-                    contract_list = contract_list1.union(Contract.objects.filter(Q(userName__icontains=name)))
+                    contract_list2 = contract_list1.union(Contract.objects.filter(Q(content__icontains=name)))
+                    contract_list = contract_list2.union(Contract.objects.filter(Q(userName__icontains=name)))
                     count = 1
                 else:
                     contract_list1 = contract_list.union(Contract.objects.filter(Q(userName__icontains=name))) \
-                        .union(Contract.objects.filter(Q(name__icontains=name)))
+                        .union(Contract.objects.filter(Q(name__icontains=name)))\
+                        .union(Contract.objects.filter(Q(content__icontains=name)))
+
                     contract_list = contract_list.union(contract_list1)
         else:
             contract_list = Contract.objects.all()
