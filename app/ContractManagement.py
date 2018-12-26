@@ -224,8 +224,8 @@ def sign_contract(request):
 
 
 def Contract_Select(request, pagenum='1'):
-    # user = User.objects.filter(username=request.user.username).first()
-    # per = judgeP(user.username)
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     print(request.method)
     if request.method == "GET":
         contract_list = Contract.objects.all()
@@ -241,7 +241,7 @@ def Contract_Select(request, pagenum='1'):
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number})
+                       'currentpage': page.number, 'per_list': per})
     if request.method == "POST":
         s_name = request.POST['name']
         name_list = s_name.split()
@@ -271,12 +271,12 @@ def Contract_Select(request, pagenum='1'):
 
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number})
+                       'currentpage': page.number, 'per_list': per})
 
 
 def Process_select(request, type='0', pagenum='1'):
-    # user = User.objects.filter(username=request.user.username).first()
-    # per = judgeP(user.username)
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     print(request.method)
     if request.method == "GET":
         if type == '0':
@@ -308,7 +308,7 @@ def Process_select(request, type='0', pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number, 'type': type})
+                       'currentpage': page.number, 'type': type, 'per_list': per})
 
     if request.method == "POST":
         pid = request.POST['P_id']
@@ -327,16 +327,20 @@ def Process_select(request, type='0', pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number, 'type': type})
+                       'currentpage': page.number, 'type': type, 'per_list': per})
 
 
 def Contract_Delete(request):
     num = request.POST.get("num")
     Contract.objects.filter(num=num).delete()
+    State.objects.filter(conNum=num).delete()
+    Process.objects.filter(conNum=num).delete()
     return redirect("app:contract_select_all")
 
 
 def Process_Detail(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     num = request.POST.get("num")
     if num != "":
         int(num)
@@ -357,4 +361,4 @@ def Process_Detail(request):
 
     return render(request, 'Contract_process.html',
                   {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                   'currentpage': page.number, 'type': type})
+                   'currentpage': page.number, 'type': type, 'per_list': per})
