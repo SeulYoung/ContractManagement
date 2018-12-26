@@ -13,9 +13,9 @@
                 <form id="form_email" class="wid-limit" action="/contract_process/" method="POST">
                     {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" class="form-control" name="P_id" placeholder="请输入编号">
+                        <input id="searchid" type="text" class="form-control" name="P_id" placeholder="请输入编号">
                         <span class="input-group-btn">
-							<button class="btn btn-primary" type="submit">查询合同信息</button>
+							<button id="btn_search1" class="btn btn-primary" type="submit">查询合同信息</button>
 						</span>
                     </div>
                 </form>
@@ -204,7 +204,14 @@
     </div>
     <script>
         $(function () {
-            {#$("#btn_search").click();#}
+            $("#btn_search1").click(function () {
+                if ($('#searchid').val() == "") {
+                    alert('已显示所有合同流程')
+                    return;
+                }
+                console.log('btn_search1');
+                //$("#form_email").submit()
+            });
             $("#btn_search").click(function () {
                 if ($('#bianhao').val() == "" || $('#leixing').val() == "" || $('#user').val() == "") {
                     alert('请输入内容!!')
