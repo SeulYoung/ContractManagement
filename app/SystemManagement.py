@@ -272,5 +272,7 @@ def user_mod(request):
 
 
 def list_log(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
     log_list = Log.objects.all()
-    return render(request, 'listLog.html', {'log_list': log_list})
+    return render(request, 'listLog.html', {'log_list': log_list, 'per_list': per})

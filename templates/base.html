@@ -175,7 +175,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统信息
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/listLog">查看日志</a></li>
+								{% if per_list.g1 == True %}<li><a href="/listLog">查看日志</a></li>{% endif %}
 							</ul>
 						</li>
 					</ul>
