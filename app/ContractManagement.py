@@ -40,7 +40,7 @@ def drafting_contract(request):
             else:
                 continue
         if customer_exist is False:
-            return render(request, 'draftingContract.html',{"errormsg":"该客户不存在", 'per_list': per})
+            return render(request, 'draftingContract.html', {"errormsg": "该客户不存在", 'per_list': per})
         file = request.FILES.get('files')
 
         my_contract = Contract.objects.create(name=name,
@@ -69,7 +69,7 @@ def drafting_contract(request):
         #
         # send_mass_mail((message1, message2), fail_silently=False)
 
-        return render(request, 'draftingContract.html',{'per_list': per})
+        return render(request, 'draftingContract.html', {'per_list': per})
 
 
 def list_draft(request):
@@ -114,7 +114,7 @@ def list_contract(request):
         contract = Contract.objects.filter(num=process.conNum).first()
         temp = State.objects.filter(conNum=contract.num).first()
         contract_list.append({'conNum': process.conNum, 'name': contract.name, 'time': temp.time, 'p_type': p_type})
-    return render(request, 'listContract.html', {'contract_list': contract_list,'per_list': per})
+    return render(request, 'listContract.html', {'contract_list': contract_list, 'per_list': per})
 
 
 def contract_info(request):
@@ -133,7 +133,7 @@ def contract_info(request):
         sing = Process.objects.filter(conNum=num, type=3).last()
         if singing is not None:
             content['sing'] = sing.content
-        return render(request, 'contractInfo.html', {'contract': contract, 'content': content,'per_list': per})
+        return render(request, 'contractInfo.html', {'contract': contract, 'content': content, 'per_list': per})
 
 
 def signing_contract(request):
@@ -143,7 +143,7 @@ def signing_contract(request):
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'signingContract.html', {'contract': contract,'per_list': per})
+            return render(request, 'signingContract.html', {'contract': contract, 'per_list': per})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
@@ -154,7 +154,7 @@ def signing_contract(request):
             if not filter_result:
                 State.objects.create(conNum=num, type=2, time=datetime.datetime.now())
             return redirect('/listContract')
-    return render(request, 'signingContract.html',{'per_list': per})
+    return render(request, 'signingContract.html', {'per_list': per})
 
 
 def final_contract(request):
@@ -165,14 +165,15 @@ def final_contract(request):
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
             process = Process.objects.filter(conNum=num, type=1).first()
-            return render(request, 'finalContract.html', {'contract': contract, 'content': process.content,'per_list': per})
+            return render(request, 'finalContract.html',
+                          {'contract': contract, 'content': process.content, 'per_list': per})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
             Contract.objects.filter(num=num).update(content=content)
             State.objects.create(conNum=num, type=3, time=datetime.datetime.now())
             return redirect('/listDraft')
-    return render(request, 'finalContract.html',{'per_list': per})
+    return render(request, 'finalContract.html', {'per_list': per})
 
 
 def approval_contract(request):
@@ -198,7 +199,7 @@ def approval_contract(request):
                 else:
                     State.objects.create(conNum=num, type=6, time=datetime.datetime.now())
             return redirect('/listContract')
-    return render(request, 'approvalContract.html',{'per_list': per})
+    return render(request, 'approvalContract.html', {'per_list': per})
 
 
 def sign_contract(request):
@@ -208,7 +209,7 @@ def sign_contract(request):
         if 'table' in request.POST:
             num = request.POST.get('num')
             contract = Contract.objects.filter(num=num).first()
-            return render(request, 'signContract.html', {'contract': contract,'per_list': per})
+            return render(request, 'signContract.html', {'contract': contract, 'per_list': per})
         else:
             num = request.POST.get('num')
             content = request.POST.get('content')
@@ -219,7 +220,7 @@ def sign_contract(request):
             if not filter_result:
                 State.objects.create(conNum=num, type=5, time=datetime.datetime.now())
             return redirect('/listContract')
-    return render(request, 'signContract.html',{'per_list': per})
+    return render(request, 'signContract.html', {'per_list': per})
 
 
 def Contract_Select(request, pagenum='1'):
@@ -238,13 +239,27 @@ def Contract_Select(request, pagenum='1'):
             page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
         except EmptyPage:
             page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-        print(page.object_list[0].name)
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number,'per_list': per})
+                       'currentpage': page.number, 'per_list': per})
     if request.method == "POST":
         s_name = request.POST['name']
-        contract_list = Contract.objects.filter(Q(name__icontains=s_name)).order_by('num')
+        name_list = s_name.split()
+        count = 0
+        ########对用户输入框内的字符进行分割并提取关键字进行合同名和用户名包含在内的模糊查询#########
+        if s_name != "":
+            for name in name_list:
+                if count == 0:
+                    contract_list1 = Contract.objects.filter(Q(name__icontains=name))
+                    contract_list = contract_list1.union(Contract.objects.filter(Q(userName__icontains=name)))
+                    count = 1
+                else:
+                    contract_list1 = contract_list.union(Contract.objects.filter(Q(userName__icontains=name))) \
+                        .union(Contract.objects.filter(Q(name__icontains=name)))
+                    contract_list = contract_list.union(contract_list1)
+        else:
+            contract_list = Contract.objects.all()
+
         paginator = Paginator(contract_list, 2)
 
         try:
@@ -256,7 +271,7 @@ def Contract_Select(request, pagenum='1'):
 
         return render(request, 'Contract_select.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number,'per_list': per})
+                       'currentpage': page.number, 'per_list': per})
 
 
 def Process_select(request, type='0', pagenum='1'):
@@ -293,13 +308,15 @@ def Process_select(request, type='0', pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number,'type':type, 'per_list': per})
+                       'currentpage': page.number, 'type': type, 'per_list': per})
 
     if request.method == "POST":
         pid = request.POST['P_id']
-        int(pid)
-        process_list = Process.objects.filter(conNum=pid)
-
+        if pid != "":
+            int(pid)
+            process_list = Process.objects.filter(conNum=pid)
+        else:
+            process_list = Process.objects.all()
         paginator = Paginator(process_list, 2)
         try:
             page = paginator.page(pagenum)
@@ -310,5 +327,38 @@ def Process_select(request, type='0', pagenum='1'):
 
         return render(request, 'Contract_process.html',
                       {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
-                       'currentpage': page.number,'type':type, 'per_list': per})
+                       'currentpage': page.number, 'type': type, 'per_list': per})
 
+
+def Contract_Delete(request):
+    num = request.POST.get("num")
+    Contract.objects.filter(num=num).delete()
+    State.objects.filter(conNum=num).delete()
+    Process.objects.filter(conNum=num).delete()
+    return redirect("app:contract_select_all")
+
+
+def Process_Detail(request):
+    user = User.objects.filter(username=request.user.username).first()
+    per = judgeP(user.username)
+    num = request.POST.get("num")
+    if num != "":
+        int(num)
+    username = request.POST.get("username")
+    type = request.POST.get("type")
+    if type != "":
+        int(type)
+
+    process_list = Process.objects.filter(conNum=num, type=type, userName=username)
+    pagenum = 1
+    paginator = Paginator(process_list, 2)
+    try:
+        page = paginator.page(pagenum)
+    except PageNotAnInteger:
+        page = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+
+    return render(request, 'Contract_process.html',
+                  {'page': page, "paginator": paginator, 'pagerange': paginator.page_range,
+                   'currentpage': page.number, 'type': type, 'per_list': per})

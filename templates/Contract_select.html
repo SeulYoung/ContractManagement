@@ -4,103 +4,142 @@
 
 {% block content %}
     <div class="content">
-		<div class="right-align">
-			<div class="row">
-				<h1 class="title">合同信息查询</h1>
-			</div>
-			<div class="clearfix"></div>
-			<div class="row">
-				<form id="form_email" class="wid-limit" action="" method="POST">
+        <div class="right-align">
+            <div class="row">
+                <h1 class="title">合同信息查询</h1>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <form id="form_email" class="wid-limit" action="" method="POST">
                     {% csrf_token %}
-					<div class="input-group">
-						<input type="text" class="form-control" name="name">
-						<span class="input-group-btn">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="name">
+                        <span class="input-group-btn">
 							<button class="btn btn-primary" type="submit">查询合同信息</button>
 						</span>
-					</div>
-				</form>
-			</div>
-			<div class="clearfix"></div>
-			<div class="row">
-			<table class="table" id="table_contact">
-				<thead>
-							<tr>
-                                <th>编号</th>
-								<th>
-									合同名称
-								</th>
-								<th>
-									合同客户
-								</th>
-								<th>
-									开始时间
-								</th>
-								<th>
-									结束时间
-								</th>
-                                <th>
-									合同使用者
-								</th>
-							</tr>
-				</thead>
-				<tbody>
-                        {% if page %}
-							{% for contract in page.object_list%}
-							<tr>
-                                <td>{{ contract.num }}</td>
-								<td>{{contract.name}}</td>
-								<td>{{contract.customer}}</td>
-								<td>{{contract.beginTime}}</td>
-								<td>{{contract.endTime}}</td>
-                                <td>{{contract.userName}}</td>
-								<!--<td>-->
-									<!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
-								<!--</td>-->
-							</tr>
-							{% endfor %}
-						{% endif %}
-				</tbody>
-			</table>
+                    </div>
+                </form>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <table class="table" id="table_contact">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>
+                            合同名称
+                        </th>
+                        <th>
+                            合同客户
+                        </th>
+                        <th>
+                            开始时间
+                        </th>
+                        <th>
+                            结束时间
+                        </th>
+                        <th>
+                            合同使用者
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if page %}
+                        {% for contract in page.object_list %}
+                            <tr>
+                                <form action="/contract_delete/" method="post" class="con_list">
+                                    <input type="hidden" value="{{ contract.num }}" name="num"/>
+                                    <td>{{ contract.num }}</td>
+                                    <td>{{ contract.name }}</td>
+                                    <td>{{ contract.customer }}</td>
+                                    <td>{{ contract.beginTime }}</td>
+                                    <td>{{ contract.endTime }}</td>
+                                    <td>{{ contract.userName }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-lg btn-danger" data-toggle="modal"
+                                                data-target="#myModal">删除
+                                        </button>
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                             aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">×
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">
+                                                            删除合同！
+                                                        </h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        真的要删除{{ contract.name }}吗?（操作不可逆）
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary"
+                                                                data-dismiss="modal">关闭
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            删除
+                                                        </button>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </td>
+                                    {% csrf_token %}
+                                </form>
+                                <!--<td>-->
+                                <!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
+                                <!--</td>-->
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
                 <nav aria-label="Page navigation">
-                        <ul class="pagination">
+                    <ul class="pagination">
 
-                            {% if page.has_previous %}
-                                <li>
-                                    <a href="{% url 'app:contract_select' page.previous_page_number %}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
+                        {% if page.has_previous %}
+                            <li>
+                                <a href="{% url 'app:contract_select' page.previous_page_number %}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
 
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for p in pagerange %}
+                            {% ifequal p currentpage %}
+                                <li class="active"><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
                             {% else %}
-                                <li class="disabled">
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                            {% endif %}
+                                <li><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
+                            {% endifequal %}
+                        {% endfor %}
 
-                            {% for p in pagerange %}
-                                {% ifequal p currentpage %}
-                                    <li class="active"><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
-                                {% else %}
-                                    <li><a href="{% url 'app:contract_select' p %}">{{ p }}</a></li>
-                                {% endifequal %}
-                            {% endfor %}
-
-                            {% if page.has_next %}
-                                <li>
-                                    <a href="{% url 'app:contract_select' page.next_page_number %}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a></li>
-                            {% else %}
-                                <li class="disabled">
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a></li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-			</div>
-		</div>
-	</div>
+                        {% if page.has_next %}
+                            <li>
+                                <a href="{% url 'app:contract_select' page.next_page_number %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a></li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 {% endblock %}

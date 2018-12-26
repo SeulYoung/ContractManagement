@@ -4,149 +4,221 @@
 
 {% block content %}
     <div class="content">
-		<div class="right-align">
-			<div class="row">
-				<h1 class="title">合同流程查询</h1>
-			</div>
-			<div class="clearfix"></div>
-			<div class="row">
-				<form id="form_email" class="wid-limit" action="" method="POST">
+        <div class="right-align">
+            <div class="row">
+                <h1 class="title">合同流程查询</h1>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <form id="form_email" class="wid-limit" action="/contract_process/" method="POST">
                     {% csrf_token %}
-					<div class="input-group">
-						<input type="text" class="form-control" name="P_id" placeholder="请输入编号">
-						<span class="input-group-btn">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="P_id" placeholder="请输入编号">
+                        <span class="input-group-btn">
 							<button class="btn btn-primary" type="submit">查询合同信息</button>
 						</span>
-					</div>
-				</form>
-                <form id="form_email" method="POST">
-                        <div class="btn-group dropdown">
-                            <button class="btn btn-primary" data-toggle="dropdown">合同状态
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href={% url 'app:contract_process_all' %}>显示全部</a></li>
-                                <li><a href={% url 'app:contract_process' '1' %}>未会签</a></li>
-                                <li><a href={% url 'app:contract_process' '2' %}>会签完成</a></li>
-                                <li><a href={% url 'app:contract_process' '3' %}>定稿完成</a></li>
-                                <li><a href={% url 'app:contract_process' '4' %}>审批完成</a></li>
-                                <li><a href={% url 'app:contract_process' '5' %}>签订完成</a></li>
-                                <li><a href={% url 'app:contract_process' '6' %}>已取消列表</a></li>
-                            </ul>
-                        </div>
+                    </div>
                 </form>
-			</div>
-			<div class="row">
-					<table class="table">
-						<thead>
-							<tr>
-                                <th>编号</th>
-								<th>
-									类型
-								</th>
-								<th>
-									状态
-								</th>
-								<th>
-									使用者
-								</th>
-                                <th>
-									操作内容
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-						{% if page %}
-							{% for process in page.object_list%}
-							<tr>
-                                <td>{{ process.conNum }}</td>
-								<td>
-                                    {% if process.type == 1%}
-                                        会签阶段
-								    {% endif %}
-                                    {% if process.type == 2%}
-                                        审批阶段
-								    {% endif %}
-                                    {% if process.type == 3%}
-                                        签订阶段
-								    {% endif %}
-
-                                </td>
-								<td>
-                                    {% if process.type == 1 and process.state == 1%}
-                                        会签完成
-								    {% endif %}
-                                    {% if process.type == 1 and process.state == 0%}
-                                        会签未完成
-								    {% endif %}
-                                    {% if process.state == 2%}
-                                        合同已取消
-								    {% endif %}
-                                    {% if process.type == 2 and process.state == 0%}
-                                        审批未完成
-								    {% endif %}
-                                    {% if process.type == 2 and process.state == 1%}
-                                        审批已完成
-								    {% endif %}
-                                    {% if process.type == 3 and process.state == 1%}
-                                        签订完成
-								    {% endif %}
-                                    {% if process.type == 3 and process.state == 0%}
-                                        签订未完成
-								    {% endif %}
-                                </td>
-								<td>{{process.userName}}</td>
-                                <td>{{ process.content }}</td>
-								<!--<td>-->
-									<!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
-								<!--</td>-->
-							</tr>
-							{% endfor %}
-						{% endif %}
-						</tbody>
-					</table>
-                <nav aria-label="Page navigation">
-                        <ul class="pagination">
-
-                            {% if page.has_previous %}
-                                <li>
-                                    <a href="{% url 'app:contract_process2' type page.previous_page_number %}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-
-                            {% else %}
-                                <li class="disabled">
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                            {% endif %}
-
-                            {% for p in pagerange %}
-                                {% ifequal p currentpage %}
-                                    <li class="active"><a href="{% url 'app:contract_process2' type p %}">{{ p }}</a></li>
-                                {% else %}
-                                    <li><a href="{% url 'app:contract_process2' type p %}">{{ p }}</a></li>
-                                {% endifequal %}
-                            {% endfor %}
-
-                            {% if page.has_next %}
-                                <li>
-                                    <a href="{% url 'app:contract_process2' type page.next_page_number %}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a></li>
-                            {% else %}
-                                <li class="disabled">
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a></li>
-                            {% endif %}
+                <form id="form_email_2" method="POST" action="/process_detail/">
+                    <div class="btn-group dropdown col-sm-4">
+                        <button class="btn btn-primary" data-toggle="dropdown">合同状态
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href={% url 'app:contract_process_all' %}>显示全部</a></li>
+                            <li><a href={% url 'app:contract_process' '1' %}>未会签</a></li>
+                            <li><a href={% url 'app:contract_process' '2' %}>会签完成</a></li>
+                            <li><a href={% url 'app:contract_process' '3' %}>定稿完成</a></li>
+                            <li><a href={% url 'app:contract_process' '4' %}>审批完成</a></li>
+                            <li><a href={% url 'app:contract_process' '5' %}>签订完成</a></li>
+                            <li><a href={% url 'app:contract_process' '6' %}>已取消列表</a></li>
                         </ul>
-                    </nav>
-			</div>
-		</div>
-	</div>
+                    </div>
+                    <div class=" col-sm-4">
+                        <button type="button" class="btn btn-default btn-upprocess" data-toggle="modal"
+                                data-target="#myModal">精确查询
+                        </button>
+                    </div>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        精确查询
+                                    </h4>
+                                </div>
+                                <div id="addBookModal" class="modal-body">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label for="bookName" class="col-sm-2 control-label">编号:*</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="bianhao" type="text" name="num">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bookAuthor" class="col-sm-2 control-label">类型:*</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="leixing" name="type" type="text"
+                                                       placeholder="1为会签阶段 2为审批阶段 3为签订阶段">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bookPrice" class="col-sm-2 control-label">使用者:*</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="user" name="username" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">关闭
+                                    </button>
+                                    <button id="btn_search" type="button" class="btn btn-primary">
+                                        查询
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    {% csrf_token %}
+
+                </form>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>
+                            类型
+                        </th>
+                        <th>
+                            状态
+                        </th>
+                        <th>
+                            使用者
+                        </th>
+                        <th>
+                            操作内容
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if page %}
+                        {% for process in page.object_list %}
+                            <tr>
+                                <td>{{ process.conNum }}</td>
+                                <td>
+                                    {% if process.type == 1 %}
+                                        会签阶段
+                                    {% endif %}
+                                    {% if process.type == 2 %}
+                                        审批阶段
+                                    {% endif %}
+                                    {% if process.type == 3 %}
+                                        签订阶段
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    {% if process.type == 1 and process.state == 1 %}
+                                        会签完成
+                                    {% endif %}
+                                    {% if process.type == 1 and process.state == 0 %}
+                                        会签未完成
+                                    {% endif %}
+                                    {% if process.state == 2 %}
+                                        合同已取消
+                                    {% endif %}
+                                    {% if process.type == 2 and process.state == 0 %}
+                                        审批未完成
+                                    {% endif %}
+                                    {% if process.type == 2 and process.state == 1 %}
+                                        审批已完成
+                                    {% endif %}
+                                    {% if process.type == 3 and process.state == 1 %}
+                                        签订完成
+                                    {% endif %}
+                                    {% if process.type == 3 and process.state == 0 %}
+                                        签订未完成
+                                    {% endif %}
+                                </td>
+                                <td>{{ process.userName }}</td>
+                                <td>{{ process.content }}</td>
+                                <!--<td>-->
+                                <!--<a href="#" role="button"  class="btn btn-sm btn-danger" >删除</a>-->
+                                <!--</td>-->
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+
+                        {% if page.has_previous %}
+                            <li>
+                                <a href="{% url 'app:contract_process2' type page.previous_page_number %}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for p in pagerange %}
+                            {% ifequal p currentpage %}
+                                <li class="active"><a href="{% url 'app:contract_process2' type p %}">{{ p }}</a></li>
+                            {% else %}
+                                <li><a href="{% url 'app:contract_process2' type p %}">{{ p }}</a></li>
+                            {% endifequal %}
+                        {% endfor %}
+
+                        {% if page.has_next %}
+                            <li>
+                                <a href="{% url 'app:contract_process2' type page.next_page_number %}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a></li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            {#$("#btn_search").click();#}
+            $("#btn_search").click(function () {
+                if ($('#bianhao').val() == "" || $('#leixing').val() == "" || $('#user').val() == "") {
+                    alert('请输入内容!!')
+                    return;
+                }
+                if ($('#bianhao').val() != "1" && $('#bianhao').val() != "2" && $('#bianhao').val() != "3") {
+                    alert("编号不能为 1,2,3 之外的数！")
+                    return;
+                }
+                console.log('btn_search');
+                $("#form_email_2").submit()
+            });
+        })
+    </script>
 {% endblock %}
 
-	<!-- footer -->
+<!-- footer -->

@@ -20,12 +20,15 @@ def judgeP(name):
                 'c1': False, 'c2': False, 'c3': False,
                 'd1': False, 'd2': False, 'd3': False,
                 'e1': False,
-                'f1': False, 'f2': False, 'f3': False, 'f4': False}
+                'f1': False, 'f2': False, 'f3': False, 'f4': False,
+                'g1': False}
     if right_list:
         permission = right_list.description
     else:
         return per_list
 
+    if right_list.roleName == '管理员':
+        per_list['g1'] = True
     if permission.find('起草合同') != -1:
         per_list['a1'] = True
     if permission.find('定稿合同') != -1:
