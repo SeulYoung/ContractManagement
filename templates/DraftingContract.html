@@ -72,9 +72,10 @@
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<div class="control-group form-group">
+							<p id="errormsg1"></p>
 							<div class="controls">
 								<label>上传附件:</label>
-								<input type="file" name="files">
+								<input type="file" name="files" id="file" onchange="c()">
 							</div>
 						</div>
 					</div>
@@ -118,6 +119,46 @@
 		</div>
 	</div>
 </div>
+
+
+<script>
+                     function c() {
+                        document.getElementById("errormsg1").style.display="none";
+                        var r = new FileReader();
+
+                        var filename0 = document.getElementById('file');
+                        var filename = filename0.value.toString();
+
+                        var f = document.getElementById('file').files[0];
+                        var  mysize = f/1024/1024;
+                        if(mysize > 2){
+                            return false;
+                        }
+
+                        var idx = filename.lastIndexOf(".");
+                        if (idx != -1) {
+                            var ext = filename.substr(idx + 1).toUpperCase();
+                            ext = ext.toLowerCase();
+
+
+                            if (ext != 'jpg'  && ext != 'jpeg' && ext != 'png' && ext != 'docx' && ext != 'doc' && ext != 'txt') {
+                                document.getElementById("errormsg1").innerHTML = "invalid format";
+                                document.getElementById("errormsg1").style.display="block";
+                                var tempfilename = document.getElementById('file');
+                                tempfilename.value = "";
+                                return false;
+                            }
+                            else {
+                                r.readAsDataURL(f);
+                                r.onload = function (e) {
+                                    document.getElementById('show').src = this.result;
+                                    document.getElementById('upload').disabled = false;
+                                };
+                                return true;
+                            }
+                        }
+                    }
+                </script>
 <!--contact-->
 {% endblock %}
 
