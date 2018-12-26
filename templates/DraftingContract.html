@@ -130,10 +130,16 @@
                         var filename = filename0.value.toString();
 
                         var f = document.getElementById('file').files[0];
+                        var  mysize = f/1024/1024;
+                        if(mysize > 2){
+                            return false;
+                        }
+
                         var idx = filename.lastIndexOf(".");
                         if (idx != -1) {
                             var ext = filename.substr(idx + 1).toUpperCase();
                             ext = ext.toLowerCase();
+
 
                             if (ext != 'jpg'  && ext != 'jpeg' && ext != 'png' && ext != 'docx' && ext != 'doc' && ext != 'txt') {
                                 document.getElementById("errormsg1").innerHTML = "invalid format";
